@@ -1,0 +1,11 @@
+{
+  "name": "agentcall",
+  "version": "0.1.0",
+  "description": "Voice calling for Claude Code via phone",
+  "author": "agentplexus",
+  "license": "MIT",
+  "repository": "https://github.com/agentplexus/agentcall",
+  "homepage": "https://github.com/agentplexus/agentcall",
+  "commands": "./commands/",
+  "skills": "./skills/"
+}

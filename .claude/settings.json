@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "You received a notification that may indicate you're stuck or need user input.\n\nIf you've been working for a while without progress or need a decision that's blocking further work, consider calling the user to discuss. Use the initiate_call tool if appropriate."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "The user has stopped the current operation. Consider whether this is an appropriate time to call them:\n\n- If you completed significant work, offer to call and walk them through it\n- If you're blocked and need clarification, suggest calling to discuss\n- If it's a minor pause, don't suggest calling\n\nIf calling seems appropriate, use the initiate_call tool. Otherwise, continue working or wait for instructions."
+          }
+        ]
+      }
+    ]
+  }
+}
