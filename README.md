@@ -1,4 +1,10 @@
-# agentcall
+# AgentCall
+
+[![Build Status][build-status-svg]][build-status-url]
+[![Lint Status][lint-status-svg]][lint-status-url]
+[![Go Report Card][goreport-svg]][goreport-url]
+[![Docs][docs-godoc-svg]][docs-godoc-url]
+[![License][license-svg]][license-url]
 
 An MCP plugin that enables voice calls via phone for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision.
 
@@ -31,37 +37,37 @@ The Go binary is self-contained with no runtime dependencies, making deployment 
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                           agentcall                                 │
-├─────────────────────────────────────────────────────────────────────┤
-│  MCP Tools (via mcpkit)                                             │
-│  ├── initiate_call  - Start a new call to the user                 │
-│  ├── continue_call  - Continue conversation on active call         │
-│  ├── speak_to_user  - Speak without waiting for response           │
-│  └── end_call       - End the call with optional goodbye           │
-├─────────────────────────────────────────────────────────────────────┤
-│  Call Manager                                                       │
-│  - Orchestrates calls, TTS, STT                                    │
-│  - Manages call state and conversation history                     │
-├─────────────────────────────────────────────────────────────────────┤
-│  omnivoice (abstraction layer)                                      │
-│  ├── tts.StreamingProvider  - Text-to-Speech interface             │
-│  ├── stt.StreamingProvider  - Speech-to-Text interface             │
-│  ├── transport.Transport    - Audio streaming interface            │
-│  └── callsystem.CallSystem  - Phone call management interface      │
-├─────────────────────────────────────────────────────────────────────┤
-│  Provider Implementations                                           │
-│  ├── go-elevenlabs  - ElevenLabs streaming TTS (natural voices)    │
-│  ├── omnivoice-deepgram    - Deepgram streaming STT (accurate transcripts)│
-│  └── omnivoice-twilio                                              │
-│      ├── Transport via Twilio Media Streams WebSocket              │
-│      └── CallSystem via Twilio REST API                            │
-├─────────────────────────────────────────────────────────────────────┤
-│  mcpkit                                                             │
-│  - MCP server with HTTP/SSE transport                              │
-│  - Built-in ngrok integration for public webhooks                  │
-│  - Library-mode for direct function calls                          │
-└─────────────────────────────────────────────────────────────────────┘
+┌────────────────────────────────────────────────────────────────────────────┐
+│                           agentcall                                        │
+├────────────────────────────────────────────────────────────────────────────┤
+│  MCP Tools (via mcpkit)                                                    │
+│  ├── initiate_call  - Start a new call to the user                         │
+│  ├── continue_call  - Continue conversation on active call                 │
+│  ├── speak_to_user  - Speak without waiting for response                   │
+│  └── end_call       - End the call with optional goodbye                   │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Call Manager                                                              │
+│  - Orchestrates calls, TTS, STT                                            │
+│  - Manages call state and conversation history                             │
+├────────────────────────────────────────────────────────────────────────────┤
+│  omnivoice (abstraction layer)                                             │
+│  ├── tts.StreamingProvider  - Text-to-Speech interface                     │
+│  ├── stt.StreamingProvider  - Speech-to-Text interface                     │
+│  ├── transport.Transport    - Audio streaming interface                    │
+│  └── callsystem.CallSystem  - Phone call management interface              │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Provider Implementations                                                  │
+│  ├── go-elevenlabs  - ElevenLabs streaming TTS (natural voices)            │
+│  ├── omnivoice-deepgram    - Deepgram streaming STT (accurate transcripts) │
+│  └── omnivoice-twilio                                                      │
+│      ├── Transport via Twilio Media Streams WebSocket                      │
+│      └── CallSystem via Twilio REST API                                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  mcpkit                                                                    │
+│  - MCP server with HTTP/SSE transport                                      │
+│  - Built-in ngrok integration for public webhooks                          │
+│  - Library-mode for direct function calls                                  │
+└────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## The agentplexus Stack
@@ -390,3 +396,16 @@ Built with the agentplexus stack:
 - [omnivoice-twilio](https://github.com/agentplexus/omnivoice-twilio) - Twilio transport and call system
 - [mcpkit](https://github.com/agentplexus/mcpkit) - MCP server runtime
 - [assistantkit](https://github.com/agentplexus/assistantkit) - Multi-tool plugin configuration
+
+ [build-status-svg]: https://github.com/agentplexus/agentcall/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/agentplexus/agentcall/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/agentplexus/agentcall/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/agentplexus/agentcall/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/agentplexus/agentcall
+ [goreport-url]: https://goreportcard.com/report/github.com/agentplexus/agentcall
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/agentplexus/agentcall
+ [docs-godoc-url]: https://pkg.go.dev/github.com/agentplexus/agentcall
+ [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
+ [license-url]: https://github.com/agentplexus/agentcall/blob/master/LICENSE
+ [used-by-svg]: https://sourcegraph.com/github.com/agentplexus/agentcall/-/badge.svg
+ [used-by-url]: https://sourcegraph.com/github.com/agentplexus/agentcall?badge
