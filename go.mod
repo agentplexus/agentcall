@@ -25,6 +25,7 @@ require (
 	github.com/go-faster/yaml v0.4.6 // indirect
 	github.com/go-logr/logr v1.4.3 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
+	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/google/go-github/v81 v81.0.0 // indirect
@@ -36,6 +37,7 @@ require (
 	github.com/grokify/gogithub v0.6.0 // indirect
 	github.com/grokify/mogo v0.72.6 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
+	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/log15/v3 v3.1.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
@@ -67,3 +69,9 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 )
+
+// Force ngrok v1.12.0 due to build issue in v1.13.0
+replace golang.ngrok.com/ngrok => golang.ngrok.com/ngrok v1.12.0
+
+// Force log15/v3 to version compatible with ngrok v1.12.0 (has ext.RandId)
+replace github.com/inconshreveable/log15/v3 => github.com/inconshreveable/log15/v3 v3.0.0-testing.5
