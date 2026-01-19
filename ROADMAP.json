@@ -1,0 +1,381 @@
+{
+  "ir_version": "1.0",
+  "project": "AgentCall",
+  "repository": "https://github.com/agentplexus/agentcall",
+
+  "legend": {
+    "completed": {"emoji": "✅", "description": "Completed"},
+    "in_progress": {"emoji": "🚧", "description": "In Progress"},
+    "planned": {"emoji": "📋", "description": "Planned"},
+    "future": {"emoji": "💡", "description": "Under Consideration"}
+  },
+
+  "areas": [
+    {"id": "core", "name": "Core", "priority": 1},
+    {"id": "mcp", "name": "MCP Server", "priority": 2},
+    {"id": "voice", "name": "Voice Integration", "priority": 3},
+    {"id": "assistantkit", "name": "AssistantKit Integration", "priority": 4},
+    {"id": "multi-tool", "name": "Multi-Tool Support", "priority": 5},
+    {"id": "docs", "name": "Documentation", "priority": 6}
+  ],
+
+  "phases": [
+    {
+      "id": "v0.1",
+      "name": "v0.1.0 - Initial Release",
+      "status": "completed",
+      "order": 1,
+      "description": "Core MCP server with voice calling via agentplexus stack"
+    },
+    {
+      "id": "v0.2",
+      "name": "v0.2.0 - Multi-Tool Support",
+      "status": "in_progress",
+      "order": 2,
+      "description": "AssistantKit bundle API and support for Claude Code, Kiro CLI, and Gemini CLI"
+    },
+    {
+      "id": "v0.3",
+      "name": "v0.3.0 - Enhanced Providers",
+      "status": "planned",
+      "order": 3,
+      "description": "Additional voice providers and features"
+    },
+    {
+      "id": "future",
+      "name": "Future",
+      "status": "future",
+      "order": 99,
+      "description": "Ideas under consideration"
+    }
+  ],
+
+  "items": [
+    {
+      "id": "go-mod",
+      "title": "Go module setup",
+      "description": "Initialize Go module with dependencies on omnivoice, omnivoice-twilio, mcpruntime",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "core",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "config",
+      "title": "Configuration management",
+      "description": "Environment variable based configuration for Twilio, ngrok, and OpenAI settings",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "core",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "call-manager",
+      "title": "Call manager",
+      "description": "Orchestrates voice calls using omnivoice interfaces with Twilio implementation",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "voice",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "mcp-tools",
+      "title": "MCP tools",
+      "description": "Four MCP tools: initiate_call, continue_call, speak_to_user, end_call",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "mcp",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "mcp-server",
+      "title": "MCP server with ngrok",
+      "description": "HTTP MCP server using mcpruntime with built-in ngrok tunnel for webhooks",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "mcp",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "twilio-webhooks",
+      "title": "Twilio webhook handlers",
+      "description": "HTTP handlers for Twilio voice, media stream, and status callbacks",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "voice",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "readme",
+      "title": "README documentation",
+      "description": "Project overview, architecture diagram, installation and usage instructions",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "docs",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "plugin-manifest-v1",
+      "title": "Claude Code plugin manifest (v0.1)",
+      "description": "Initial plugin.json using direct assistantkit adapter calls",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "skill-phone-input-v1",
+      "title": "Phone input skill (v0.1)",
+      "description": "Initial SKILL.md using direct assistantkit adapter calls",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "hooks-config-v1",
+      "title": "Hooks configuration (v0.1)",
+      "description": "Initial hooks using direct assistantkit adapter calls",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "command-call-v1",
+      "title": "Call slash command (v0.1)",
+      "description": "Initial /call command using direct assistantkit adapter calls",
+      "status": "completed",
+      "version": "0.1.0",
+      "phase": "v0.1",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "bundle-package",
+      "title": "AssistantKit bundle package",
+      "description": "New bundle package in assistantkit that unifies plugin, skills, commands, hooks into single type",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "bundle-claude-adapter",
+      "title": "Bundle Claude adapter",
+      "description": "Claude Code adapter for bundle package - generates .claude-plugin/, skills/, commands/, .claude/",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "bundle-kiro-adapter",
+      "title": "Bundle Kiro CLI adapter",
+      "description": "AWS Kiro CLI adapter for bundle package - generates ~/.kiro/agents/, .kiro/settings/",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "bundle-gemini-adapter",
+      "title": "Bundle Gemini CLI adapter",
+      "description": "Gemini CLI adapter for bundle package - generates gemini-extension.json, agents/*.toml",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "bundle-generate-api",
+      "title": "Bundle Generate API",
+      "description": "Single Generate(tool, dir) function to output bundle for any supported tool",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "assistantkit",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "agentcall-bundle-migration",
+      "title": "Migrate agentcall to bundle API",
+      "description": "Refactor generate-plugin to use bundle.Generate() instead of direct adapter calls",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "core",
+      "type": "Changed",
+      "priority": "high"
+    },
+    {
+      "id": "kiro-cli-support",
+      "title": "Kiro CLI plugin generation",
+      "description": "Generate Kiro CLI agent and MCP configuration for agentcall",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "multi-tool",
+      "type": "Added",
+      "priority": "high"
+    },
+    {
+      "id": "gemini-cli-support",
+      "title": "Gemini CLI plugin generation",
+      "description": "Generate Gemini CLI extension and agent configuration for agentcall",
+      "status": "planned",
+      "target_version": "0.2.0",
+      "phase": "v0.2",
+      "area": "multi-tool",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "multi-tool-docs",
+      "title": "Multi-tool documentation",
+      "description": "Documentation for using agentcall with Claude Code, Kiro CLI, and Gemini CLI",
+      "status": "completed",
+      "version": "0.2.0",
+      "phase": "v0.2",
+      "area": "docs",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "telnyx-provider",
+      "title": "Telnyx phone provider",
+      "description": "Alternative phone provider via omnivoice-telnyx (50% cheaper than Twilio)",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "voice",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "openai-tts",
+      "title": "OpenAI TTS provider",
+      "description": "Higher quality TTS via OpenAI as alternative to Twilio TTS",
+      "status": "planned",
+      "target_version": "0.3.0",
+      "phase": "v0.3",
+      "area": "voice",
+      "type": "Added",
+      "priority": "medium"
+    },
+    {
+      "id": "call-recording",
+      "title": "Call recording",
+      "description": "Option to record calls for later review",
+      "status": "future",
+      "phase": "future",
+      "area": "voice",
+      "type": "Added",
+      "priority": "low"
+    },
+    {
+      "id": "multi-user",
+      "title": "Multi-user support",
+      "description": "Support for calling different users based on context",
+      "status": "future",
+      "phase": "future",
+      "area": "core",
+      "type": "Added",
+      "priority": "low"
+    },
+    {
+      "id": "sms-fallback",
+      "title": "SMS fallback",
+      "description": "Fall back to SMS when call not answered",
+      "status": "future",
+      "phase": "future",
+      "area": "voice",
+      "type": "Added",
+      "priority": "low"
+    }
+  ],
+
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "order": 1,
+      "content": [
+        {"type": "text", "value": "AgentCall is a Claude Code MCP plugin that enables voice calls via phone, built with the agentplexus stack (omnivoice, omnivoice-twilio, mcpruntime). Start a task, walk away. Your phone rings when Claude is done, stuck, or needs a decision."}
+      ]
+    },
+    {
+      "id": "stack",
+      "title": "Technology Stack",
+      "order": 2,
+      "content": [
+        {"type": "list", "items": [
+          "**omnivoice** - Voice abstraction layer (TTS, STT, Transport, CallSystem interfaces)",
+          "**omnivoice-twilio** - Twilio implementation of omnivoice interfaces",
+          "**mcpruntime** - MCP server runtime with built-in ngrok integration",
+          "**assistantkit** - Multi-tool plugin configuration management (Claude, Kiro, Gemini)"
+        ]}
+      ]
+    },
+    {
+      "id": "multi-tool",
+      "title": "Multi-Tool Support",
+      "order": 3,
+      "content": [
+        {"type": "text", "value": "AgentCall supports multiple AI coding assistants through the assistantkit bundle API:"},
+        {"type": "list", "items": [
+          "**Claude Code** - Plugin manifest, skills, commands, hooks",
+          "**AWS Kiro CLI** - Agent definitions, MCP server configuration",
+          "**Gemini CLI** - Extension manifest, TOML agents"
+        ]}
+      ]
+    },
+    {
+      "id": "references",
+      "title": "References",
+      "order": 99,
+      "content": [
+        {"type": "list", "items": [
+          "[README.md](README.md) - Project documentation",
+          "[ZeframLou/call-me](https://github.com/ZeframLou/call-me) - Original TypeScript inspiration",
+          "[assistantkit](https://github.com/agentplexus/assistantkit) - Multi-tool configuration management"
+        ]}
+      ]
+    }
+  ],
+
+  "version_history": [
+    {"version": "0.1.0", "date": "2026-01-18", "status": "completed", "summary": "Initial release with MCP server and Claude Code integration"},
+    {"version": "0.2.0", "date": null, "status": "in_progress", "summary": "Multi-tool support via assistantkit bundle API"}
+  ]
+}
