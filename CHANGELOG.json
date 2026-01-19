@@ -1,0 +1,46 @@
+{
+  "ir_version": "1.0",
+  "project": "agentcall",
+  "repository": "https://github.com/agentplexus/agentcall",
+  "versioning": "semver",
+  "commit_convention": "conventional",
+  "releases": [
+    {
+      "version": "v0.1.0",
+      "date": "2026-01-19",
+      "highlights": [
+        { "description": "MCP plugin enabling AI coding assistants (Claude Code, AWS Kiro, Gemini CLI) to make phone calls to users for task completion, clarification, or complex discussions" },
+        { "description": "Premium voice quality using ElevenLabs streaming TTS and Deepgram streaming STT" },
+        { "description": "Single 53 MB Go binary with no runtime dependencies" }
+      ],
+      "added": [
+        { "description": "MCP voice call plugin with omnivoice stack integration", "commit": "5a69eb9" },
+        { "description": "`initiate_call` tool - start a new call to the user with initial message", "commit": "5a69eb9" },
+        { "description": "`continue_call` tool - continue conversation on active call", "commit": "5a69eb9" },
+        { "description": "`speak_to_user` tool - speak without waiting for response", "commit": "5a69eb9" },
+        { "description": "`end_call` tool - end call with optional goodbye message", "commit": "5a69eb9" },
+        { "description": "Call manager orchestrating TTS, STT, and phone providers", "commit": "5a69eb9" },
+        { "description": "Multi-assistant plugin generator for Claude Code, AWS Kiro CLI, and Gemini CLI", "commit": "a84a09f" },
+        { "description": "MCP plugin configuration and build artifacts", "commit": "a84a09f" }
+      ],
+      "fixed": [
+        { "description": "Downgrade ngrok to v1.12.0 and pin log15/v3 to v3.0.0-testing.5 for build compatibility", "commit": "cefd410" }
+      ],
+      "changed": [
+        { "description": "Update go.mod dependencies", "commit": "8340013" }
+      ],
+      "documentation": [
+        { "description": "README with architecture diagram, installation, configuration, and usage", "commit": "300f5d5" },
+        { "description": "Roadmap and usage documentation", "commit": "300f5d5" },
+        { "description": "README formatting improvements", "commit": "18613b9" }
+      ],
+      "chore": [
+        { "description": "Project configuration files (.gitignore, .golangci.yaml, LICENSE)", "commit": "ceb2943" }
+      ],
+      "ci": [
+        { "description": "GitHub Actions workflows for CI/CD", "commit": "57fb1d9" },
+        { "description": "Dependabot configuration for automated dependency updates", "commit": "57fb1d9" }
+      ]
+    }
+  ]
+}
