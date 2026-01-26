@@ -6,9 +6,9 @@ require (
 	github.com/agentplexus/assistantkit v0.6.0
 	github.com/agentplexus/go-elevenlabs v0.6.0
 	github.com/agentplexus/mcpkit v0.3.1
-	github.com/agentplexus/omnivoice v0.2.0
+	github.com/agentplexus/omnivoice v0.3.0
 	github.com/agentplexus/omnivoice-deepgram v0.1.0
-	github.com/agentplexus/omnivoice-twilio v0.1.1
+	github.com/agentplexus/omnivoice-twilio v0.1.2
 	github.com/modelcontextprotocol/go-sdk v1.2.0
 )
 
@@ -47,7 +47,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/twilio/twilio-go v1.29.1 // indirect
+	github.com/twilio/twilio-go v1.30.0 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect
