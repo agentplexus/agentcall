@@ -6,8 +6,8 @@ github.com/agentplexus/mcpkit v0.3.1 h1:+NA1U3tq0Kb6w3xQE+ZQcuAcDGyhbi0HKwHPh10j
 github.com/agentplexus/mcpkit v0.3.1/go.mod h1:r8AJFyvm9RU3OffftSbK5ZeJ2T5BrlI9jxXGE9+doWk=
 github.com/agentplexus/ogen-tools v0.1.1 h1:uj3U/YEaykEjt1VBsaAGUpsolYSoaeGPjpzpIaeXaSg=
 github.com/agentplexus/ogen-tools v0.1.1/go.mod h1:IVRZVeR/MmXwAKGsh+AxBxG9TQ63cBuAUILxP4nrumY=
-github.com/agentplexus/omnivoice v0.2.0 h1:r8SP5fCVE88ZrGESE0QYBY1vVMeLtRWKhcwsaIaSiVE=
-github.com/agentplexus/omnivoice v0.2.0/go.mod h1:LfxHfgrgrBg5isbaggYMpnwkN+zrCD1ziQA6StOMvkQ=
+github.com/agentplexus/omnivoice v0.3.0 h1:O6uIbUXZzAuWyMB465QKNRIb2pHTAifGk19pFpr1vrY=
+github.com/agentplexus/omnivoice v0.3.0/go.mod h1:LfxHfgrgrBg5isbaggYMpnwkN+zrCD1ziQA6StOMvkQ=
 github.com/agentplexus/omnivoice-deepgram v0.1.0 h1:dwtWVIZAfG23jy24N2dNjgqYUIR8I42iZkhf8cPO1IM=
 github.com/agentplexus/omnivoice-deepgram v0.1.0/go.mod h1:9U1yHRlC4wDPJAKx5MGiCBvVWTcvBXTZbWsiIcWCHrU=
 github.com/agentplexus/omnivoice-twilio v0.1.1 h1:0k/Vb9bAyNM2MFt1lzNTsMLtbdJ9B3ZZfsgQhTmexK0=

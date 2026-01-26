@@ -6,7 +6,7 @@ require (
 	github.com/agentplexus/assistantkit v0.6.0
 	github.com/agentplexus/go-elevenlabs v0.6.0
 	github.com/agentplexus/mcpkit v0.3.1
-	github.com/agentplexus/omnivoice v0.2.0
+	github.com/agentplexus/omnivoice v0.3.0
 	github.com/agentplexus/omnivoice-deepgram v0.1.0
 	github.com/agentplexus/omnivoice-twilio v0.1.1
 	github.com/modelcontextprotocol/go-sdk v1.2.0
