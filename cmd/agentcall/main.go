@@ -23,6 +23,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	mcpkit "github.com/agentplexus/mcpkit/runtime"
@@ -158,7 +159,11 @@ func setupTwilioWebhooks(manager *callmanager.Manager, publicURL string) {
 		}
 		// Log status update
 		callSID := r.FormValue("CallSid")
+		callSID = strings.ReplaceAll(callSID, "\n", "")
+		callSID = strings.ReplaceAll(callSID, "\r", "")
 		callStatus := r.FormValue("CallStatus")
+		callStatus = strings.ReplaceAll(callStatus, "\n", "")
+		callStatus = strings.ReplaceAll(callStatus, "\r", "")
 		log.Printf("Call %s status: %s", callSID, callStatus)
 		w.WriteHeader(http.StatusOK)
 	})
