@@ -1,7 +1,7 @@
 github.com/agentplexus/assistantkit v0.8.0 h1:s12ijhLl3KvXEGJWmbNg0g+GVUH2wIQSu2wQ9cnUzTU=
 github.com/agentplexus/assistantkit v0.8.0/go.mod h1:bqyq+8LLBBNy8vbjEHixHlNa5kGUAGCFJhIble1hyGE=
-github.com/agentplexus/go-elevenlabs v0.6.0 h1:04aVcICv8vSvbnSzw075x9PdO7HnkSQBKkI6zeYByFI=
-github.com/agentplexus/go-elevenlabs v0.6.0/go.mod h1:VqnIzhyFwbvj/l8vBVEjp301drGaaBfoMAKIaFDTS/Y=
+github.com/agentplexus/go-elevenlabs v0.7.0 h1:rWOwyQwnCiCU5qeoK2M29QMxeOFhjrQTc4dWQC4Dv8g=
+github.com/agentplexus/go-elevenlabs v0.7.0/go.mod h1:VGZFOo1BgXmmMiZT9LPgyge40iLAzsuKQ6ni5behjTU=
 github.com/agentplexus/mcpkit v0.3.1 h1:+NA1U3tq0Kb6w3xQE+ZQcuAcDGyhbi0HKwHPh10jS68=
 github.com/agentplexus/mcpkit v0.3.1/go.mod h1:r8AJFyvm9RU3OffftSbK5ZeJ2T5BrlI9jxXGE9+doWk=
 github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0 h1:fnJU9+2F9+BIyNwjHPsw6HdZL60Q4NjekItAingHYuA=
