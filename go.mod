@@ -3,7 +3,7 @@ module github.com/agentplexus/agentcall
 go 1.24.11
 
 require (
-	github.com/agentplexus/assistantkit v0.6.0
+	github.com/agentplexus/assistantkit v0.8.0
 	github.com/agentplexus/go-elevenlabs v0.6.0
 	github.com/agentplexus/mcpkit v0.3.1
 	github.com/agentplexus/omnivoice v0.3.0
@@ -13,7 +13,10 @@ require (
 )
 
 require (
+	github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0 // indirect
 	github.com/agentplexus/ogen-tools v0.1.1 // indirect
+	github.com/bahlo/generic-list-go v0.2.0 // indirect
+	github.com/buger/jsonparser v1.1.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/deepgram/deepgram-go-sdk/v3 v3.5.0 // indirect
 	github.com/dlclark/regexp2 v1.11.5 // indirect
@@ -39,7 +42,9 @@ require (
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/log15/v3 v3.1.0 // indirect
+	github.com/invopop/jsonschema v0.13.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
+	github.com/mailru/easyjson v0.9.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/ogen-go/ogen v1.18.0 // indirect
@@ -48,6 +53,7 @@ require (
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/twilio/twilio-go v1.30.0 // indirect
+	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
 	go.opentelemetry.io/otel v1.39.0 // indirect
