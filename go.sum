@@ -10,8 +10,8 @@ github.com/agentplexus/ogen-tools v0.1.1 h1:uj3U/YEaykEjt1VBsaAGUpsolYSoaeGPjpzp
 github.com/agentplexus/ogen-tools v0.1.1/go.mod h1:IVRZVeR/MmXwAKGsh+AxBxG9TQ63cBuAUILxP4nrumY=
 github.com/agentplexus/omnivoice v0.3.0 h1:O6uIbUXZzAuWyMB465QKNRIb2pHTAifGk19pFpr1vrY=
 github.com/agentplexus/omnivoice v0.3.0/go.mod h1:LfxHfgrgrBg5isbaggYMpnwkN+zrCD1ziQA6StOMvkQ=
-github.com/agentplexus/omnivoice-deepgram v0.1.0 h1:dwtWVIZAfG23jy24N2dNjgqYUIR8I42iZkhf8cPO1IM=
-github.com/agentplexus/omnivoice-deepgram v0.1.0/go.mod h1:9U1yHRlC4wDPJAKx5MGiCBvVWTcvBXTZbWsiIcWCHrU=
+github.com/agentplexus/omnivoice-deepgram v0.2.0 h1:4Hpat0subiCYCS9oW+6lE5WBe8Aa6BTzuEGjjPkSv8g=
+github.com/agentplexus/omnivoice-deepgram v0.2.0/go.mod h1:Dtvagj2ciVLUe54URZOmH2azYB8RQOLPFC0sF7KcSCg=
 github.com/agentplexus/omnivoice-twilio v0.1.2 h1:K6zmjzNXW0Dzf5NX551fTEc6xP1Xqdac3dAIpH8uCho=
 github.com/agentplexus/omnivoice-twilio v0.1.2/go.mod h1:6pC+MMA9+JGL2N3clVK/eW3dQ8A/7j8TRrbRuDRg7hE=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
