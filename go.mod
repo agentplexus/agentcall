@@ -3,7 +3,7 @@ module github.com/agentplexus/agentcall
 go 1.24.11
 
 require (
-	github.com/agentplexus/assistantkit v0.8.0
+	github.com/agentplexus/assistantkit v0.9.0
 	github.com/agentplexus/go-elevenlabs v0.7.0
 	github.com/agentplexus/mcpkit v0.3.1
 	github.com/agentplexus/omnivoice v0.3.0
@@ -31,14 +31,14 @@ require (
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang-jwt/jwt/v5 v5.3.0 // indirect
 	github.com/golang/mock v1.6.0 // indirect
-	github.com/google/go-github/v81 v81.0.0 // indirect
+	github.com/google/go-github/v82 v82.0.0 // indirect
 	github.com/google/go-querystring v1.2.0 // indirect
 	github.com/google/jsonschema-go v0.4.2 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
-	github.com/grokify/gogithub v0.6.0 // indirect
-	github.com/grokify/mogo v0.72.6 // indirect
+	github.com/grokify/gogithub v0.8.0 // indirect
+	github.com/grokify/mogo v0.72.7 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/log15/v3 v3.1.0 // indirect
