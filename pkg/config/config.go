@@ -18,14 +18,22 @@ type Config struct {
 	PhoneNumber     string // E.164 format, e.g., +15551234567
 	UserPhoneNumber string // E.164 format
 
-	// ElevenLabs TTS settings
-	ElevenLabsAPIKey string
-	TTSVoice         string // ElevenLabs voice ID (e.g., "Rachel")
-	TTSModel         string // ElevenLabs model (e.g., "eleven_turbo_v2_5")
+	// Voice provider selection
+	TTSProvider string // "elevenlabs" or "deepgram"
+	STTProvider string // "elevenlabs" or "deepgram"
 
-	// Deepgram STT settings
-	DeepgramAPIKey       string
-	STTModel             string // Deepgram model (e.g., "nova-2")
+	// ElevenLabs settings
+	ElevenLabsAPIKey string
+
+	// Deepgram settings
+	DeepgramAPIKey string
+
+	// TTS settings (provider-agnostic)
+	TTSVoice string // Voice ID (provider-specific)
+	TTSModel string // Model ID (provider-specific)
+
+	// STT settings (provider-agnostic)
+	STTModel             string // Model ID (provider-specific)
 	STTLanguage          string // BCP-47 language code (e.g., "en-US")
 	STTSilenceDurationMS int    // milliseconds of silence to detect end of speech
 
@@ -37,14 +45,22 @@ type Config struct {
 	TranscriptTimeoutMS int
 }
 
+// Provider constants.
+const (
+	ProviderElevenLabs = "elevenlabs"
+	ProviderDeepgram   = "deepgram"
+)
+
 // DefaultConfig returns a Config with sensible defaults.
 func DefaultConfig() *Config {
 	return &Config{
 		Port:                 3333,
 		PhoneProvider:        "twilio",
-		TTSVoice:             "Rachel",            // ElevenLabs voice
-		TTSModel:             "eleven_turbo_v2_5", // Low-latency ElevenLabs model
-		STTModel:             "nova-2",            // Deepgram model
+		TTSProvider:          ProviderElevenLabs, // Default to ElevenLabs for TTS
+		STTProvider:          ProviderDeepgram,   // Default to Deepgram for STT
+		TTSVoice:             "Rachel",           // ElevenLabs default voice
+		TTSModel:             "eleven_turbo_v2_5",
+		STTModel:             "nova-2",
 		STTLanguage:          "en-US",
 		STTSilenceDurationMS: 800,
 		TranscriptTimeoutMS:  180000, // 3 minutes
@@ -72,11 +88,27 @@ func LoadFromEnv() (*Config, error) {
 	cfg.PhoneNumber = os.Getenv("AGENTCALL_PHONE_NUMBER")
 	cfg.UserPhoneNumber = os.Getenv("AGENTCALL_USER_PHONE_NUMBER")
 
-	// ElevenLabs TTS
+	// Voice provider selection
+	if ttsProvider := os.Getenv("AGENTCALL_TTS_PROVIDER"); ttsProvider != "" {
+		cfg.TTSProvider = ttsProvider
+	}
+	if sttProvider := os.Getenv("AGENTCALL_STT_PROVIDER"); sttProvider != "" {
+		cfg.STTProvider = sttProvider
+	}
+
+	// ElevenLabs API key
 	cfg.ElevenLabsAPIKey = os.Getenv("AGENTCALL_ELEVENLABS_API_KEY")
 	if cfg.ElevenLabsAPIKey == "" {
 		cfg.ElevenLabsAPIKey = os.Getenv("ELEVENLABS_API_KEY") // fallback
 	}
+
+	// Deepgram API key
+	cfg.DeepgramAPIKey = os.Getenv("AGENTCALL_DEEPGRAM_API_KEY")
+	if cfg.DeepgramAPIKey == "" {
+		cfg.DeepgramAPIKey = os.Getenv("DEEPGRAM_API_KEY") // fallback
+	}
+
+	// TTS settings
 	if voice := os.Getenv("AGENTCALL_TTS_VOICE"); voice != "" {
 		cfg.TTSVoice = voice
 	}
@@ -84,11 +116,7 @@ func LoadFromEnv() (*Config, error) {
 		cfg.TTSModel = model
 	}
 
-	// Deepgram STT
-	cfg.DeepgramAPIKey = os.Getenv("AGENTCALL_DEEPGRAM_API_KEY")
-	if cfg.DeepgramAPIKey == "" {
-		cfg.DeepgramAPIKey = os.Getenv("DEEPGRAM_API_KEY") // fallback
-	}
+	// STT settings
 	if model := os.Getenv("AGENTCALL_STT_MODEL"); model != "" {
 		cfg.STTModel = model
 	}
@@ -123,7 +151,9 @@ func LoadFromEnv() (*Config, error) {
 // Validate checks that required configuration is present.
 func (c *Config) Validate() error {
 	var missing []string
+	var errors []string
 
+	// Phone provider settings
 	if c.PhoneAccountSID == "" {
 		missing = append(missing, "AGENTCALL_PHONE_ACCOUNT_SID")
 	}
@@ -136,19 +166,47 @@ func (c *Config) Validate() error {
 	if c.UserPhoneNumber == "" {
 		missing = append(missing, "AGENTCALL_USER_PHONE_NUMBER")
 	}
-	if c.ElevenLabsAPIKey == "" {
+
+	// Validate provider selection
+	if c.TTSProvider != ProviderElevenLabs && c.TTSProvider != ProviderDeepgram {
+		errors = append(errors, fmt.Sprintf("invalid TTS provider %q (must be %q or %q)", c.TTSProvider, ProviderElevenLabs, ProviderDeepgram))
+	}
+	if c.STTProvider != ProviderElevenLabs && c.STTProvider != ProviderDeepgram {
+		errors = append(errors, fmt.Sprintf("invalid STT provider %q (must be %q or %q)", c.STTProvider, ProviderElevenLabs, ProviderDeepgram))
+	}
+
+	// Check API keys based on selected providers
+	needsElevenLabs := c.TTSProvider == ProviderElevenLabs || c.STTProvider == ProviderElevenLabs
+	needsDeepgram := c.TTSProvider == ProviderDeepgram || c.STTProvider == ProviderDeepgram
+
+	if needsElevenLabs && c.ElevenLabsAPIKey == "" {
 		missing = append(missing, "AGENTCALL_ELEVENLABS_API_KEY or ELEVENLABS_API_KEY")
 	}
-	if c.DeepgramAPIKey == "" {
+	if needsDeepgram && c.DeepgramAPIKey == "" {
 		missing = append(missing, "AGENTCALL_DEEPGRAM_API_KEY or DEEPGRAM_API_KEY")
 	}
+
+	// ngrok
 	if c.NgrokAuthToken == "" {
 		missing = append(missing, "AGENTCALL_NGROK_AUTHTOKEN or NGROK_AUTHTOKEN")
 	}
 
+	if len(errors) > 0 {
+		return fmt.Errorf("configuration errors: %v", errors)
+	}
 	if len(missing) > 0 {
 		return fmt.Errorf("missing required environment variables: %v", missing)
 	}
 
 	return nil
+}
+
+// NeedsElevenLabs returns true if any provider uses ElevenLabs.
+func (c *Config) NeedsElevenLabs() bool {
+	return c.TTSProvider == ProviderElevenLabs || c.STTProvider == ProviderElevenLabs
+}
+
+// NeedsDeepgram returns true if any provider uses Deepgram.
+func (c *Config) NeedsDeepgram() bool {
+	return c.TTSProvider == ProviderDeepgram || c.STTProvider == ProviderDeepgram
 }

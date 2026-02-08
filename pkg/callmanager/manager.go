@@ -9,8 +9,10 @@ import (
 	"time"
 
 	elevenlabs "github.com/agentplexus/go-elevenlabs"
+	elevenlabsstt "github.com/agentplexus/go-elevenlabs/omnivoice/stt"
 	elevenlabstts "github.com/agentplexus/go-elevenlabs/omnivoice/tts"
 	deepgramstt "github.com/agentplexus/omnivoice-deepgram/omnivoice/stt"
+	deepgramtts "github.com/agentplexus/omnivoice-deepgram/omnivoice/tts"
 	twilliocallsystem "github.com/agentplexus/omnivoice-twilio/callsystem"
 	"github.com/agentplexus/omnivoice/callsystem"
 	"github.com/agentplexus/omnivoice/stt"
@@ -103,21 +105,65 @@ func (m *Manager) Initialize(publicURL string) error {
 	}
 	m.callSystem = cs
 
-	// Create ElevenLabs TTS provider
-	elevenClient, err := elevenlabs.NewClient(elevenlabs.WithAPIKey(m.config.ElevenLabsAPIKey))
-	if err != nil {
-		return fmt.Errorf("failed to create ElevenLabs client: %w", err)
+	// Create TTS provider based on configuration
+	if err := m.initTTSProvider(); err != nil {
+		return fmt.Errorf("failed to create TTS provider: %w", err)
 	}
-	m.ttsProvider = elevenlabstts.NewWithClient(elevenClient)
 
-	// Create Deepgram STT provider
-	sttProvider, err := deepgramstt.New(deepgramstt.WithAPIKey(m.config.DeepgramAPIKey))
-	if err != nil {
-		return fmt.Errorf("failed to create Deepgram provider: %w", err)
+	// Create STT provider based on configuration
+	if err := m.initSTTProvider(); err != nil {
+		return fmt.Errorf("failed to create STT provider: %w", err)
 	}
-	m.sttProvider = sttProvider
 
 	return nil
+}
+
+// initTTSProvider initializes the TTS provider based on configuration.
+func (m *Manager) initTTSProvider() error {
+	switch m.config.TTSProvider {
+	case config.ProviderElevenLabs:
+		elevenClient, err := elevenlabs.NewClient(elevenlabs.WithAPIKey(m.config.ElevenLabsAPIKey))
+		if err != nil {
+			return fmt.Errorf("failed to create ElevenLabs client: %w", err)
+		}
+		m.ttsProvider = elevenlabstts.NewWithClient(elevenClient)
+		return nil
+
+	case config.ProviderDeepgram:
+		ttsProvider, err := deepgramtts.New(deepgramtts.WithAPIKey(m.config.DeepgramAPIKey))
+		if err != nil {
+			return fmt.Errorf("failed to create Deepgram TTS provider: %w", err)
+		}
+		m.ttsProvider = ttsProvider
+		return nil
+
+	default:
+		return fmt.Errorf("unsupported TTS provider: %s", m.config.TTSProvider)
+	}
+}
+
+// initSTTProvider initializes the STT provider based on configuration.
+func (m *Manager) initSTTProvider() error {
+	switch m.config.STTProvider {
+	case config.ProviderElevenLabs:
+		sttProvider, err := elevenlabsstt.New(elevenlabsstt.WithAPIKey(m.config.ElevenLabsAPIKey))
+		if err != nil {
+			return fmt.Errorf("failed to create ElevenLabs STT provider: %w", err)
+		}
+		m.sttProvider = sttProvider
+		return nil
+
+	case config.ProviderDeepgram:
+		sttProvider, err := deepgramstt.New(deepgramstt.WithAPIKey(m.config.DeepgramAPIKey))
+		if err != nil {
+			return fmt.Errorf("failed to create Deepgram STT provider: %w", err)
+		}
+		m.sttProvider = sttProvider
+		return nil
+
+	default:
+		return fmt.Errorf("unsupported STT provider: %s", m.config.STTProvider)
+	}
 }
 
 // generateCallID generates a unique call ID.
