@@ -28,8 +28,8 @@ This project is inspired by [ZeframLou/call-me](https://github.com/ZeframLou/cal
 | **Runtime required** | None | Node.js/Bun |
 | **Dependencies** | Compiled in | 122 npm packages |
 | **Distribution** | Single file copy | npm install |
-| **TTS Provider** | ElevenLabs (streaming) | OpenAI |
-| **STT Provider** | Deepgram (streaming) | OpenAI |
+| **TTS Provider** | ElevenLabs or Deepgram (configurable) | OpenAI |
+| **STT Provider** | ElevenLabs or Deepgram (configurable) | OpenAI |
 | **Phone Provider** | Twilio | Twilio/Telnyx |
 
 The Go binary is self-contained with no runtime dependencies, making deployment as simple as copying a single file.
@@ -56,9 +56,9 @@ The Go binary is self-contained with no runtime dependencies, making deployment 
 │  ├── transport.Transport    - Audio streaming interface                    │
 │  └── callsystem.CallSystem  - Phone call management interface              │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Provider Implementations                                                  │
-│  ├── go-elevenlabs  - ElevenLabs streaming TTS (natural voices)            │
-│  ├── omnivoice-deepgram    - Deepgram streaming STT (accurate transcripts) │
+│  Provider Implementations (configurable per function)                      │
+│  ├── go-elevenlabs       - ElevenLabs TTS/STT (natural voices)             │
+│  ├── omnivoice-deepgram  - Deepgram TTS/STT (accurate transcripts)         │
 │  └── omnivoice-twilio                                                      │
 │      ├── Transport via Twilio Media Streams WebSocket                      │
 │      └── CallSystem via Twilio REST API                                    │
@@ -77,17 +77,17 @@ This project demonstrates the agentplexus voice AI stack:
 | Package | Role | Description |
 |---------|------|-------------|
 | **omnivoice** | Abstraction | Provider-agnostic interfaces for TTS, STT, Transport, CallSystem |
-| **go-elevenlabs** | TTS Provider | ElevenLabs streaming TTS with natural voices |
-| **omnivoice-deepgram** | STT Provider | Deepgram streaming STT with accurate transcription |
+| **go-elevenlabs** | Voice Provider | ElevenLabs streaming TTS and STT |
+| **omnivoice-deepgram** | Voice Provider | Deepgram streaming TTS and STT |
 | **omnivoice-twilio** | Phone Provider | Twilio transport and call system |
 | **mcpkit** | Server | MCP server runtime with ngrok and multiple transport modes |
 
 ### Why This Architecture?
 
-1. **Provider Independence**: Switch providers by swapping implementations (e.g., OpenAI instead of ElevenLabs)
-2. **Testability**: Mock interfaces for unit testing without real phone calls
-3. **Composability**: Mix and match TTS/STT/Phone providers independently
-4. **Premium Quality**: ElevenLabs voices + Deepgram accuracy for professional call quality
+1. **Provider Independence**: Switch providers via configuration without code changes
+2. **Mix and Match**: Use different providers for TTS and STT (e.g., ElevenLabs TTS + Deepgram STT)
+3. **Testability**: Mock interfaces for unit testing without real phone calls
+4. **Premium Quality**: Choose the best provider for each function
 
 ## Installation
 
@@ -118,11 +118,15 @@ export AGENTCALL_PHONE_AUTH_TOKEN=your_auth_token
 export AGENTCALL_PHONE_NUMBER=+15551234567      # Your Twilio number
 export AGENTCALL_USER_PHONE_NUMBER=+15559876543  # Your personal phone
 
-# Required: ElevenLabs TTS
+# Optional: Voice provider selection (default: elevenlabs for TTS, deepgram for STT)
+export AGENTCALL_TTS_PROVIDER=elevenlabs  # "elevenlabs" or "deepgram"
+export AGENTCALL_STT_PROVIDER=deepgram    # "elevenlabs" or "deepgram"
+
+# Required if using ElevenLabs (TTS or STT)
 export AGENTCALL_ELEVENLABS_API_KEY=your_elevenlabs_key
 # or: export ELEVENLABS_API_KEY=your_elevenlabs_key
 
-# Required: Deepgram STT
+# Required if using Deepgram (TTS or STT)
 export AGENTCALL_DEEPGRAM_API_KEY=your_deepgram_key
 # or: export DEEPGRAM_API_KEY=your_deepgram_key
 
@@ -374,9 +378,18 @@ agentcall/
 | Twilio outbound calls | ~$0.014/min |
 | Twilio phone number | ~$1.15/month |
 | ElevenLabs TTS | ~$0.30/1K chars (~$0.03/min of speech) |
+| ElevenLabs STT | ~$0.10/min (Scribe) |
+| Deepgram TTS | ~$0.015/1K chars |
 | Deepgram STT | ~$0.0043/min (Nova-2) |
 | ngrok (free tier) | $0 |
-| **Total per minute** | ~$0.05/min |
+
+**Example configurations:**
+
+| Config | TTS | STT | Approx. Cost/min |
+|--------|-----|-----|------------------|
+| ElevenLabs + Deepgram (default) | ElevenLabs | Deepgram | ~$0.05/min |
+| All Deepgram | Deepgram | Deepgram | ~$0.03/min |
+| All ElevenLabs | ElevenLabs | ElevenLabs | ~$0.15/min |
 
 *Note: Costs vary by plan and usage. ElevenLabs and Deepgram offer free tiers for testing.*
 
