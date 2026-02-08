@@ -19,7 +19,7 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -35,9 +35,13 @@ import (
 	twiliotransport "github.com/agentplexus/omnivoice-twilio/transport"
 )
 
+// logger is the package-level logger.
+var logger = slog.Default()
+
 func main() {
 	if err := run(); err != nil {
-		log.Fatalf("Fatal error: %v", err)
+		logger.Error("fatal error", "error", err)
+		os.Exit(1)
 	}
 }
 
@@ -50,7 +54,7 @@ func run() error {
 	signal.Notify(sigCh, syscall.SIGINT, syscall.SIGTERM)
 	go func() {
 		<-sigCh
-		log.Println("Shutting down...")
+		logger.Info("shutting down")
 		cancel()
 	}()
 
@@ -60,11 +64,14 @@ func run() error {
 		return fmt.Errorf("failed to load config: %w", err)
 	}
 
-	log.Println("Starting agentcall MCP server...")
-	log.Println("Using agentplexus stack:")
-	log.Println("  - omnivoice (voice abstraction)")
-	log.Println("  - omnivoice-twilio (Twilio implementation)")
-	log.Println("  - mcpkit (MCP server with ngrok)")
+	logger.Info("starting agentcall MCP server")
+	logger.Info("using agentplexus stack",
+		"components", []string{"omnivoice", "omnivoice-twilio", "mcpkit"},
+	)
+	logger.Info("voice providers",
+		"tts", cfg.TTSProvider,
+		"stt", cfg.STTProvider,
+	)
 
 	// Create MCP runtime
 	rt := mcpkit.New(&mcp.Implementation{
@@ -91,13 +98,14 @@ func run() error {
 			Domain:    cfg.NgrokDomain,
 		},
 		OnReady: func(result *mcpkit.HTTPServerResult) {
-			log.Printf("MCP server ready")
-			log.Printf("  Local:  %s", result.LocalURL)
-			log.Printf("  Public: %s", result.PublicURL)
+			logger.Info("MCP server ready",
+				"local_url", result.LocalURL,
+				"public_url", result.PublicURL,
+			)
 
 			// Initialize call manager with public URL
 			if err := manager.Initialize(result.PublicURL); err != nil {
-				log.Printf("Warning: failed to initialize call manager: %v", err)
+				logger.Warn("failed to initialize call manager", "error", err)
 			}
 
 			// Set up webhook routes for Twilio
@@ -118,20 +126,20 @@ func run() error {
 func setupTwilioWebhooks(manager *callmanager.Manager, publicURL string) {
 	transport := manager.Transport()
 	if transport == nil {
-		log.Println("Warning: transport not available for webhook setup")
+		logger.Warn("transport not available for webhook setup")
 		return
 	}
 
 	twilioTransport, ok := transport.(*twiliotransport.Provider)
 	if !ok {
-		log.Println("Warning: transport is not Twilio transport")
+		logger.Warn("transport is not Twilio transport")
 		return
 	}
 
 	// Handle Twilio Media Streams WebSocket connections
 	http.HandleFunc("/media-stream", func(w http.ResponseWriter, r *http.Request) {
 		if err := twilioTransport.HandleWebSocket(w, r, "/media-stream"); err != nil {
-			log.Printf("WebSocket error: %v", err)
+			logger.Error("WebSocket error", "error", err)
 			http.Error(w, "WebSocket error", http.StatusInternalServerError)
 		}
 	})
@@ -164,12 +172,13 @@ func setupTwilioWebhooks(manager *callmanager.Manager, publicURL string) {
 		callStatus := r.FormValue("CallStatus")
 		callStatus = strings.ReplaceAll(callStatus, "\n", "")
 		callStatus = strings.ReplaceAll(callStatus, "\r", "")
-		log.Printf("Call %s status: %s", callSID, callStatus)
+		logger.Info("call status update", "call_sid", callSID, "status", callStatus)
 		w.WriteHeader(http.StatusOK)
 	})
 
-	log.Printf("Twilio webhooks configured:")
-	log.Printf("  Voice:   %s/voice", publicURL)
-	log.Printf("  Stream:  %s/media-stream", publicURL)
-	log.Printf("  Status:  %s/status", publicURL)
+	logger.Info("Twilio webhooks configured",
+		"voice_url", publicURL+"/voice",
+		"stream_url", publicURL+"/media-stream",
+		"status_url", publicURL+"/status",
+	)
 }
