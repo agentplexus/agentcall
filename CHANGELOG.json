@@ -4,6 +4,26 @@
   "repository": "https://github.com/agentplexus/agentcall",
   "versioning": "semver",
   "commit_convention": "conventional",
+  "unreleased": {
+    "added": [
+      { "description": "Configurable voice providers - TTS and STT can each be set to ElevenLabs or Deepgram independently" },
+      { "description": "`AGENTCALL_TTS_PROVIDER` environment variable to select TTS provider (`elevenlabs` or `deepgram`)" },
+      { "description": "`AGENTCALL_STT_PROVIDER` environment variable to select STT provider (`elevenlabs` or `deepgram`)" },
+      { "description": "ElevenLabs STT provider support via go-elevenlabs omnivoice integration" },
+      { "description": "Deepgram TTS provider support via omnivoice-deepgram integration" }
+    ],
+    "changed": [
+      { "description": "API keys now only required for selected providers (ElevenLabs key only needed if using ElevenLabs, Deepgram key only needed if using Deepgram)" },
+      { "description": "Default configuration: ElevenLabs for TTS, Deepgram for STT (unchanged behavior)" },
+      { "description": "Migrate logging from `log` to `log/slog` for structured logging" }
+    ],
+    "documentation": [
+      { "description": "README updated with provider selection configuration and cost comparison table" }
+    ],
+    "chore": [
+      { "description": "Add `.envrc` to `.gitignore`" }
+    ]
+  },
   "releases": [
     {
       "version": "v0.1.0",
