@@ -9,7 +9,7 @@ require (
 	github.com/agentplexus/omnivoice v0.3.0
 	github.com/agentplexus/omnivoice-deepgram v0.2.0
 	github.com/agentplexus/omnivoice-twilio v0.1.2
-	github.com/modelcontextprotocol/go-sdk v1.2.0
+	github.com/modelcontextprotocol/go-sdk v1.3.0
 )
 
 require (
