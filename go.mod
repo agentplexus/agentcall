@@ -1,11 +1,11 @@
 module github.com/agentplexus/agentcall
 
-go 1.24.11
+go 1.25.0
 
 require (
 	github.com/agentplexus/assistantkit v0.9.0
 	github.com/agentplexus/go-elevenlabs v0.7.0
-	github.com/agentplexus/mcpkit v0.3.1
+	github.com/agentplexus/mcpkit v0.3.2
 	github.com/agentplexus/omnivoice v0.4.1
 	github.com/agentplexus/omnivoice-deepgram v0.3.0
 	github.com/agentplexus/omnivoice-twilio v0.1.2
@@ -38,7 +38,7 @@ require (
 	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/grokify/gogithub v0.9.0 // indirect
-	github.com/grokify/mogo v0.73.0 // indirect
+	github.com/grokify/mogo v0.73.2 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/log15/v3 v3.1.0 // indirect
@@ -63,13 +63,13 @@ require (
 	go.uber.org/zap v1.27.1 // indirect
 	golang.ngrok.com/muxado/v2 v2.0.1 // indirect
 	golang.ngrok.com/ngrok v1.13.0 // indirect
-	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
-	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/exp v0.0.0-20260212183809-81e46e3db34a // indirect
+	golang.org/x/net v0.50.0 // indirect
 	golang.org/x/oauth2 v0.35.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
-	golang.org/x/term v0.39.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/term v0.40.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
