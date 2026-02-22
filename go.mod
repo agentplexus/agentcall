@@ -1,19 +1,19 @@
 module github.com/agentplexus/agentcall
 
-go 1.24.11
+go 1.25.0
 
 require (
-	github.com/agentplexus/assistantkit v0.9.0
-	github.com/agentplexus/go-elevenlabs v0.7.0
-	github.com/agentplexus/mcpkit v0.3.1
-	github.com/agentplexus/omnivoice v0.4.1
+	github.com/agentplexus/assistantkit v0.10.0
+	github.com/agentplexus/go-elevenlabs v0.8.2
+	github.com/agentplexus/mcpkit v0.3.2
+	github.com/agentplexus/omnivoice v0.4.3
 	github.com/agentplexus/omnivoice-deepgram v0.3.0
 	github.com/agentplexus/omnivoice-twilio v0.1.2
-	github.com/modelcontextprotocol/go-sdk v1.3.0
+	github.com/modelcontextprotocol/go-sdk v1.3.1
 )
 
 require (
-	github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0 // indirect
+	github.com/agentplexus/multi-agent-spec/sdk/go v0.7.0 // indirect
 	github.com/agentplexus/ogen-tools v0.1.1 // indirect
 	github.com/bahlo/generic-list-go v0.2.0 // indirect
 	github.com/buger/jsonparser v1.1.1 // indirect
@@ -37,8 +37,8 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/schema v1.4.1 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
-	github.com/grokify/gogithub v0.9.0 // indirect
-	github.com/grokify/mogo v0.73.0 // indirect
+	github.com/grokify/gogithub v0.9.1 // indirect
+	github.com/grokify/mogo v0.73.2 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/inconshreveable/log15 v3.0.0-testing.5+incompatible // indirect
 	github.com/inconshreveable/log15/v3 v3.1.0 // indirect
@@ -47,12 +47,15 @@ require (
 	github.com/mailru/easyjson v0.9.1 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/ogen-go/ogen v1.18.0 // indirect
+	github.com/ogen-go/ogen v1.19.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
+	github.com/segmentio/encoding v0.5.3 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
-	github.com/twilio/twilio-go v1.30.1 // indirect
+	github.com/twilio/twilio-go v1.30.2 // indirect
+	github.com/valyala/bytebufferpool v1.0.0 // indirect
+	github.com/valyala/quicktemplate v1.8.0 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
@@ -63,13 +66,13 @@ require (
 	go.uber.org/zap v1.27.1 // indirect
 	golang.ngrok.com/muxado/v2 v2.0.1 // indirect
 	golang.ngrok.com/ngrok v1.13.0 // indirect
-	golang.org/x/exp v0.0.0-20260112195511-716be5621a96 // indirect
-	golang.org/x/net v0.49.0 // indirect
+	golang.org/x/exp v0.0.0-20260218203240-3dfff04db8fa // indirect
+	golang.org/x/net v0.50.0 // indirect
 	golang.org/x/oauth2 v0.35.0 // indirect
 	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.41.0 // indirect
-	golang.org/x/term v0.39.0 // indirect
-	golang.org/x/text v0.33.0 // indirect
+	golang.org/x/term v0.40.0 // indirect
+	golang.org/x/text v0.34.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
