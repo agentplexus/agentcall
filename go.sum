@@ -8,10 +8,10 @@ github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0 h1:fnJU9+2F9+BIyNwjHPsw6Hd
 github.com/agentplexus/multi-agent-spec/sdk/go v0.5.0/go.mod h1:p44VILyLNN6u8zY51UdXFOeB42Oy+5EcLhQO3EcalGo=
 github.com/agentplexus/ogen-tools v0.1.1 h1:uj3U/YEaykEjt1VBsaAGUpsolYSoaeGPjpzpIaeXaSg=
 github.com/agentplexus/ogen-tools v0.1.1/go.mod h1:IVRZVeR/MmXwAKGsh+AxBxG9TQ63cBuAUILxP4nrumY=
-github.com/agentplexus/omnivoice v0.3.0 h1:O6uIbUXZzAuWyMB465QKNRIb2pHTAifGk19pFpr1vrY=
-github.com/agentplexus/omnivoice v0.3.0/go.mod h1:LfxHfgrgrBg5isbaggYMpnwkN+zrCD1ziQA6StOMvkQ=
-github.com/agentplexus/omnivoice-deepgram v0.2.0 h1:4Hpat0subiCYCS9oW+6lE5WBe8Aa6BTzuEGjjPkSv8g=
-github.com/agentplexus/omnivoice-deepgram v0.2.0/go.mod h1:Dtvagj2ciVLUe54URZOmH2azYB8RQOLPFC0sF7KcSCg=
+github.com/agentplexus/omnivoice v0.4.1 h1:orxrZarh6RoRd0krV/u1coqbSf0dP9Atxeip5ANp+Tk=
+github.com/agentplexus/omnivoice v0.4.1/go.mod h1:LfxHfgrgrBg5isbaggYMpnwkN+zrCD1ziQA6StOMvkQ=
+github.com/agentplexus/omnivoice-deepgram v0.3.0 h1:JnM/juJPnsaLSD9zJg54kaVvK0wQ6FxfWc2mYFDNiU0=
+github.com/agentplexus/omnivoice-deepgram v0.3.0/go.mod h1:we+gmzg3xytPSeWsHMHIHCfyt4gQ+xbc7FQK+NNGbTQ=
 github.com/agentplexus/omnivoice-twilio v0.1.2 h1:K6zmjzNXW0Dzf5NX551fTEc6xP1Xqdac3dAIpH8uCho=
 github.com/agentplexus/omnivoice-twilio v0.1.2/go.mod h1:6pC+MMA9+JGL2N3clVK/eW3dQ8A/7j8TRrbRuDRg7hE=
 github.com/bahlo/generic-list-go v0.2.0 h1:5sz/EEAK+ls5wF+NeqDpk5+iNdMDXrh3z3nPnH1Wvgk=
