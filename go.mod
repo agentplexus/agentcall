@@ -9,7 +9,7 @@ require (
 	github.com/agentplexus/omnivoice v0.4.1
 	github.com/agentplexus/omnivoice-deepgram v0.3.0
 	github.com/agentplexus/omnivoice-twilio v0.1.2
-	github.com/modelcontextprotocol/go-sdk v1.3.0
+	github.com/modelcontextprotocol/go-sdk v1.3.1
 )
 
 require (
@@ -51,6 +51,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
+	github.com/segmentio/encoding v0.5.3 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/twilio/twilio-go v1.30.1 // indirect
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
