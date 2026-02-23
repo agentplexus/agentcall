@@ -7,7 +7,7 @@ require (
 	github.com/agentplexus/go-elevenlabs v0.8.2
 	github.com/agentplexus/mcpkit v0.3.2
 	github.com/agentplexus/omnivoice v0.4.3
-	github.com/agentplexus/omnivoice-deepgram v0.3.0
+	github.com/agentplexus/omnivoice-deepgram v0.3.1
 	github.com/agentplexus/omnivoice-twilio v0.1.2
 	github.com/modelcontextprotocol/go-sdk v1.3.1
 )
