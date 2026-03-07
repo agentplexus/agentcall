@@ -16,11 +16,29 @@ An MCP plugin that enables voice calls and chat messaging for AI coding assistan
 
 ## Features
 
-- 📞 **Phone Calls**: Real voice calls to your phone via Twilio
+- 📞 **Phone Calls**: Real voice calls to your phone via Twilio—works with smartphones, smartwatches, landlines, or VoIP
 - 💬 **Chat Messaging**: Send messages via Discord, Telegram, or WhatsApp
 - 🔄 **Multi-turn Conversations**: Back-and-forth discussions, not just one-way notifications
 - ⚡ **Smart Triggers**: Hooks that suggest calling/messaging when you're stuck or done with work
 - 🔀 **Mix and Match**: Use voice, chat, or both based on your needs
+- 🧠 **Parallel Execution**: AI continues working while waiting for your response—searching code, running tests, preparing next steps
+
+## How It Works
+
+```
+┌─────────────┐      ┌─────────────┐      ┌─────────────┐      ┌─────────────┐
+│   AI Agent  │ ───▶ │ AgentComms  │ ───▶ │   Twilio/   │ ───▶ │    You      │
+│  Claude /   │      │ MCP Server  │      │  Discord/   │      │  (phone or  │
+│  Kiro / etc │ ◀─── │             │ ◀─── │  Telegram   │ ◀─── │   chat)     │
+└─────────────┘      └─────────────┘      └─────────────┘      └─────────────┘
+       │                                                              │
+       │    While you think, AI keeps working on the task...          │
+       └──────────────────────────────────────────────────────────────┘
+```
+
+1. **AI needs input** → Calls your phone or sends a chat message
+2. **You respond** → Voice is transcribed, chat is read directly
+3. **AI continues** → Uses your input to complete the task
 
 ## Architecture
 
@@ -387,8 +405,20 @@ agentcomms/
 | ElevenLabs STT | ~$0.10/min (Scribe) |
 | Deepgram TTS | ~$0.015/1K chars |
 | Deepgram STT | ~$0.0043/min (Nova-2) |
+| OpenAI TTS | ~$0.015/1K chars |
+| OpenAI STT | ~$0.006/min (Whisper) |
 | Discord/Telegram | Free |
 | ngrok (free tier) | $0 |
+
+**Provider Recommendations:**
+
+| Priority | TTS Provider | STT Provider | Total Cost/min | Notes |
+|----------|--------------|--------------|----------------|-------|
+| Lowest Cost | Deepgram | Deepgram | ~$0.03 | Best value, good quality |
+| Best Quality | ElevenLabs | Deepgram | ~$0.05 | Premium voices, fast transcription |
+| Balanced | OpenAI | OpenAI | ~$0.04 | Single API key, consistent quality |
+
+*Costs are approximate and exclude Twilio phone charges (~$0.014/min).*
 
 ## License
 
