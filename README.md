@@ -1,4 +1,4 @@
-# AgentCall
+# AgentComms
 
 [![Build Status][build-status-svg]][build-status-url]
 [![Lint Status][lint-status-svg]][lint-status-url]
@@ -6,186 +6,172 @@
 [![Docs][docs-godoc-svg]][docs-godoc-url]
 [![License][license-svg]][license-url]
 
-An MCP plugin that enables voice calls via phone for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision.
+An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Telegram, or WhatsApp.
 
 **Supports:** Claude Code, AWS Kiro CLI, Gemini CLI
 
-**Built with the agentplexus stack** - showcasing a complete voice AI architecture in Go.
+**Built with the plexusone stack** - showcasing a complete voice and chat AI architecture in Go.
 
-## Inspiration
+## Features
 
-This project is inspired by [ZeframLou/call-me](https://github.com/ZeframLou/call-me), an excellent TypeScript MCP plugin that pioneered the "AI calls you" pattern. We wanted to:
-
-1. **Build a Go implementation** - Leverage Go's deployment simplicity and performance
-2. **Exercise the AgentPlexus libraries** - Demonstrate the omnivoice abstraction layer with pluggable providers
-3. **Use premium voice providers** - ElevenLabs for natural TTS, Deepgram for accurate STT
-
-### Comparison
-
-| Aspect | agentcall (Go) | call-me (TypeScript) |
-|--------|----------------|----------------------|
-| **Deployable size** | 53 MB (single binary) | 68 MB (node_modules) |
-| **Runtime required** | None | Node.js/Bun |
-| **Dependencies** | Compiled in | 122 npm packages |
-| **Distribution** | Single file copy | npm install |
-| **TTS Provider** | ElevenLabs or Deepgram (configurable) | OpenAI |
-| **STT Provider** | ElevenLabs or Deepgram (configurable) | OpenAI |
-| **Phone Provider** | Twilio | Twilio/Telnyx |
-
-The Go binary is self-contained with no runtime dependencies, making deployment as simple as copying a single file.
+- **Phone Calls**: Real voice calls to your phone via Twilio
+- **Chat Messaging**: Send messages via Discord, Telegram, or WhatsApp
+- **Multi-turn Conversations**: Back-and-forth discussions, not just one-way notifications
+- **Smart Triggers**: Hooks that suggest calling/messaging when you're stuck or done with work
+- **Mix and Match**: Use voice, chat, or both based on your needs
 
 ## Architecture
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
-│                           agentcall                                        │
+│                           agentcomms                                        │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  MCP Tools (via mcpkit)                                                    │
-│  ├── initiate_call  - Start a new call to the user                         │
-│  ├── continue_call  - Continue conversation on active call                 │
-│  ├── speak_to_user  - Speak without waiting for response                   │
-│  └── end_call       - End the call with optional goodbye                   │
+│  ├── Voice Tools                                                           │
+│  │   ├── initiate_call  - Start a new call to the user                    │
+│  │   ├── continue_call  - Continue conversation on active call            │
+│  │   ├── speak_to_user  - Speak without waiting for response              │
+│  │   └── end_call       - End the call with optional goodbye              │
+│  └── Chat Tools                                                            │
+│      ├── send_message   - Send message via Discord/Telegram/WhatsApp      │
+│      ├── list_channels  - List available chat channels                    │
+│      └── get_messages   - Get recent messages from a channel              │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Call Manager                                                              │
-│  - Orchestrates calls, TTS, STT                                            │
-│  - Manages call state and conversation history                             │
+│  Managers                                                                  │
+│  ├── Voice Manager - Orchestrates calls, TTS, STT                         │
+│  └── Chat Manager  - Routes messages across chat providers                │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  omnivoice (abstraction layer)                                             │
-│  ├── tts.StreamingProvider  - Text-to-Speech interface                     │
-│  ├── stt.StreamingProvider  - Speech-to-Text interface                     │
-│  ├── transport.Transport    - Audio streaming interface                    │
-│  └── callsystem.CallSystem  - Phone call management interface              │
+│  omnivoice (voice abstraction layer)                                       │
+│  ├── tts.Provider       - Text-to-Speech interface                        │
+│  ├── stt.Provider       - Speech-to-Text interface                        │
+│  ├── transport.Transport - Audio streaming interface                      │
+│  └── callsystem.CallSystem - Phone call management interface              │
 ├────────────────────────────────────────────────────────────────────────────┤
-│  Provider Implementations (configurable per function)                      │
-│  ├── go-elevenlabs       - ElevenLabs TTS/STT (natural voices)             │
-│  ├── omnivoice-deepgram  - Deepgram TTS/STT (accurate transcripts)         │
-│  └── omnivoice-twilio                                                      │
-│      ├── Transport via Twilio Media Streams WebSocket                      │
-│      └── CallSystem via Twilio REST API                                    │
+│  omnichat (chat abstraction layer)                                         │
+│  ├── provider.Provider  - Chat provider interface                         │
+│  └── provider.Router    - Message routing and handling                    │
+├────────────────────────────────────────────────────────────────────────────┤
+│  Provider Implementations                                                  │
+│  ├── Voice: ElevenLabs, Deepgram, OpenAI, Twilio                          │
+│  └── Chat:  Discord, Telegram, WhatsApp                                   │
 ├────────────────────────────────────────────────────────────────────────────┤
 │  mcpkit                                                                    │
 │  - MCP server with HTTP/SSE transport                                      │
 │  - Built-in ngrok integration for public webhooks                          │
-│  - Library-mode for direct function calls                                  │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
 
-## The agentplexus Stack
+## The plexusone Stack
 
-This project demonstrates the agentplexus voice AI stack:
+This project demonstrates the plexusone voice and chat AI stack:
 
 | Package | Role | Description |
 |---------|------|-------------|
-| **omnivoice** | Abstraction | Provider-agnostic interfaces for TTS, STT, Transport, CallSystem |
-| **go-elevenlabs** | Voice Provider | ElevenLabs streaming TTS and STT |
+| **omnivoice** | Voice Abstraction | Batteries-included TTS/STT with registry-based provider lookup |
+| **omnichat** | Chat Abstraction | Provider-agnostic chat messaging interface |
+| **elevenlabs-go** | Voice Provider | ElevenLabs streaming TTS and STT |
 | **omnivoice-deepgram** | Voice Provider | Deepgram streaming TTS and STT |
+| **omnivoice-openai** | Voice Provider | OpenAI TTS and STT |
 | **omnivoice-twilio** | Phone Provider | Twilio transport and call system |
 | **mcpkit** | Server | MCP server runtime with ngrok and multiple transport modes |
-
-### Why This Architecture?
-
-1. **Provider Independence**: Switch providers via configuration without code changes
-2. **Mix and Match**: Use different providers for TTS and STT (e.g., ElevenLabs TTS + Deepgram STT)
-3. **Testability**: Mock interfaces for unit testing without real phone calls
-4. **Premium Quality**: Choose the best provider for each function
 
 ## Installation
 
 ### Prerequisites
 
 - Go 1.24+
-- Twilio account with:
-  - Account SID and Auth Token
-  - Phone number capable of making outbound calls
-- ngrok account with auth token
+- For voice: Twilio account + ngrok account
+- For chat: Discord/Telegram bot token (optional)
 
 ### Build
 
 ```bash
-cd /path/to/agentcall
+cd /path/to/agentcomms
 go mod tidy
-go build -o agentcall ./cmd/agentcall
+go build -o agentcomms ./cmd/agentcomms
 ```
 
 ## Configuration
 
-Set the following environment variables:
+### Environment Variables
 
 ```bash
-# Required: Twilio credentials
-export AGENTCALL_PHONE_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-export AGENTCALL_PHONE_AUTH_TOKEN=your_auth_token
-export AGENTCALL_PHONE_NUMBER=+15551234567      # Your Twilio number
-export AGENTCALL_USER_PHONE_NUMBER=+15559876543  # Your personal phone
+# ===== Voice (optional) =====
 
-# Optional: Voice provider selection (default: elevenlabs for TTS, deepgram for STT)
-export AGENTCALL_TTS_PROVIDER=elevenlabs  # "elevenlabs" or "deepgram"
-export AGENTCALL_STT_PROVIDER=deepgram    # "elevenlabs" or "deepgram"
+# Twilio credentials
+export AGENTCOMMS_PHONE_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+export AGENTCOMMS_PHONE_AUTH_TOKEN=your_auth_token
+export AGENTCOMMS_PHONE_NUMBER=+15551234567      # Your Twilio number
+export AGENTCOMMS_USER_PHONE_NUMBER=+15559876543  # Your personal phone
 
-# Required if using ElevenLabs (TTS or STT)
-export AGENTCALL_ELEVENLABS_API_KEY=your_elevenlabs_key
-# or: export ELEVENLABS_API_KEY=your_elevenlabs_key
+# Voice provider selection (default: elevenlabs for TTS, deepgram for STT)
+export AGENTCOMMS_TTS_PROVIDER=elevenlabs  # "elevenlabs", "deepgram", or "openai"
+export AGENTCOMMS_STT_PROVIDER=deepgram    # "elevenlabs", "deepgram", or "openai"
 
-# Required if using Deepgram (TTS or STT)
-export AGENTCALL_DEEPGRAM_API_KEY=your_deepgram_key
-# or: export DEEPGRAM_API_KEY=your_deepgram_key
+# API keys (based on selected providers)
+export AGENTCOMMS_ELEVENLABS_API_KEY=your_elevenlabs_key  # or ELEVENLABS_API_KEY
+export AGENTCOMMS_DEEPGRAM_API_KEY=your_deepgram_key      # or DEEPGRAM_API_KEY
+export AGENTCOMMS_OPENAI_API_KEY=your_openai_key          # or OPENAI_API_KEY
 
-# Required: ngrok
+# ngrok (required for voice)
 export NGROK_AUTHTOKEN=your_ngrok_authtoken
 
-# Optional: ElevenLabs voice (default: Rachel)
-export AGENTCALL_TTS_VOICE=Rachel
+# Optional voice settings
+export AGENTCOMMS_TTS_VOICE=Rachel           # ElevenLabs voice
+export AGENTCOMMS_TTS_MODEL=eleven_turbo_v2_5
+export AGENTCOMMS_STT_MODEL=nova-2
+export AGENTCOMMS_STT_LANGUAGE=en-US
 
-# Optional: ElevenLabs model (default: eleven_turbo_v2_5)
-export AGENTCALL_TTS_MODEL=eleven_turbo_v2_5
+# ===== Chat (optional) =====
 
-# Optional: Deepgram model (default: nova-2)
-export AGENTCALL_STT_MODEL=nova-2
+# Discord
+export AGENTCOMMS_DISCORD_ENABLED=true
+export AGENTCOMMS_DISCORD_TOKEN=your_discord_bot_token  # or DISCORD_TOKEN
+export AGENTCOMMS_DISCORD_GUILD_ID=optional_guild_id
 
-# Optional: STT language (default: en-US)
-export AGENTCALL_STT_LANGUAGE=en-US
+# Telegram
+export AGENTCOMMS_TELEGRAM_ENABLED=true
+export AGENTCOMMS_TELEGRAM_TOKEN=your_telegram_bot_token  # or TELEGRAM_BOT_TOKEN
 
-# Optional: Server port (default: 3333)
-export AGENTCALL_PORT=3333
+# WhatsApp
+export AGENTCOMMS_WHATSAPP_ENABLED=true
+export AGENTCOMMS_WHATSAPP_DB_PATH=./whatsapp.db
 
-# Optional: Custom ngrok domain (requires paid plan)
-export AGENTCALL_NGROK_DOMAIN=myapp.ngrok.io
+# ===== Server =====
+export AGENTCOMMS_PORT=3333
+export AGENTCOMMS_NGROK_DOMAIN=myapp.ngrok.io  # Optional custom domain
 ```
 
-### ElevenLabs Voices
+### Legacy Environment Variables
 
-Popular voices: `Rachel`, `Adam`, `Antoni`, `Arnold`, `Bella`, `Domi`, `Elli`, `Josh`, `Sam`
-
-See [ElevenLabs Voice Library](https://elevenlabs.io/voice-library) for the full list.
+For backwards compatibility, `AGENTCALL_*` variables are also supported with `AGENTCOMMS_*` taking precedence.
 
 ## Usage
 
 ### Running the Server
 
 ```bash
-./agentcall
+./agentcomms
 ```
 
 Output:
 
 ```
-Starting agentcall MCP server...
-Using agentplexus stack:
+Starting agentcomms MCP server...
+Using plexusone stack:
   - omnivoice (voice abstraction)
-  - omnivoice-twilio (Twilio implementation)
-  - mcpruntime (MCP server with ngrok)
+  - omnichat (chat abstraction)
+  - mcpkit (MCP server)
+Voice providers: tts=elevenlabs stt=deepgram
+Chat providers: [discord telegram]
 MCP server ready
   Local:  http://localhost:3333/mcp
   Public: https://abc123.ngrok.io/mcp
-Twilio webhooks configured:
-  Voice:   https://abc123.ngrok.io/voice
-  Stream:  https://abc123.ngrok.io/media-stream
-  Status:  https://abc123.ngrok.io/status
 ```
 
 ### Multi-Tool Support
 
-agentcall supports multiple AI coding assistants. Generate configuration files for your preferred tool:
+agentcomms supports multiple AI coding assistants. Generate configuration files for your preferred tool:
 
 ```bash
 # Generate for a specific tool
@@ -206,9 +192,12 @@ go run ./cmd/generate-plugin claude .
 ```
 
 This creates:
+
 - `.claude-plugin/plugin.json` - Plugin manifest
 - `skills/phone-input/SKILL.md` - Voice calling skill
+- `skills/chat-messaging/SKILL.md` - Chat messaging skill
 - `commands/call.md` - `/call` slash command
+- `commands/message.md` - `/message` slash command
 - `.claude/settings.json` - Lifecycle hooks
 
 **Option 2: Manual MCP configuration**
@@ -218,63 +207,27 @@ Add to `~/.claude/settings.json` or `.claude/settings.json`:
 ```json
 {
   "mcpServers": {
-    "agentcall": {
-      "command": "/path/to/agentcall",
+    "agentcomms": {
+      "command": "/path/to/agentcomms",
       "env": {
-        "AGENTCALL_PHONE_ACCOUNT_SID": "ACxxx",
-        "AGENTCALL_PHONE_AUTH_TOKEN": "xxx",
-        "AGENTCALL_PHONE_NUMBER": "+15551234567",
-        "AGENTCALL_USER_PHONE_NUMBER": "+15559876543",
-        "NGROK_AUTHTOKEN": "xxx"
+        "AGENTCOMMS_PHONE_ACCOUNT_SID": "ACxxx",
+        "AGENTCOMMS_PHONE_AUTH_TOKEN": "xxx",
+        "AGENTCOMMS_PHONE_NUMBER": "+15551234567",
+        "AGENTCOMMS_USER_PHONE_NUMBER": "+15559876543",
+        "NGROK_AUTHTOKEN": "xxx",
+        "AGENTCOMMS_DISCORD_ENABLED": "true",
+        "AGENTCOMMS_DISCORD_TOKEN": "xxx"
       }
     }
   }
 }
 ```
-
-### Kiro CLI Integration
-
-```bash
-go run ./cmd/generate-plugin kiro .
-```
-
-This creates:
-- `.kiro/settings/mcp.json` - MCP server configuration
-- `.kiro/agents/voice-caller.json` - Voice calling agent
-
-**Manual configuration** - Add to `.kiro/settings/mcp.json`:
-
-```json
-{
-  "mcpServers": {
-    "agentcall": {
-      "command": "/path/to/agentcall",
-      "env": {
-        "AGENTCALL_PHONE_ACCOUNT_SID": "${AGENTCALL_PHONE_ACCOUNT_SID}",
-        "AGENTCALL_PHONE_AUTH_TOKEN": "${AGENTCALL_PHONE_AUTH_TOKEN}",
-        "AGENTCALL_PHONE_NUMBER": "${AGENTCALL_PHONE_NUMBER}",
-        "AGENTCALL_USER_PHONE_NUMBER": "${AGENTCALL_USER_PHONE_NUMBER}",
-        "NGROK_AUTHTOKEN": "${NGROK_AUTHTOKEN}"
-      }
-    }
-  }
-}
-```
-
-### Gemini CLI Integration
-
-```bash
-go run ./cmd/generate-plugin gemini .
-```
-
-This creates:
-- `gemini-extension.json` - Extension manifest
-- `commands/call.toml` - Call command
-- `agents/voice-caller.toml` - Voice calling agent
 
 ## MCP Tools
 
-### initiate_call
+### Voice Tools
+
+#### initiate_call
 
 Start a new call to the user.
 
@@ -293,7 +246,7 @@ Returns:
 }
 ```
 
-### continue_call
+#### continue_call
 
 Continue an active call with another message.
 
@@ -304,7 +257,7 @@ Continue an active call with another message.
 }
 ```
 
-### speak_to_user
+#### speak_to_user
 
 Speak without waiting for a response (useful for status updates).
 
@@ -315,7 +268,7 @@ Speak without waiting for a response (useful for status updates).
 }
 ```
 
-### end_call
+#### end_call
 
 End the call with an optional goodbye message.
 
@@ -326,34 +279,86 @@ End the call with an optional goodbye message.
 }
 ```
 
+### Chat Tools
+
+#### send_message
+
+Send a message to a chat channel.
+
+```json
+{
+  "provider": "discord",
+  "chat_id": "123456789",
+  "message": "I've finished the PR! Here's the link: https://github.com/..."
+}
+```
+
+#### list_channels
+
+List available chat channels and their status.
+
+```json
+{}
+```
+
+Returns:
+
+```json
+{
+  "channels": [
+    {"provider_name": "discord", "status": "connected"},
+    {"provider_name": "telegram", "status": "connected"}
+  ]
+}
+```
+
+#### get_messages
+
+Get recent messages from a chat conversation.
+
+```json
+{
+  "provider": "telegram",
+  "chat_id": "987654321",
+  "limit": 5
+}
+```
+
 ## Use Cases
 
-**Ideal for:**
+**Phone calls are ideal for:**
 
 - Reporting significant task completion
-- Requesting clarification when blocked
+- Requesting urgent clarification when blocked
 - Discussing complex decisions
 - Walking through code changes
 - Multi-step processes needing back-and-forth
 
-**Not ideal for:**
+**Chat messaging is ideal for:**
 
-- Simple yes/no questions (use text)
-- Status updates that don't need discussion
-- Information already in the conversation
+- Asynchronous status updates
+- Sharing links, code, or formatted content
+- Non-urgent notifications
+- Follow-up summaries
 
 ## Development
 
 ### Project Structure
 
 ```
-agentcall/
+agentcomms/
 ├── cmd/
-│   └── agentcall/
-│       └── main.go          # Entry point
+│   ├── agentcomms/
+│   │   └── main.go          # Entry point
+│   ├── generate-plugin/
+│   │   └── main.go          # Plugin generator
+│   └── publish/
+│       └── main.go          # Marketplace publisher
 ├── pkg/
-│   ├── callmanager/
-│   │   └── manager.go       # Call orchestration
+│   ├── voice/
+│   │   └── manager.go       # Voice call orchestration
+│   ├── chat/
+│   │   └── manager.go       # Chat message routing
 │   ├── config/
 │   │   └── config.go        # Configuration
 │   └── tools/
@@ -364,11 +369,10 @@ agentcall/
 
 ### Dependencies
 
-- `github.com/agentplexus/omnivoice` - Voice abstraction layer
-- `github.com/agentplexus/go-elevenlabs` - ElevenLabs TTS provider
-- `github.com/agentplexus/omnivoice-deepgram` - Deepgram STT provider
-- `github.com/agentplexus/omnivoice-twilio` - Twilio transport and call system
-- `github.com/agentplexus/mcpkit` - MCP server runtime
+- `github.com/plexusone/omnivoice` - Batteries-included voice abstraction
+- `github.com/plexusone/omnichat` - Chat messaging abstraction
+- `github.com/plexusone/omnivoice-twilio` - Twilio transport and call system
+- `github.com/plexusone/mcpkit` - MCP server runtime
 - `github.com/modelcontextprotocol/go-sdk` - MCP protocol SDK
 
 ## Cost Estimate
@@ -381,17 +385,8 @@ agentcall/
 | ElevenLabs STT | ~$0.10/min (Scribe) |
 | Deepgram TTS | ~$0.015/1K chars |
 | Deepgram STT | ~$0.0043/min (Nova-2) |
+| Discord/Telegram | Free |
 | ngrok (free tier) | $0 |
-
-**Example configurations:**
-
-| Config | TTS | STT | Approx. Cost/min |
-|--------|-----|-----|------------------|
-| ElevenLabs + Deepgram (default) | ElevenLabs | Deepgram | ~$0.05/min |
-| All Deepgram | Deepgram | Deepgram | ~$0.03/min |
-| All ElevenLabs | ElevenLabs | ElevenLabs | ~$0.15/min |
-
-*Note: Costs vary by plan and usage. ElevenLabs and Deepgram offer free tiers for testing.*
 
 ## License
 
@@ -401,24 +396,23 @@ MIT
 
 Inspired by [ZeframLou/call-me](https://github.com/ZeframLou/call-me) (TypeScript).
 
-Built with the agentplexus stack:
+Built with the plexusone stack:
 
-- [omnivoice](https://github.com/agentplexus/omnivoice) - Voice abstraction layer
-- [go-elevenlabs](https://github.com/agentplexus/go-elevenlabs) - ElevenLabs TTS provider
-- [omnivoice-deepgram](https://github.com/agentplexus/omnivoice-deepgram) - Deepgram STT provider
-- [omnivoice-twilio](https://github.com/agentplexus/omnivoice-twilio) - Twilio transport and call system
-- [mcpkit](https://github.com/agentplexus/mcpkit) - MCP server runtime
-- [assistantkit](https://github.com/agentplexus/assistantkit) - Multi-tool plugin configuration
+- [omnivoice](https://github.com/plexusone/omnivoice) - Voice abstraction layer
+- [omnichat](https://github.com/plexusone/omnichat) - Chat messaging abstraction
+- [elevenlabs-go](https://github.com/plexusone/elevenlabs-go) - ElevenLabs provider
+- [omnivoice-deepgram](https://github.com/plexusone/omnivoice-deepgram) - Deepgram provider
+- [omnivoice-twilio](https://github.com/plexusone/omnivoice-twilio) - Twilio provider
+- [mcpkit](https://github.com/plexusone/mcpkit) - MCP server runtime
+- [assistantkit](https://github.com/plexusone/assistantkit) - Multi-tool plugin configuration
 
- [build-status-svg]: https://github.com/agentplexus/agentcall/actions/workflows/ci.yaml/badge.svg?branch=main
- [build-status-url]: https://github.com/agentplexus/agentcall/actions/workflows/ci.yaml
- [lint-status-svg]: https://github.com/agentplexus/agentcall/actions/workflows/lint.yaml/badge.svg?branch=main
- [lint-status-url]: https://github.com/agentplexus/agentcall/actions/workflows/lint.yaml
- [goreport-svg]: https://goreportcard.com/badge/github.com/agentplexus/agentcall
- [goreport-url]: https://goreportcard.com/report/github.com/agentplexus/agentcall
- [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/agentplexus/agentcall
- [docs-godoc-url]: https://pkg.go.dev/github.com/agentplexus/agentcall
+ [build-status-svg]: https://github.com/plexusone/agentcomms/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/plexusone/agentcomms/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/plexusone/agentcomms/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/plexusone/agentcomms/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/plexusone/agentcomms
+ [goreport-url]: https://goreportcard.com/report/github.com/plexusone/agentcomms
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/agentcomms
+ [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/agentcomms
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/agentplexus/agentcall/blob/master/LICENSE
- [used-by-svg]: https://sourcegraph.com/github.com/agentplexus/agentcall/-/badge.svg
- [used-by-url]: https://sourcegraph.com/github.com/agentplexus/agentcall?badge
+ [license-url]: https://github.com/plexusone/agentcomms/blob/master/LICENSE

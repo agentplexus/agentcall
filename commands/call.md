@@ -48,7 +48,7 @@ When this command is invoked:
 /call Hey, I finished the feature! Want me to walk you through it?
 ```
 
-**Without message (Claude crafts based on context):**
+**Without message (crafts based on context):**
 ```
 /call
 ```

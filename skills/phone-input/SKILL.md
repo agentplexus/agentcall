@@ -12,7 +12,7 @@ Voice calling capability for multi-turn phone conversations
 
 # Phone Input Skill
 
-This skill enables Claude to call the user on the phone for real-time voice conversations.
+This skill enables AI assistants to call the user on the phone for real-time voice conversations.
 
 ## When to Use
 

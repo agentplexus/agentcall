@@ -1,4 +1,4 @@
-// Package main publishes the agentcall plugin to the Claude Code marketplace.
+// Package main publishes the agentcomms plugin to the Claude Code marketplace.
 //
 // This tool generates the plugin files and submits a PR to anthropics/claude-plugins-official.
 //
@@ -14,7 +14,7 @@
 //	GITHUB_TOKEN=ghp_xxx go run ./cmd/publish
 //
 //	# Submit with custom PR title
-//	GITHUB_TOKEN=ghp_xxx go run ./cmd/publish --title "Add agentcall voice calling plugin"
+//	GITHUB_TOKEN=ghp_xxx go run ./cmd/publish --title "Add agentcomms voice and chat plugin"
 package main
 
 import (
@@ -25,10 +25,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/agentplexus/assistantkit/bundle"
-	"github.com/agentplexus/assistantkit/hooks/core"
-	"github.com/agentplexus/assistantkit/publish"
-	"github.com/agentplexus/assistantkit/publish/claude"
+	"github.com/plexusone/assistantkit/bundle"
+	"github.com/plexusone/assistantkit/hooks/core"
+	"github.com/plexusone/assistantkit/publish"
+	"github.com/plexusone/assistantkit/publish/claude"
 )
 
 func main() {
@@ -57,7 +57,7 @@ func main() {
 			fmt.Printf("Using output directory: %s\n", pluginDir)
 		}
 	} else {
-		tmpDir, err := os.MkdirTemp("", "agentcall-publish-*")
+		tmpDir, err := os.MkdirTemp("", "agentcomms-publish-*")
 		if err != nil {
 			log.Fatalf("Failed to create temp directory: %v", err)
 		}
@@ -111,9 +111,9 @@ func main() {
 
 	if *dryRun {
 		fmt.Println("\n[Dry run] Would submit to Claude Code marketplace:")
-		fmt.Printf("  Plugin: agentcall\n")
+		fmt.Printf("  Plugin: agentcomms\n")
 		fmt.Printf("  Target: anthropics/claude-plugins-official\n")
-		fmt.Printf("  Path:   external_plugins/agentcall/\n")
+		fmt.Printf("  Path:   external_plugins/agentcomms/\n")
 		if *outputDir != "" {
 			fmt.Printf("\nGenerated files kept at: %s\n", pluginDir)
 		}
@@ -124,7 +124,7 @@ func main() {
 	fmt.Println("\nSubmitting to Claude Code marketplace...")
 	opts := publish.PublishOptions{
 		PluginDir:  pluginDir,
-		PluginName: "agentcall",
+		PluginName: "agentcomms",
 		DryRun:     false,
 		Verbose:    *verbose,
 		Title:      *title,
@@ -142,42 +142,50 @@ func main() {
 	fmt.Printf("Branch: %s\n", result.Branch)
 }
 
-// createBundle builds the agentcall bundle with all components.
+// createBundle builds the agentcomms bundle with all components.
 // This is duplicated from generate-plugin to keep the commands independent.
 func createBundle() *bundle.Bundle {
-	b := bundle.New("agentcall", "0.1.0", "Voice calling for AI assistants via phone")
-	b.Plugin.Author = "agentplexus"
+	b := bundle.New("agentcomms", "0.2.0", "Voice calling and chat messaging for AI assistants")
+	b.Plugin.Author = "plexusone"
 	b.Plugin.License = "MIT"
-	b.Plugin.Repository = "https://github.com/agentplexus/agentcall"
-	b.Plugin.Homepage = "https://github.com/agentplexus/agentcall"
+	b.Plugin.Repository = "https://github.com/plexusone/agentcomms"
+	b.Plugin.Homepage = "https://github.com/plexusone/agentcomms"
 
 	// Add MCP server
-	b.AddMCPServer("agentcall", bundle.MCPServer{
-		Command: "./agentcall",
+	//nolint:gosec // G101: These are env var templates, not credentials
+	b.AddMCPServer("agentcomms", bundle.MCPServer{
+		Command: "./agentcomms",
 		Env: map[string]string{
-			"AGENTCALL_PHONE_ACCOUNT_SID": "${AGENTCALL_PHONE_ACCOUNT_SID}",
-			"AGENTCALL_PHONE_AUTH_TOKEN":  "${AGENTCALL_PHONE_AUTH_TOKEN}",
-			"AGENTCALL_PHONE_NUMBER":      "${AGENTCALL_PHONE_NUMBER}",
-			"AGENTCALL_USER_PHONE_NUMBER": "${AGENTCALL_USER_PHONE_NUMBER}",
-			"NGROK_AUTHTOKEN":             "${NGROK_AUTHTOKEN}",
-			"AGENTCALL_TTS_VOICE":         "${AGENTCALL_TTS_VOICE:-Polly.Matthew}",
+			"AGENTCOMMS_PHONE_ACCOUNT_SID": "${AGENTCOMMS_PHONE_ACCOUNT_SID}",
+			"AGENTCOMMS_PHONE_AUTH_TOKEN":  "${AGENTCOMMS_PHONE_AUTH_TOKEN}",
+			"AGENTCOMMS_PHONE_NUMBER":      "${AGENTCOMMS_PHONE_NUMBER}",
+			"AGENTCOMMS_USER_PHONE_NUMBER": "${AGENTCOMMS_USER_PHONE_NUMBER}",
+			"NGROK_AUTHTOKEN":              "${NGROK_AUTHTOKEN}",
+			"AGENTCOMMS_TTS_VOICE":         "${AGENTCOMMS_TTS_VOICE:-Rachel}",
+			"AGENTCOMMS_DISCORD_ENABLED":   "${AGENTCOMMS_DISCORD_ENABLED}",
+			"AGENTCOMMS_DISCORD_TOKEN":     "${AGENTCOMMS_DISCORD_TOKEN}",
+			"AGENTCOMMS_TELEGRAM_ENABLED":  "${AGENTCOMMS_TELEGRAM_ENABLED}",
+			"AGENTCOMMS_TELEGRAM_TOKEN":    "${AGENTCOMMS_TELEGRAM_TOKEN}",
 		},
 	})
 
 	// Add dependencies
 	b.Plugin.AddOptionalDependency("ngrok", "ngrok")
 
-	// Add skill
+	// Add skills
 	b.AddSkill(createPhoneSkill())
+	b.AddSkill(createChatSkill())
 
-	// Add command
+	// Add commands
 	b.AddCommand(createCallCommand())
+	b.AddCommand(createMessageCommand())
 
 	// Add hooks
 	b.SetHooks(createHooks())
 
-	// Add agent (for Kiro CLI)
+	// Add agents (for Kiro CLI)
 	b.AddAgent(createVoiceAgent())
+	b.AddAgent(createChatAgent())
 
 	return b
 }
@@ -190,68 +198,57 @@ func createPhoneSkill() *bundle.Skill {
 
 This skill enables AI assistants to call the user on the phone for real-time voice conversations.
 
-## When to Use
-
-Use phone calling when:
-
-- **Task Completion**: You've finished significant work and need to discuss next steps
-- **Blocked**: You're stuck and need urgent clarification that would take too long via text
-- **Complex Decisions**: The situation requires back-and-forth discussion
-- **Milestone Reached**: You want to walk through completed work verbally
-- **Multi-step Process**: The task needs iterative input from the user
-
-## When NOT to Use
-
-Don't use phone calling for:
-
-- Simple yes/no questions (use text instead)
-- Status updates that don't require discussion
-- Information already provided in the conversation
-- Quick clarifications that can be typed
-
 ## Available Tools
 
-### initiate_call
-Start a new call to the user. Use when beginning a conversation.
-
-**Example:**
-` + "```json\n{\n  \"message\": \"Hey! I finished implementing the authentication system. Want me to walk you through what I built?\"\n}\n```" + `
-
-### continue_call
-Continue an active call with another message. Use for multi-turn conversations.
-
-**Example:**
-` + "```json\n{\n  \"call_id\": \"call-1-123456\",\n  \"message\": \"Should I also add refresh token support, or is the basic JWT implementation sufficient?\"\n}\n```" + `
-
-### speak_to_user
-Speak without waiting for a response. Use for acknowledgments before time-consuming operations.
-
-**Example:**
-` + "```json\n{\n  \"call_id\": \"call-1-123456\",\n  \"message\": \"Let me search through the codebase for that. Give me a moment...\"\n}\n```" + `
-
-### end_call
-End the call with an optional goodbye message.
-
-**Example:**
-` + "```json\n{\n  \"call_id\": \"call-1-123456\",\n  \"message\": \"Perfect! I'll get started on the tests. Talk soon!\"\n}\n```" + `
+- **initiate_call**: Start a new phone call to the user
+- **continue_call**: Continue an active call with another message
+- **speak_to_user**: Speak without waiting for a response
+- **end_call**: End the call with an optional goodbye message
 
 ## Best Practices
 
-1. **Be conversational**: Speak naturally, as if talking to a colleague
-2. **Be concise**: Phone time is valuable; get to the point
-3. **Wait for response**: After asking a question, always wait for the user's answer
-4. **Handle silence**: If the user doesn't respond, ask if they're still there
-5. **Confirm understanding**: Repeat back important decisions before ending the call
+1. Be conversational and natural
+2. Be concise - phone time is valuable
+3. Wait for responses after questions
+4. Confirm important decisions before ending
 
-## Cost Consideration
+## Cost
 
-Phone calls cost approximately $0.02-0.04 per minute. Use them judiciously for high-value interactions.
+Calls cost approximately $0.02-0.04 per minute.
 `
 
 	skill.AddTrigger("call")
 	skill.AddTrigger("phone")
 	skill.AddTrigger("voice")
-	skill.AddTrigger("ring")
+
+	return skill
+}
+
+// createChatSkill creates the chat-messaging skill.
+func createChatSkill() *bundle.Skill {
+	skill := bundle.NewSkill("chat-messaging", "Chat messaging capability via Discord, Telegram, and WhatsApp")
+
+	skill.Instructions = `# Chat Messaging Skill
+
+Send messages to users via chat platforms (Discord, Telegram, WhatsApp).
+
+## Available Tools
+
+- **send_message**: Send a message to a chat channel
+- **list_channels**: List available chat channels
+- **get_messages**: Get recent messages from a conversation
+
+## Supported Providers
+
+- **discord**: Discord servers and DMs
+- **telegram**: Telegram chats
+- **whatsapp**: WhatsApp conversations
+`
+
+	skill.AddTrigger("message")
+	skill.AddTrigger("chat")
+	skill.AddTrigger("discord")
+	skill.AddTrigger("telegram")
 
 	return skill
 }
@@ -271,49 +268,46 @@ func createCallCommand() *bundle.Command {
 
 	cmd.Instructions = `Initiate a phone call to the user for real-time voice conversation.
 
-## Usage
-
-` + "```\n/call [message]\n```" + `
-
-## Arguments
-
-- **message** (optional): The initial message to speak when the user answers. If not provided, craft an appropriate greeting based on context.
-
-## Behavior
-
-When this command is invoked:
-
-1. Check if there's context that warrants a call (completed work, blocking issue, decision needed)
-2. If no message provided, craft an appropriate opening based on recent conversation
-3. Use the ` + "`initiate_call`" + ` tool to place the call
-4. Wait for the user's response
-5. Continue the conversation as needed using ` + "`continue_call`" + `
-6. End the call politely using ` + "`end_call`" + ` when done
-
-## Examples
-
-**With message:**
-` + "```\n/call Hey, I finished the feature! Want me to walk you through it?\n```" + `
-
-**Without message (crafts based on context):**
-` + "```\n/call\n```" + `
-
-## Notes
-
-- The call will ring the user's configured phone number
-- Calls cost approximately $0.02-0.04 per minute
-- Use for meaningful interactions, not simple questions
+Use the ` + "`initiate_call`" + ` tool to place the call.
 `
 
 	cmd.AddExample(
-		"Call with specific message",
-		"/call I'm blocked on the API design. Can we discuss the endpoint structure?",
+		"Call with message",
+		"/call I'm blocked on the API design. Can we discuss?",
 		"Initiates call and speaks the provided message",
 	)
+
+	return cmd
+}
+
+// createMessageCommand creates the /message command.
+func createMessageCommand() *bundle.Command {
+	cmd := bundle.NewCommand("message", "Send a message via chat (Discord/Telegram/WhatsApp)")
+
+	cmd.Arguments = []bundle.Argument{
+		{
+			Name:        "provider",
+			Type:        "string",
+			Required:    true,
+			Description: "Chat provider: discord, telegram, or whatsapp",
+		},
+		{
+			Name:        "content",
+			Type:        "string",
+			Required:    true,
+			Description: "Message content to send",
+		},
+	}
+
+	cmd.Instructions = `Send a message to the user via a chat platform.
+
+Use the ` + "`send_message`" + ` tool to send the message.
+`
+
 	cmd.AddExample(
-		"Call without message",
-		"/call",
-		"Crafts an appropriate message based on conversation context",
+		"Send Discord message",
+		"/message discord The deployment is complete!",
+		"Sends message to user's Discord",
 	)
 
 	return cmd
@@ -323,29 +317,13 @@ When this command is invoked:
 func createHooks() *bundle.Config {
 	cfg := bundle.NewHooksConfig()
 
-	// Add hook for OnStop event
 	cfg.AddHook(
 		core.OnStop,
 		core.Hook{
 			Type: "prompt",
-			Prompt: `The user has stopped the current operation. Consider whether this is an appropriate time to call them:
-
-- If you completed significant work, offer to call and walk them through it
-- If you're blocked and need clarification, suggest calling to discuss
-- If it's a minor pause, don't suggest calling
-
-If calling seems appropriate, use the initiate_call tool. Otherwise, continue working or wait for instructions.`,
-		},
-	)
-
-	// Add hook for notification events
-	cfg.AddHook(
-		core.OnNotification,
-		core.Hook{
-			Type: "prompt",
-			Prompt: `You received a notification that may indicate you're stuck or need user input.
-
-If you've been working for a while without progress or need a decision that's blocking further work, consider calling the user to discuss. Use the initiate_call tool if appropriate.`,
+			Prompt: `The user has stopped the current operation. Consider whether to communicate:
+- Phone call for urgent matters or complex discussions
+- Chat message for status updates or sharing links`,
 		},
 	)
 
@@ -355,81 +333,68 @@ If you've been working for a while without progress or need a decision that's bl
 // createVoiceAgent creates the voice calling agent for Kiro CLI.
 func createVoiceAgent() *bundle.Agent {
 	agent := bundle.NewAgent("voice-caller", "Voice calling agent for phone conversations")
-
-	agent.Instructions = `You are a voice calling agent that can call users on the phone.
-
-## Capabilities
-
-You can use the following MCP tools:
-
-- **initiate_call**: Start a new phone call to the user
-- **continue_call**: Continue an active call with another message
-- **speak_to_user**: Speak without waiting for a response
-- **end_call**: End the call with an optional goodbye message
-
-## When to Call
-
-Call the user when:
-- You've completed significant work and want to walk them through it
-- You're blocked and need clarification
-- A complex decision requires discussion
-- The task needs iterative input
-
-## Guidelines
-
-1. Be conversational and natural
-2. Be concise - phone time is valuable
-3. Wait for responses after questions
-4. Confirm important decisions before ending
-5. End calls politely
-
-## Cost
-
-Calls cost approximately $0.02-0.04 per minute.
-`
-
+	agent.Instructions = `You are a voice calling agent that can call users on the phone.`
 	agent.WithTools("Read", "Write", "Bash")
+	return agent
+}
 
+// createChatAgent creates the chat messaging agent for Kiro CLI.
+func createChatAgent() *bundle.Agent {
+	agent := bundle.NewAgent("chat-messenger", "Chat messaging agent for Discord/Telegram/WhatsApp")
+	agent.Instructions = `You are a chat messaging agent that can send messages via Discord, Telegram, and WhatsApp.`
+	agent.WithTools("Read", "Write", "Bash")
 	return agent
 }
 
 // writeReadme creates a README.md for the marketplace submission.
 func writeReadme(dir string) error {
-	readme := `# agentcall
+	readme := `# agentcomms
 
-An MCP plugin that enables voice calls via phone for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision.
+An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Telegram, or WhatsApp.
 
 ## Features
 
 - **Phone Calls**: Real voice calls to your phone via Twilio
+- **Chat Messaging**: Send messages via Discord, Telegram, or WhatsApp
 - **Multi-turn Conversations**: Back-and-forth discussions, not just one-way notifications
-- **Smart Triggers**: Hooks that suggest calling when you're stuck or done with work
-- **Cost Effective**: ~$0.02-0.04 per minute
+- **Smart Triggers**: Hooks that suggest calling/messaging when you're stuck or done with work
 
 ## Requirements
 
+### Voice (optional)
 - Twilio account with phone number
 - ngrok account for webhook tunneling
 
+### Chat (optional)
+- Discord bot token
+- Telegram bot token
+- WhatsApp (via whatsmeow)
+
 ## Installation
 
-1. Build the agentcall binary:
-   ` + "```bash\n   go build -o agentcall ./cmd/agentcall\n   ```" + `
+1. Build the agentcomms binary:
+   ` + "```bash\n   go build -o agentcomms ./cmd/agentcomms\n   ```" + `
 
 2. Set environment variables:
-   ` + "```bash\n   export AGENTCALL_PHONE_ACCOUNT_SID=ACxxx\n   export AGENTCALL_PHONE_AUTH_TOKEN=xxx\n   export AGENTCALL_PHONE_NUMBER=+15551234567\n   export AGENTCALL_USER_PHONE_NUMBER=+15559876543\n   export NGROK_AUTHTOKEN=xxx\n   ```" + `
+   ` + "```bash\n   # Voice (optional)\n   export AGENTCOMMS_PHONE_ACCOUNT_SID=ACxxx\n   export AGENTCOMMS_PHONE_AUTH_TOKEN=xxx\n   export AGENTCOMMS_PHONE_NUMBER=+15551234567\n   export AGENTCOMMS_USER_PHONE_NUMBER=+15559876543\n   export NGROK_AUTHTOKEN=xxx\n   \n   # Chat (optional)\n   export AGENTCOMMS_DISCORD_ENABLED=true\n   export AGENTCOMMS_DISCORD_TOKEN=your_bot_token\n   ```" + `
 
 ## MCP Tools
 
+### Voice
 - **initiate_call**: Start a new call to the user
 - **continue_call**: Continue an active call
 - **speak_to_user**: Speak without waiting for response
 - **end_call**: End the call
 
+### Chat
+- **send_message**: Send a message to a chat channel
+- **list_channels**: List available chat channels
+- **get_messages**: Get recent messages
+
 ## Links
 
-- [Repository](https://github.com/agentplexus/agentcall)
-- [Documentation](https://github.com/agentplexus/agentcall#readme)
+- [Repository](https://github.com/plexusone/agentcomms)
+- [Documentation](https://github.com/plexusone/agentcomms#readme)
 
 ## License
 

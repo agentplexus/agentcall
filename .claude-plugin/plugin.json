@@ -1,11 +1,11 @@
 {
-  "name": "agentcall",
-  "version": "0.1.0",
-  "description": "Voice calling for Claude Code via phone",
-  "author": "agentplexus",
+  "name": "agentcomms",
+  "version": "0.2.0",
+  "description": "Voice calling and chat messaging for AI assistants",
+  "author": "plexusone",
   "license": "MIT",
-  "repository": "https://github.com/agentplexus/agentcall",
-  "homepage": "https://github.com/agentplexus/agentcall",
+  "repository": "https://github.com/plexusone/agentcomms",
+  "homepage": "https://github.com/plexusone/agentcomms",
   "commands": "./commands/",
   "skills": "./skills/"
 }
