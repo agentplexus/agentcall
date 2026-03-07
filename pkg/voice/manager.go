@@ -9,9 +9,6 @@ import (
 	"time"
 
 	"github.com/plexusone/omnivoice"
-	"github.com/plexusone/omnivoice-core/callsystem"
-	"github.com/plexusone/omnivoice-core/stt"
-	"github.com/plexusone/omnivoice-core/tts"
 	twiliosystem "github.com/plexusone/omnivoice-twilio/callsystem"
 	twiliotransport "github.com/plexusone/omnivoice-twilio/transport"
 	_ "github.com/plexusone/omnivoice/providers/all" // Register all providers
@@ -22,7 +19,7 @@ import (
 // CallState represents the state of an active call.
 type CallState struct {
 	ID              string
-	Call            callsystem.Call
+	Call            omnivoice.Call
 	StartTime       time.Time
 	Conversation    []ConversationTurn
 	LastUserMessage string
@@ -60,9 +57,9 @@ type Manager struct {
 	config *config.Config
 
 	// omnivoice providers (using batteries-included registry)
-	callSystem  callsystem.CallSystem
-	ttsProvider tts.Provider
-	sttProvider stt.StreamingProvider
+	callSystem  omnivoice.CallSystem
+	ttsProvider omnivoice.TTSProvider
+	sttProvider omnivoice.STTStreamingProvider
 
 	// Active calls
 	calls   map[string]*CallState
@@ -121,7 +118,7 @@ func (m *Manager) Initialize(publicURL string) error {
 	if err != nil {
 		return fmt.Errorf("failed to create STT provider: %w", err)
 	}
-	streamingSTT, ok := sttProvider.(stt.StreamingProvider)
+	streamingSTT, ok := sttProvider.(omnivoice.STTStreamingProvider)
 	if !ok {
 		return fmt.Errorf("STT provider %s does not support streaming", m.config.STTProvider)
 	}
@@ -256,7 +253,7 @@ func (m *Manager) removeCall(callID string) {
 }
 
 // waitForAnswer waits for the call to be answered.
-func (m *Manager) waitForAnswer(ctx context.Context, call callsystem.Call, timeout time.Duration) bool {
+func (m *Manager) waitForAnswer(ctx context.Context, call omnivoice.Call, timeout time.Duration) bool {
 	deadline := time.Now().Add(timeout)
 	for time.Now().Before(deadline) {
 		select {
@@ -266,11 +263,11 @@ func (m *Manager) waitForAnswer(ctx context.Context, call callsystem.Call, timeo
 		}
 
 		status := call.Status()
-		if status == callsystem.StatusAnswered {
+		if status == omnivoice.StatusAnswered {
 			return true
 		}
-		if status == callsystem.StatusEnded || status == callsystem.StatusFailed ||
-			status == callsystem.StatusBusy || status == callsystem.StatusNoAnswer {
+		if status == omnivoice.StatusEnded || status == omnivoice.StatusFailed ||
+			status == omnivoice.StatusBusy || status == omnivoice.StatusNoAnswer {
 			return false
 		}
 
@@ -291,7 +288,7 @@ func (m *Manager) speak(ctx context.Context, state *CallState, message string) e
 	}
 
 	// Synthesize using streaming TTS with native ulaw output for Twilio
-	stream, err := m.ttsProvider.SynthesizeStream(ctx, message, tts.SynthesisConfig{
+	stream, err := m.ttsProvider.SynthesizeStream(ctx, message, omnivoice.SynthesisConfig{
 		VoiceID:      m.config.TTSVoice,
 		Model:        m.config.TTSModel,
 		OutputFormat: "ulaw", // Native mu-law for Twilio
@@ -345,7 +342,7 @@ func (m *Manager) listen(ctx context.Context, state *CallState) (string, error) 
 	}
 
 	// Create a streaming transcription session
-	writer, events, err := m.sttProvider.TranscribeStream(ctx, stt.TranscriptionConfig{
+	writer, events, err := m.sttProvider.TranscribeStream(ctx, omnivoice.TranscriptionConfig{
 		Language:          m.config.STTLanguage,
 		Model:             m.config.STTModel,
 		Encoding:          "mulaw",

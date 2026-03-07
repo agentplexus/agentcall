@@ -7,8 +7,7 @@ require (
 	github.com/plexusone/assistantkit v0.11.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.3.0
-	github.com/plexusone/omnivoice v0.5.1
-	github.com/plexusone/omnivoice-core v0.5.0
+	github.com/plexusone/omnivoice v0.6.0
 	github.com/plexusone/omnivoice-twilio v0.2.0
 )
 
@@ -50,13 +49,14 @@ require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
-	github.com/ogen-go/ogen v1.20.0 // indirect
+	github.com/ogen-go/ogen v1.20.1 // indirect
 	github.com/openai/openai-go v1.12.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/plexusone/elevenlabs-go v0.9.0 // indirect
 	github.com/plexusone/multi-agent-spec/sdk/go v0.8.0 // indirect
 	github.com/plexusone/ogen-tools v0.2.0 // indirect
+	github.com/plexusone/omnivoice-core v0.5.0 // indirect
 	github.com/plexusone/omnivoice-deepgram v0.4.0 // indirect
 	github.com/plexusone/omnivoice-openai v0.1.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
@@ -72,9 +72,9 @@ require (
 	github.com/wk8/go-ordered-map/v2 v2.1.8 // indirect
 	github.com/yosida95/uritemplate/v3 v3.0.2 // indirect
 	go.opentelemetry.io/auto/sdk v1.2.1 // indirect
-	go.opentelemetry.io/otel v1.40.0 // indirect
-	go.opentelemetry.io/otel/metric v1.40.0 // indirect
-	go.opentelemetry.io/otel/trace v1.40.0 // indirect
+	go.opentelemetry.io/otel v1.42.0 // indirect
+	go.opentelemetry.io/otel/metric v1.42.0 // indirect
+	go.opentelemetry.io/otel/trace v1.42.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.1 // indirect
 	golang.ngrok.com/muxado/v2 v2.0.1 // indirect
@@ -91,7 +91,7 @@ require (
 	gopkg.in/telebot.v3 v3.3.8 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/klog/v2 v2.130.1 // indirect
+	k8s.io/klog/v2 v2.140.0 // indirect
 )
 
 // Force ngrok v1.12.0 due to build issue in v1.13.0
