@@ -1,9 +1,11 @@
 # AgentComms
 
-[![Build Status][build-status-svg]][build-status-url]
-[![Lint Status][lint-status-svg]][lint-status-url]
+[![Go CI][go-ci-svg]][go-ci-url]
+[![Go Lint][go-lint-svg]][go-lint-url]
+[![Go SAST][go-sast-svg]][go-sast-url]
 [![Go Report Card][goreport-svg]][goreport-url]
 [![Docs][docs-godoc-svg]][docs-godoc-url]
+[![Visualization][viz-svg]][viz-url]
 [![License][license-svg]][license-url]
 
 An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Telegram, or WhatsApp.
@@ -23,42 +25,42 @@ An MCP plugin that enables voice calls and chat messaging for AI coding assistan
 ## Architecture
 
 ```
-┌────────────────────────────────────────────────────────────────────────────┐
-│                           agentcomms                                        │
-├────────────────────────────────────────────────────────────────────────────┤
-│  MCP Tools (via mcpkit)                                                    │
-│  ├── Voice Tools                                                           │
+┌───────────────────────────────────────────────────────────────────────────┐
+│                           agentcomms                                      │
+├───────────────────────────────────────────────────────────────────────────┤
+│  MCP Tools (via mcpkit)                                                   │
+│  ├── Voice Tools                                                          │
 │  │   ├── initiate_call  - Start a new call to the user                    │
 │  │   ├── continue_call  - Continue conversation on active call            │
 │  │   ├── speak_to_user  - Speak without waiting for response              │
 │  │   └── end_call       - End the call with optional goodbye              │
-│  └── Chat Tools                                                            │
+│  └── Chat Tools                                                           │
 │      ├── send_message   - Send message via Discord/Telegram/WhatsApp      │
 │      ├── list_channels  - List available chat channels                    │
 │      └── get_messages   - Get recent messages from a channel              │
-├────────────────────────────────────────────────────────────────────────────┤
-│  Managers                                                                  │
+├───────────────────────────────────────────────────────────────────────────┤
+│  Managers                                                                 │
 │  ├── Voice Manager - Orchestrates calls, TTS, STT                         │
 │  └── Chat Manager  - Routes messages across chat providers                │
-├────────────────────────────────────────────────────────────────────────────┤
-│  omnivoice (voice abstraction layer)                                       │
+├───────────────────────────────────────────────────────────────────────────┤
+│  omnivoice (voice abstraction layer)                                      │
 │  ├── tts.Provider       - Text-to-Speech interface                        │
 │  ├── stt.Provider       - Speech-to-Text interface                        │
 │  ├── transport.Transport - Audio streaming interface                      │
 │  └── callsystem.CallSystem - Phone call management interface              │
-├────────────────────────────────────────────────────────────────────────────┤
-│  omnichat (chat abstraction layer)                                         │
+├───────────────────────────────────────────────────────────────────────────┤
+│  omnichat (chat abstraction layer)                                        │
 │  ├── provider.Provider  - Chat provider interface                         │
 │  └── provider.Router    - Message routing and handling                    │
-├────────────────────────────────────────────────────────────────────────────┤
-│  Provider Implementations                                                  │
+├───────────────────────────────────────────────────────────────────────────┤
+│  Provider Implementations                                                 │
 │  ├── Voice: ElevenLabs, Deepgram, OpenAI, Twilio                          │
 │  └── Chat:  Discord, Telegram, WhatsApp                                   │
-├────────────────────────────────────────────────────────────────────────────┤
-│  mcpkit                                                                    │
-│  - MCP server with HTTP/SSE transport                                      │
-│  - Built-in ngrok integration for public webhooks                          │
-└────────────────────────────────────────────────────────────────────────────┘
+├───────────────────────────────────────────────────────────────────────────┤
+│  mcpkit                                                                   │
+│  - MCP server with HTTP/SSE transport                                     │
+│  - Built-in ngrok integration for public webhooks                         │
+└───────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## The plexusone Stack
@@ -406,13 +408,19 @@ Built with the plexusone stack:
 - [mcpkit](https://github.com/plexusone/mcpkit) - MCP server runtime
 - [assistantkit](https://github.com/plexusone/assistantkit) - Multi-tool plugin configuration
 
- [build-status-svg]: https://github.com/plexusone/agentcomms/actions/workflows/ci.yaml/badge.svg?branch=main
- [build-status-url]: https://github.com/plexusone/agentcomms/actions/workflows/ci.yaml
- [lint-status-svg]: https://github.com/plexusone/agentcomms/actions/workflows/lint.yaml/badge.svg?branch=main
- [lint-status-url]: https://github.com/plexusone/agentcomms/actions/workflows/lint.yaml
+ [go-ci-svg]: https://github.com/plexusone/agentcomms/actions/workflows/go-ci.yaml/badge.svg?branch=main
+ [go-ci-url]: https://github.com/plexusone/agentcomms/actions/workflows/go-ci.yaml
+ [go-lint-svg]: https://github.com/plexusone/agentcomms/actions/workflows/go-lint.yaml/badge.svg?branch=main
+ [go-lint-url]: https://github.com/plexusone/agentcomms/actions/workflows/go-lint.yaml
+ [go-sast-svg]: https://github.com/plexusone/agentcomms/actions/workflows/go-sast-codeql.yaml/badge.svg?branch=main
+ [go-sast-url]: https://github.com/plexusone/agentcomms/actions/workflows/go-sast-codeql.yaml
  [goreport-svg]: https://goreportcard.com/badge/github.com/plexusone/agentcomms
  [goreport-url]: https://goreportcard.com/report/github.com/plexusone/agentcomms
  [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/agentcomms
  [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/agentcomms
+ [viz-svg]: https://img.shields.io/badge/visualizaton-Go-blue.svg
+ [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fagentcomms
+ [loc-svg]: https://tokei.rs/b1/github/plexusone/agentcomms
+ [repo-url]: https://github.com/plexusone/agentcomms
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
  [license-url]: https://github.com/plexusone/agentcomms/blob/master/LICENSE
