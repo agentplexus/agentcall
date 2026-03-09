@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/modelcontextprotocol/go-sdk v1.4.0
-	github.com/plexusone/assistantkit v0.11.0
+	github.com/plexusone/assistantkit v0.12.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.3.0
 	github.com/plexusone/omnivoice v0.6.0
