@@ -3,7 +3,7 @@ module github.com/plexusone/agentcomms
 go 1.25.0
 
 require (
-	github.com/modelcontextprotocol/go-sdk v1.4.0
+	github.com/modelcontextprotocol/go-sdk v1.4.1
 	github.com/plexusone/assistantkit v0.12.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.3.0
@@ -60,7 +60,7 @@ require (
 	github.com/plexusone/omnivoice-deepgram v0.4.0 // indirect
 	github.com/plexusone/omnivoice-openai v0.1.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
-	github.com/segmentio/encoding v0.5.3 // indirect
+	github.com/segmentio/encoding v0.5.4 // indirect
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/tidwall/gjson v1.18.0 // indirect
 	github.com/tidwall/match v1.2.0 // indirect
