@@ -393,8 +393,8 @@ github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/sftp v1.13.1/go.mod h1:3HaPG6Dq1ILlpPZRO0HVMrsydcdLt6HRDccSgb87qRg=
-github.com/plexusone/assistantkit v0.11.0 h1:kSDEvT3UfBQpzlS6LlzIfnR0RLAUUHSMeGKflf2CVSA=
-github.com/plexusone/assistantkit v0.11.0/go.mod h1:wi8K+HRqIBBQyQ+a9nrjkw8iUeOjw03Ga4riCR1LULQ=
+github.com/plexusone/assistantkit v0.12.0 h1:hgSWC4IQrqKls4LoIcCHU+/cPOcMb1ZRKR3V0rqDL6E=
+github.com/plexusone/assistantkit v0.12.0/go.mod h1:wi8K+HRqIBBQyQ+a9nrjkw8iUeOjw03Ga4riCR1LULQ=
 github.com/plexusone/elevenlabs-go v0.9.0 h1:Rfyai2VGRad3BNQJP4dvG66SWHmrmxEWhgnSlrbHQvE=
 github.com/plexusone/elevenlabs-go v0.9.0/go.mod h1:qrly94gKHGsO7BeJU7Gxv++5t/l5wvcprQ6e8UYhZjY=
 github.com/plexusone/mcpkit v0.4.0 h1:NZQJwsJoVPexV84JQtjFw0gyPX/KXDsGbZBOA7GI/vI=
