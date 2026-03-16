@@ -48,6 +48,10 @@ nav:
       - MCP Tools: mcp-tools.md
       - Configuration: configuration.md
   - Architecture: architecture.md
+  - Releases:
+      - v0.3.0: releases/v0.3.0.md
+      - v0.2.0: releases/v0.2.0.md
+      - v0.1.0: releases/v0.1.0.md
   - Design:
       - Inbound PRD: design/FEAT_INBOUND_PRD.md
       - Inbound TRD: design/FEAT_INBOUND_TRD.md
