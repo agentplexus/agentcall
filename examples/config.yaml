@@ -1,0 +1,42 @@
+# AgentComms Daemon Configuration
+# Copy this file to ~/.agentcomms/config.yaml
+
+# Logging level: debug, info, warn, error
+log_level: info
+
+# Agent definitions
+agents:
+  # Define a coding agent that receives messages via tmux
+  - id: claude
+    type: tmux
+    tmux_session: claude-code  # The tmux session name
+    tmux_pane: "0"             # The pane number (optional, default: 0)
+
+# Chat configuration (via omnichat)
+# Supports Discord, Telegram, and WhatsApp
+chat:
+  # Discord configuration (optional)
+  discord:
+    # Bot token - get from https://discord.com/developers/applications
+    # Can also be set via DISCORD_TOKEN environment variable
+    token: "${DISCORD_TOKEN}"
+    # Optional: Filter to specific guild (server)
+    guild_id: "YOUR_GUILD_ID"
+
+  # Telegram configuration (optional)
+  # telegram:
+  #   token: "${TELEGRAM_BOT_TOKEN}"
+
+  # WhatsApp configuration (optional)
+  # whatsapp:
+  #   db_path: "${HOME}/.agentcomms/whatsapp.db"
+
+  # Map chat channels to agents
+  # Format: "provider:chatid"
+  channels:
+    - channel_id: "discord:YOUR_CHANNEL_ID"  # Discord channel
+      agent_id: claude
+    # - channel_id: "telegram:YOUR_CHAT_ID"  # Telegram chat
+    #   agent_id: claude
+    # - channel_id: "whatsapp:YOUR_JID"      # WhatsApp JID
+    #   agent_id: claude
