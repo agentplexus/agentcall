@@ -133,3 +133,6 @@ replace golang.ngrok.com/ngrok => golang.ngrok.com/ngrok v1.12.0
 
 // Force log15/v3 to version compatible with ngrok v1.12.0 (has ext.RandId)
 replace github.com/inconshreveable/log15/v3 => github.com/inconshreveable/log15/v3 v3.0.0-testing.5
+
+// Force tablewriter v0.0.5 for ent v0.14.5 compatibility (v1.x has breaking API changes)
+replace github.com/olekukonko/tablewriter => github.com/olekukonko/tablewriter v0.0.5
