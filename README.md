@@ -90,7 +90,7 @@ AgentComms provides **bidirectional communication** between humans and AI agents
 
 ```
 ┌───────────────────────────────────────────────────────────────────────────┐
-│                           agentcomms                                      │
+│                                 AgentComms                                │
 ├───────────────────────────────────────────────────────────────────────────┤
 │  OUTBOUND (MCP Server) - Agent → Human                                    │
 │  ├── Voice Tools: initiate_call, continue_call, speak_to_user, end_call   │
