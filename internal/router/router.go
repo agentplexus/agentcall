@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/plexusone/agentcomms/ent"
+	"github.com/plexusone/agentcomms/ent/agent"
 	"github.com/plexusone/agentcomms/internal/bridge"
 )
 
@@ -46,13 +47,18 @@ func (r *Router) RegisterAgent(ctx context.Context, agentID string, adapter brid
 
 	r.actors[agentID] = actor
 
+	// Update agent status to online in the database
+	if err := r.updateAgentStatus(ctx, agentID, agent.StatusOnline); err != nil {
+		r.logger.Warn("failed to update agent status", "agent_id", agentID, "error", err)
+	}
+
 	r.logger.Info("registered agent", "agent_id", agentID)
 
 	return nil
 }
 
 // UnregisterAgent removes an agent from the router.
-func (r *Router) UnregisterAgent(agentID string) error {
+func (r *Router) UnregisterAgent(ctx context.Context, agentID string) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -63,6 +69,11 @@ func (r *Router) UnregisterAgent(agentID string) error {
 
 	actor.Stop()
 	delete(r.actors, agentID)
+
+	// Update agent status to offline in the database
+	if err := r.updateAgentStatus(ctx, agentID, agent.StatusOffline); err != nil {
+		r.logger.Warn("failed to update agent status", "agent_id", agentID, "error", err)
+	}
 
 	r.logger.Info("unregistered agent", "agent_id", agentID)
 
@@ -121,14 +132,49 @@ func (r *Router) HasAgent(agentID string) bool {
 }
 
 // Stop stops all agent actors.
-func (r *Router) Stop() {
+func (r *Router) Stop(ctx context.Context) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	for id, actor := range r.actors {
 		actor.Stop()
+
+		// Update agent status to offline
+		if err := r.updateAgentStatusUnsafe(ctx, id, agent.StatusOffline); err != nil {
+			r.logger.Warn("failed to update agent status", "agent_id", id, "error", err)
+		}
+
 		r.logger.Info("stopped agent", "agent_id", id)
 	}
 
 	r.actors = make(map[string]*AgentActor)
+}
+
+// AgentStatuses returns the status of all registered agents.
+// Returns a map of agent ID to status ("online" or "offline").
+func (r *Router) AgentStatuses() map[string]string {
+	r.mu.RLock()
+	defer r.mu.RUnlock()
+
+	statuses := make(map[string]string, len(r.actors))
+	for id := range r.actors {
+		statuses[id] = "online"
+	}
+	return statuses
+}
+
+// updateAgentStatus updates the status of an agent in the database.
+// This method acquires no lock - caller must not hold r.mu.
+func (r *Router) updateAgentStatus(ctx context.Context, agentID string, status agent.Status) error {
+	return r.updateAgentStatusUnsafe(ctx, agentID, status)
+}
+
+// updateAgentStatusUnsafe updates the status of an agent in the database.
+// This is safe to call while holding r.mu.
+func (r *Router) updateAgentStatusUnsafe(ctx context.Context, agentID string, status agent.Status) error {
+	_, err := r.client.Agent.
+		UpdateOneID(agentID).
+		SetStatus(status).
+		Save(ctx)
+	return err
 }

@@ -96,9 +96,14 @@ func (a *AgentActor) handle(ctx context.Context, evt *ent.Event) {
 	case event.TypeInterrupt:
 		err = a.handleInterrupt(evt)
 	case event.TypeAgentMessage:
-		// Agent messages are outbound, handled elsewhere
-		a.logger.Debug("ignoring agent message (outbound)")
-		return
+		// Check if this is an agent-to-agent message (has source_agent_id)
+		if evt.SourceAgentID != "" {
+			err = a.handleAgentMessage(evt)
+		} else {
+			// Outbound agent messages (to chat) are handled elsewhere
+			a.logger.Debug("ignoring outbound agent message")
+			return
+		}
 	case event.TypeSystem:
 		a.logger.Debug("ignoring system event")
 		return
@@ -147,6 +152,27 @@ func (a *AgentActor) handleInterrupt(evt *ent.Event) error {
 	}
 	a.logger.Info("interrupting agent", "reason", reason)
 	return a.adapter.Interrupt()
+}
+
+// handleAgentMessage sends an agent-to-agent message to this agent.
+// The message is prefixed with the source agent ID for context.
+func (a *AgentActor) handleAgentMessage(evt *ent.Event) error {
+	// Extract text from payload
+	text, ok := evt.Payload["text"].(string)
+	if !ok {
+		a.logger.Warn("agent message has no text payload", "event_id", evt.ID)
+		return nil
+	}
+
+	// Format message with source agent prefix
+	formattedText := "[from: " + evt.SourceAgentID + "] " + text
+
+	a.logger.Info("sending agent message",
+		"from_agent", evt.SourceAgentID,
+		"text_length", len(text),
+	)
+
+	return a.adapter.Send(formattedText)
 }
 
 // updateEventStatus updates the status of an event in the database.

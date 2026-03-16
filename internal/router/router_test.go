@@ -114,7 +114,7 @@ func TestRouterDispatch(t *testing.T) {
 	}
 
 	// Stop router
-	r.Stop()
+	r.Stop(ctx)
 }
 
 func TestRouterRegisterUnregister(t *testing.T) {
@@ -141,7 +141,7 @@ func TestRouterRegisterUnregister(t *testing.T) {
 	}
 
 	// Unregister
-	if err := r.UnregisterAgent("test"); err != nil {
+	if err := r.UnregisterAgent(ctx, "test"); err != nil {
 		t.Errorf("UnregisterAgent failed: %v", err)
 	}
 
@@ -150,11 +150,11 @@ func TestRouterRegisterUnregister(t *testing.T) {
 	}
 
 	// Unregister non-existent should fail
-	if err := r.UnregisterAgent("nonexistent"); err == nil {
+	if err := r.UnregisterAgent(ctx, "nonexistent"); err == nil {
 		t.Error("expected error for non-existent agent")
 	}
 
-	r.Stop()
+	r.Stop(ctx)
 }
 
 // mockAdapter is a simple mock adapter for testing.
@@ -175,4 +175,62 @@ func (m *mockAdapter) Interrupt() error {
 
 func (m *mockAdapter) Close() error {
 	return nil
+}
+
+func TestRouterAgentStatuses(t *testing.T) {
+	client := newTestClient(t)
+	r := New(client, nil)
+	ctx := context.Background()
+
+	// Initially no agents
+	statuses := r.AgentStatuses()
+	if len(statuses) != 0 {
+		t.Errorf("expected 0 statuses, got %d", len(statuses))
+	}
+
+	// Register agent
+	adapter := &mockAdapter{}
+	if err := r.RegisterAgent(ctx, "test-agent", adapter); err != nil {
+		t.Fatalf("RegisterAgent failed: %v", err)
+	}
+
+	// Should have one online agent
+	statuses = r.AgentStatuses()
+	if len(statuses) != 1 {
+		t.Fatalf("expected 1 status, got %d", len(statuses))
+	}
+	if statuses["test-agent"] != "online" {
+		t.Errorf("expected status 'online', got %q", statuses["test-agent"])
+	}
+
+	// Register another agent
+	adapter2 := &mockAdapter{}
+	if err := r.RegisterAgent(ctx, "test-agent-2", adapter2); err != nil {
+		t.Fatalf("RegisterAgent failed: %v", err)
+	}
+
+	// Should have two online agents
+	statuses = r.AgentStatuses()
+	if len(statuses) != 2 {
+		t.Fatalf("expected 2 statuses, got %d", len(statuses))
+	}
+	if statuses["test-agent"] != "online" || statuses["test-agent-2"] != "online" {
+		t.Errorf("expected both agents online, got %v", statuses)
+	}
+
+	// Unregister one
+	if err := r.UnregisterAgent(ctx, "test-agent"); err != nil {
+		t.Fatalf("UnregisterAgent failed: %v", err)
+	}
+
+	// Should have one agent remaining
+	statuses = r.AgentStatuses()
+	if len(statuses) != 1 {
+		t.Fatalf("expected 1 status, got %d", len(statuses))
+	}
+	if _, ok := statuses["test-agent"]; ok {
+		t.Error("expected test-agent to be removed")
+	}
+
+	r.Stop(ctx)
 }
