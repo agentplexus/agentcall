@@ -1,0 +1,59 @@
+site_name: AgentComms
+site_description: Bidirectional communication between AI agents and humans
+site_url: https://plexusone.github.io/agentcomms/
+repo_url: https://github.com/plexusone/agentcomms
+repo_name: plexusone/agentcomms
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - User Guide:
+      - CLI Commands: cli.md
+      - MCP Tools: mcp-tools.md
+      - Configuration: configuration.md
+  - Architecture: architecture.md
+  - Design:
+      - Inbound PRD: design/FEAT_INBOUND_PRD.md
+      - Inbound TRD: design/FEAT_INBOUND_TRD.md
+      - Implementation Plan: design/FEAT_INBOUND_PLAN.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/plexusone/agentcomms
