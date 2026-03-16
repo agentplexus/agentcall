@@ -298,8 +298,8 @@ func RegisterChatTools(rt *mcpkit.Runtime, manager *chat.Manager) {
 	})
 }
 
-// RegisterTools registers all MCP tools (voice + chat) with the runtime.
-// This is a convenience function that calls both RegisterVoiceTools and RegisterChatTools.
+// RegisterTools registers all MCP tools (voice + chat + inbound) with the runtime.
+// This is a convenience function that calls RegisterVoiceTools, RegisterChatTools, and RegisterInboundTools.
 func RegisterTools(rt *mcpkit.Runtime, voiceManager *voice.Manager, chatManager *chat.Manager) {
 	if voiceManager != nil {
 		RegisterVoiceTools(rt, voiceManager)
@@ -307,4 +307,8 @@ func RegisterTools(rt *mcpkit.Runtime, voiceManager *voice.Manager, chatManager 
 	if chatManager != nil {
 		RegisterChatTools(rt, chatManager)
 	}
+
+	// Always register inbound tools - they check daemon status dynamically
+	inboundManager := NewInboundManager(InboundConfig{})
+	RegisterInboundTools(rt, inboundManager)
 }
