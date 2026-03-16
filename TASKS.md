@@ -185,11 +185,28 @@ Claude Code ←── check_messages (MCP tool) ←── Daemon Client
 ## Future
 
 ### Phase 9: Additional Transports
+
 - Slack integration
 - SMS via Twilio
 - Email notifications
 
 ### Phase 10: Cloud Readiness
+
 - PostgreSQL support
 - Multi-tenant (tenant_id)
 - Row-level security
+
+### Voice Enhancements
+
+- Telnyx phone provider (50% cheaper than Twilio via omnivoice-telnyx)
+- Call recording for later review
+- SMS fallback when call not answered
+
+### Multi-Tool Expansion
+
+- Gemini CLI adapter (generates gemini-extension.json, agents/*.toml)
+- Gemini CLI plugin generation for agentcomms
+
+### Core Enhancements
+
+- Multi-user support (calling different users based on context)
