@@ -44,4 +44,16 @@
          <loc>https://plexusone.github.io/agentcomms/design/FEAT_OUTBOUND_PRD/</loc>
          <lastmod>2026-03-16</lastmod>
     </url>
+    <url>
+         <loc>https://plexusone.github.io/agentcomms/releases/v0.1.0/</loc>
+         <lastmod>2026-03-16</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/agentcomms/releases/v0.2.0/</loc>
+         <lastmod>2026-03-16</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/agentcomms/releases/v0.3.0/</loc>
+         <lastmod>2026-03-16</lastmod>
+    </url>
 </urlset>

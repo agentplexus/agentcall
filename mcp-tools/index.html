@@ -304,6 +304,26 @@
     
     
       <li class="md-tabs__item">
+        <a href="../releases/v0.3.0/" class="md-tabs__link">
+          
+  
+  
+  Releases
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
         <a href="../design/FEAT_INBOUND_PRD/" class="md-tabs__link">
           
   
@@ -668,6 +688,39 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#multi-agent-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Agent Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_agents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#send_agent_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      send_agent_message
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#agent-id-resolution" class="md-nav__link">
     <span class="md-ellipsis">
       Agent ID Resolution
@@ -809,7 +862,7 @@
   
   
   <span class="md-ellipsis">
-    Design
+    Releases
     
   </span>
   
@@ -819,6 +872,127 @@
         
         <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Releases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releases/v0.3.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.3.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releases/v0.2.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.2.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../releases/v0.1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.1.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Design
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
             <span class="md-nav__icon md-icon"></span>
             Design
           </label>
@@ -1051,6 +1225,39 @@
   <a href="#daemon_status" class="md-nav__link">
     <span class="md-ellipsis">
       daemon_status
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#multi-agent-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Multi-Agent Tools
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Multi-Agent Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#list_agents" class="md-nav__link">
+    <span class="md-ellipsis">
+      list_agents
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#send_agent_message" class="md-nav__link">
+    <span class="md-ellipsis">
+      send_agent_message
     </span>
   </a>
   
@@ -1389,6 +1596,115 @@ Start it with <code>agentcomms daemon</code>.</p>
 <a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span><span class="nt">&quot;running&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
 <a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="p">}</span>
 </code></pre></div>
+<h2 id="multi-agent-tools">Multi-Agent Tools<a class="headerlink" href="#multi-agent-tools" title="Permanent link">&para;</a></h2>
+<p>These tools enable agent-to-agent communication.</p>
+<div class="admonition note">
+<p class="admonition-title">Requires Daemon</p>
+<p>These tools require the agentcomms daemon to be running.
+Start it with <code>agentcomms daemon</code>.</p>
+</div>
+<h3 id="list_agents">list_agents<a class="headerlink" href="#list_agents" title="Permanent link">&para;</a></h3>
+<p>List all available agents and their status.</p>
+<p><strong>Input:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;include_offline&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="w">  </span><span class="nt">&quot;agents&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmux&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;online&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">      </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmux:dev:0&quot;</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;frontend&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmux&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">      </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;online&quot;</span><span class="p">,</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">      </span><span class="nt">&quot;target&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tmux:dev:1&quot;</span>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>include_offline</code></td>
+<td>boolean</td>
+<td>false</td>
+<td>Whether to include offline agents</td>
+</tr>
+</tbody>
+</table>
+<p><strong>When to use:</strong></p>
+<ul>
+<li>Discovering available agents to collaborate with</li>
+<li>Checking if a specific agent is online before sending a message</li>
+<li>Understanding the multi-agent system topology</li>
+</ul>
+<h3 id="send_agent_message">send_agent_message<a class="headerlink" href="#send_agent_message" title="Permanent link">&para;</a></h3>
+<p>Send a message to another agent.</p>
+<p><strong>Input:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">  </span><span class="nt">&quot;to_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Can you help me with the API implementation?&quot;</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Output:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">  </span><span class="nt">&quot;event_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;evt_01ABC123&quot;</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">  </span><span class="nt">&quot;delivered&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">  </span><span class="nt">&quot;to_agent_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;backend&quot;</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">}</span>
+</code></pre></div>
+<p><strong>Parameters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>to_agent_id</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The destination agent ID</td>
+</tr>
+<tr>
+<td><code>message</code></td>
+<td>string</td>
+<td>yes</td>
+<td>The message to send</td>
+</tr>
+</tbody>
+</table>
+<p>The source agent is automatically set to <code>AGENTCOMMS_AGENT_ID</code> (or "default").</p>
+<p><strong>When to use:</strong></p>
+<ul>
+<li>Delegating tasks to specialized agents</li>
+<li>Requesting help from another agent</li>
+<li>Coordinating work across multiple agents</li>
+<li>Sharing information between agents</li>
+</ul>
+<p><strong>Message format at destination:</strong></p>
+<p>Messages arrive at the destination agent prefixed with the source:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>[from: frontend] Can you help me with the API implementation?
+</code></pre></div>
 <h2 id="agent-id-resolution">Agent ID Resolution<a class="headerlink" href="#agent-id-resolution" title="Permanent link">&para;</a></h2>
 <p>The inbound tools need to know which agent to query. Resolution order:</p>
 <ol>
@@ -1397,35 +1713,35 @@ Start it with <code>agentcomms daemon</code>.</p>
 <li>Default: <code>"default"</code></li>
 </ol>
 <p>Set the environment variable in your MCP server configuration:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span>
-<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">    </span><span class="nt">&quot;agentcomms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/agentcomms&quot;</span><span class="p">,</span>
-<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">        </span><span class="nt">&quot;AGENTCOMMS_AGENT_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude&quot;</span>
-<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">      </span><span class="p">}</span>
-<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="p">}</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nt">&quot;agentcomms&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;/path/to/agentcomms&quot;</span><span class="p">,</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="nt">&quot;env&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">        </span><span class="nt">&quot;AGENTCOMMS_AGENT_ID&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;claude&quot;</span>
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">      </span><span class="p">}</span>
+<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="p">}</span>
 </code></pre></div>
 <h2 id="usage-patterns">Usage Patterns<a class="headerlink" href="#usage-patterns" title="Permanent link">&para;</a></h2>
 <h3 id="polling-during-long-tasks">Polling During Long Tasks<a class="headerlink" href="#polling-during-long-tasks" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>1. Start long-running operation
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>2. Every few minutes, call check_messages
-<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>3. If messages found, process them
-<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>4. Continue operation
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>1. Start long-running operation
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>2. Every few minutes, call check_messages
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>3. If messages found, process them
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>4. Continue operation
 </code></pre></div>
 <h3 id="responding-to-messages">Responding to Messages<a class="headerlink" href="#responding-to-messages" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>1. Call check_messages
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>2. Read message from human
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>3. Process the request
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>4. Call send_message to respond
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>1. Call check_messages
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>2. Read message from human
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>3. Process the request
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>4. Call send_message to respond
 </code></pre></div>
 <h3 id="checking-before-major-decisions">Checking Before Major Decisions<a class="headerlink" href="#checking-before-major-decisions" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>1. Before making a significant change
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>2. Call check_messages to see if human sent updates
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>3. Incorporate any new information
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>4. Proceed with decision
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>1. Before making a significant change
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>2. Call check_messages to see if human sent updates
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>3. Incorporate any new information
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>4. Proceed with decision
 </code></pre></div>
 
 
