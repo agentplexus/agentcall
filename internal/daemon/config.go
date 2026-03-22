@@ -70,6 +70,24 @@ type ChatConfig struct {
 	Channels []ChannelMapping `yaml:"channels"`
 }
 
+// DatabaseConfig holds database connection configuration.
+type DatabaseConfig struct {
+	// Driver is the database driver ("sqlite" or "postgres").
+	// Default: "sqlite"
+	Driver string `yaml:"driver"`
+
+	// DSN is the data source name (connection string).
+	// For SQLite: file path (default: data_dir/data.db)
+	// For Postgres: postgres://user:pass@host:port/dbname?sslmode=disable
+	DSN string `yaml:"dsn"`
+
+	// MultiTenant enables multi-tenancy mode (requires tenant_id per request).
+	MultiTenant bool `yaml:"multi_tenant"`
+
+	// UseRLS enables PostgreSQL Row-Level Security (PostgreSQL only).
+	UseRLS bool `yaml:"use_rls"`
+}
+
 // DaemonConfig holds the daemon configuration loaded from config.yaml.
 type DaemonConfig struct {
 	// DataDir overrides the default data directory.
@@ -77,6 +95,10 @@ type DaemonConfig struct {
 
 	// LogLevel sets the logging level (debug, info, warn, error).
 	LogLevel string `yaml:"log_level"`
+
+	// Database holds database configuration (optional).
+	// If not set, uses SQLite with default path.
+	Database *DatabaseConfig `yaml:"database"`
 
 	// Agents defines the available agents.
 	Agents []AgentConfig `yaml:"agents"`

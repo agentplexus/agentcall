@@ -14,6 +14,10 @@ type Request struct {
 	// Method is the RPC method name.
 	Method string `json:"method"`
 
+	// TenantID is the tenant identifier for multi-tenant mode.
+	// Optional, defaults to "local" for single-tenant mode.
+	TenantID string `json:"tenant_id,omitempty"`
+
 	// Params contains method-specific parameters.
 	Params json.RawMessage `json:"params,omitempty"`
 }

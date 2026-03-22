@@ -3,16 +3,11 @@ package daemon
 
 import (
 	"context"
-	"database/sql"
 	"fmt"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"sync"
-
-	"entgo.io/ent/dialect"
-	entsql "entgo.io/ent/dialect/sql"
-	_ "modernc.org/sqlite" // SQLite driver (registers as "sqlite")
 
 	"github.com/plexusone/omnichat/provider"
 	"github.com/plexusone/omnichat/providers/discord"
@@ -20,7 +15,9 @@ import (
 	"github.com/plexusone/omnichat/providers/whatsapp"
 
 	"github.com/plexusone/agentcomms/ent"
+	_ "github.com/plexusone/agentcomms/ent/runtime" // Required for Ent privacy policies
 	"github.com/plexusone/agentcomms/internal/bridge"
+	"github.com/plexusone/agentcomms/internal/database"
 	"github.com/plexusone/agentcomms/internal/router"
 	"github.com/plexusone/agentcomms/internal/transport"
 )
@@ -54,6 +51,7 @@ type Daemon struct {
 	config       *Config
 	daemonConfig *DaemonConfig
 	client       *ent.Client
+	dbResult     *database.OpenResult // stores the underlying DB for RLS
 	router       *router.Router
 	chatRouter   *provider.Router
 	chat         *transport.ChatTransport
@@ -118,14 +116,19 @@ func (d *Daemon) Start(ctx context.Context) error {
 	)
 
 	// Initialize database
-	dbPath := filepath.Join(d.config.DataDir, "data.db")
-	client, err := d.initDB(dbPath)
+	dbCfg := d.buildDBConfig(daemonCfg)
+	dbResult, err := database.Open(dbCfg)
 	if err != nil {
 		return fmt.Errorf("failed to initialize database: %w", err)
 	}
-	d.client = client
+	d.dbResult = dbResult
+	d.client = dbResult.Client
 
-	d.logger.Info("database initialized", "path", dbPath)
+	d.logger.Info("database initialized",
+		"driver", dbCfg.Driver,
+		"multi_tenant", dbCfg.MultiTenant,
+		"use_rls", dbCfg.UseRLS,
+	)
 
 	// Create cancellable context
 	ctx, cancel := context.WithCancel(ctx)
@@ -134,6 +137,14 @@ func (d *Daemon) Start(ctx context.Context) error {
 	// Run schema migration
 	if err := d.client.Schema.Create(ctx); err != nil {
 		return fmt.Errorf("failed to create schema: %w", err)
+	}
+
+	// Apply RLS policies for PostgreSQL (after schema migration)
+	if dbCfg.Driver == database.DriverPostgres && dbCfg.UseRLS {
+		if err := d.applyRLSPolicies(ctx); err != nil {
+			return fmt.Errorf("failed to apply RLS policies: %w", err)
+		}
+		d.logger.Info("RLS policies applied")
 	}
 
 	// Create router
@@ -286,14 +297,18 @@ func (d *Daemon) startServer(ctx context.Context) {
 		chatSender = d.chat
 	}
 
+	// Check if multi-tenant mode is enabled
+	multiTenant := d.daemonConfig.Database != nil && d.daemonConfig.Database.MultiTenant
+
 	d.server = NewServer(ServerConfig{
-		SocketPath: d.config.SocketPath,
-		Client:     d.client,
-		Router:     d.router,
-		DaemonCfg:  d.daemonConfig,
-		ChatSender: chatSender,
-		Providers:  providers,
-		Logger:     d.logger,
+		SocketPath:  d.config.SocketPath,
+		Client:      d.client,
+		Router:      d.router,
+		DaemonCfg:   d.daemonConfig,
+		ChatSender:  chatSender,
+		Providers:   providers,
+		Logger:      d.logger,
+		MultiTenant: multiTenant,
 	})
 
 	// Start in background goroutine
@@ -358,22 +373,47 @@ func (d *Daemon) shutdown() error {
 	return nil
 }
 
-// initDB initializes the SQLite database.
-func (d *Daemon) initDB(dbPath string) (*ent.Client, error) {
-	// SQLite connection string with WAL mode for better concurrency
-	// modernc/sqlite uses "sqlite" as driver name
-	dsn := fmt.Sprintf("file:%s?_pragma=foreign_keys(1)&_pragma=journal_mode(WAL)", dbPath)
-
-	db, err := sql.Open("sqlite", dsn)
-	if err != nil {
-		return nil, fmt.Errorf("failed to open database: %w", err)
+// buildDBConfig creates a database.Config from daemon configuration.
+// Uses SQLite by default if no database config is specified.
+func (d *Daemon) buildDBConfig(daemonCfg *DaemonConfig) database.Config {
+	// Default to SQLite with standard path
+	if daemonCfg.Database == nil {
+		return database.Config{
+			Driver:      database.DriverSQLite,
+			DSN:         filepath.Join(d.config.DataDir, "data.db"),
+			MultiTenant: false,
+			UseRLS:      false,
+		}
 	}
 
-	// Create Ent driver from sql.DB
-	drv := entsql.OpenDB(dialect.SQLite, db)
-	client := ent.NewClient(ent.Driver(drv))
+	cfg := daemonCfg.Database
 
-	return client, nil
+	// Determine driver type
+	driver := database.DriverSQLite
+	if cfg.Driver == "postgres" {
+		driver = database.DriverPostgres
+	}
+
+	// Build DSN
+	dsn := cfg.DSN
+	if dsn == "" && driver == database.DriverSQLite {
+		dsn = filepath.Join(d.config.DataDir, "data.db")
+	}
+
+	return database.Config{
+		Driver:      driver,
+		DSN:         dsn,
+		MultiTenant: cfg.MultiTenant,
+		UseRLS:      cfg.UseRLS && driver == database.DriverPostgres,
+	}
+}
+
+// applyRLSPolicies applies PostgreSQL Row-Level Security policies.
+func (d *Daemon) applyRLSPolicies(ctx context.Context) error {
+	if d.dbResult == nil || d.dbResult.DB == nil {
+		return fmt.Errorf("unable to get underlying database connection")
+	}
+	return database.ApplyRLSPolicies(ctx, d.dbResult.DB)
 }
 
 // Client returns the Ent client for database operations.

@@ -16,6 +16,7 @@ import (
 	"github.com/plexusone/agentcomms/ent/event"
 	"github.com/plexusone/agentcomms/internal/events"
 	"github.com/plexusone/agentcomms/internal/router"
+	"github.com/plexusone/agentcomms/internal/tenant"
 )
 
 // ChatSender is the interface for sending outbound chat messages.
@@ -25,9 +26,10 @@ type ChatSender interface {
 
 // Server handles IPC requests over a Unix socket.
 type Server struct {
-	socketPath string
-	listener   net.Listener
-	logger     *slog.Logger
+	socketPath  string
+	listener    net.Listener
+	logger      *slog.Logger
+	multiTenant bool
 
 	// Dependencies for handling requests
 	client     *ent.Client
@@ -44,13 +46,14 @@ type Server struct {
 
 // ServerConfig holds server configuration.
 type ServerConfig struct {
-	SocketPath string
-	Client     *ent.Client
-	Router     *router.Router
-	DaemonCfg  *DaemonConfig
-	ChatSender ChatSender
-	Providers  []string
-	Logger     *slog.Logger
+	SocketPath  string
+	Client      *ent.Client
+	Router      *router.Router
+	DaemonCfg   *DaemonConfig
+	ChatSender  ChatSender
+	Providers   []string
+	Logger      *slog.Logger
+	MultiTenant bool
 }
 
 // NewServer creates a new IPC server.
@@ -60,14 +63,15 @@ func NewServer(cfg ServerConfig) *Server {
 	}
 
 	return &Server{
-		socketPath: cfg.SocketPath,
-		client:     cfg.Client,
-		router:     cfg.Router,
-		daemonCfg:  cfg.DaemonCfg,
-		chatSender: cfg.ChatSender,
-		providers:  cfg.Providers,
-		logger:     cfg.Logger.With("component", "server"),
-		startedAt:  time.Now(),
+		socketPath:  cfg.SocketPath,
+		client:      cfg.Client,
+		router:      cfg.Router,
+		daemonCfg:   cfg.DaemonCfg,
+		chatSender:  cfg.ChatSender,
+		providers:   cfg.Providers,
+		logger:      cfg.Logger.With("component", "server"),
+		startedAt:   time.Now(),
+		multiTenant: cfg.MultiTenant,
 	}
 }
 
@@ -227,7 +231,19 @@ func (s *Server) writeResponse(writer *bufio.Writer, resp *Response) error {
 
 // handleRequest dispatches a request to the appropriate handler.
 func (s *Server) handleRequest(ctx context.Context, req *Request) *Response {
-	s.logger.Debug("handling request", "method", req.Method, "id", req.ID)
+	s.logger.Debug("handling request", "method", req.Method, "id", req.ID, "tenant_id", req.TenantID)
+
+	// In multi-tenant mode, require tenant_id
+	if s.multiTenant && req.TenantID == "" {
+		return NewErrorResponse(req.ID, ErrCodeInvalidRequest, "tenant_id is required in multi-tenant mode")
+	}
+
+	// Add tenant ID to context (defaults to "local" if not set)
+	tenantID := req.TenantID
+	if tenantID == "" {
+		tenantID = tenant.DefaultTenantID
+	}
+	ctx = tenant.WithTenantID(ctx, tenantID)
 
 	switch req.Method {
 	case MethodPing:
@@ -323,6 +339,7 @@ func (s *Server) handleSend(ctx context.Context, req *Request) *Response {
 	// Create event
 	evt, err := s.client.Event.Create().
 		SetID(events.NewID()).
+		SetTenantID(tenant.FromContext(ctx)).
 		SetAgentID(params.AgentID).
 		SetChannelID("cli:local").
 		SetType(event.TypeHumanMessage).
@@ -370,6 +387,7 @@ func (s *Server) handleInterrupt(ctx context.Context, req *Request) *Response {
 	// Create interrupt event
 	evt, err := s.client.Event.Create().
 		SetID(events.NewID()).
+		SetTenantID(tenant.FromContext(ctx)).
 		SetAgentID(params.AgentID).
 		SetChannelID("cli:local").
 		SetType(event.TypeInterrupt).
@@ -489,6 +507,7 @@ func (s *Server) handleReply(ctx context.Context, req *Request) *Response {
 	// Create event for tracking
 	evt, err := s.client.Event.Create().
 		SetID(events.NewID()).
+		SetTenantID(tenant.FromContext(ctx)).
 		SetAgentID(agentID).
 		SetChannelID(params.ChannelID).
 		SetType(event.TypeAgentMessage).
@@ -585,6 +604,7 @@ func (s *Server) handleAgentMessage(ctx context.Context, req *Request) *Response
 	// Create event with source_agent_id for agent-to-agent messaging
 	evt, err := s.client.Event.Create().
 		SetID(events.NewID()).
+		SetTenantID(tenant.FromContext(ctx)).
 		SetAgentID(params.ToAgentID).
 		SetSourceAgentID(params.FromAgentID).
 		SetChannelID("agent:" + params.FromAgentID).
