@@ -27,7 +27,7 @@
 
 **[Documentation](https://plexusone.github.io/agentcomms/)** | **[Getting Started](https://plexusone.github.io/agentcomms/getting-started/)** | **[MCP Tools](https://plexusone.github.io/agentcomms/mcp-tools/)**
 
-An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Telegram, or WhatsApp.
+An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Slack, Telegram, WhatsApp, or Gmail.
 
 **Supports:** Claude Code, AWS Kiro CLI, Gemini CLI
 
@@ -36,7 +36,7 @@ An MCP plugin that enables voice calls and chat messaging for AI coding assistan
 ## Features
 
 - 📞 **Phone Calls**: Real voice calls to your phone via Twilio—works with smartphones, smartwatches, landlines, or VoIP
-- 💬 **Chat Messaging**: Send messages via Discord, Telegram, or WhatsApp
+- 💬 **Chat Messaging**: Send messages via Discord, Slack, Telegram, or WhatsApp
 - 🔄 **Multi-turn Conversations**: Back-and-forth discussions, not just one-way notifications
 - ⚡ **Smart Triggers**: Hooks that suggest calling/messaging when you're stuck or done with work
 - 🔀 **Mix and Match**: Use voice, chat, or both based on your needs
@@ -90,31 +90,31 @@ AgentComms provides **bidirectional communication** between humans and AI agents
 ## Architecture
 
 ```
-┌───────────────────────────────────────────────────────────────────────────┐
-│                                 AgentComms                                │
-├───────────────────────────────────────────────────────────────────────────┤
-│  OUTBOUND (MCP Server) - Agent → Human                                    │
-│  ├── Voice Tools: initiate_call, continue_call, speak_to_user, end_call   │
-│  ├── Chat Tools:  send_message, list_channels, get_messages               │
-│  ├── Voice Manager - Orchestrates calls via omnivoice                     │
-│  └── Chat Manager  - Routes messages via omnichat                         │
-├───────────────────────────────────────────────────────────────────────────┤
-│  INBOUND (Daemon) - Human → Agent                                         │
-│  ├── Router       - Actor-style event dispatcher (goroutine per agent)    │
-│  ├── AgentBridge  - Adapters for tmux, process, etc.                      │
-│  ├── Event Store  - SQLite database via Ent ORM                           │
-│  └── Transports   - Discord, Twilio (receives human messages)             │
-├───────────────────────────────────────────────────────────────────────────┤
-│  Shared Infrastructure                                                    │
-│  ├── omnivoice    - Voice abstraction (TTS, STT, Transport, CallSystem)   │
-│  ├── omnichat     - Chat abstraction (Discord, Telegram, WhatsApp)        │
-│  ├── mcpkit       - MCP server with ngrok integration                     │
-│  └── Ent          - Database ORM with SQLite/PostgreSQL support           │
-├───────────────────────────────────────────────────────────────────────────┤
-│  Provider Implementations                                                 │
-│  ├── Voice: ElevenLabs, Deepgram, OpenAI, Twilio                          │
-│  └── Chat:  Discord, Telegram, WhatsApp                                   │
-└───────────────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                   AgentComms                                │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  OUTBOUND (MCP Server) - Agent → Human                                      │
+│  ├── Voice Tools   - initiate_call, continue_call, speak_to_user, end_call  │
+│  ├── Chat Tools    - send_message, list_channels, get_messages              │
+│  ├── Voice Manager - Orchestrates calls via omnivoice                       │
+│  └── Chat Manager  - Routes messages via omnichat                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  INBOUND (Daemon)  - Human → Agent                                          │
+│  ├── Router        - Actor-style event dispatcher (goroutine per agent)     │
+│  ├── AgentBridge   - Adapters for tmux, process, etc.                       │
+│  ├── Event Store   - SQLite database via Ent ORM                            │
+│  └── Transports    - Discord, Twilio (receives human messages)              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Shared Infrastructure                                                      │
+│  ├── omnivoice     - Voice abstraction (TTS, STT, Transport, CallSystem)    │
+│  ├── omnichat      - Chat abstraction (Discord, Telegram, WhatsApp)         │
+│  ├── mcpkit        - MCP server with ngrok integration                      │
+│  └── Ent           - Database ORM with SQLite/PostgreSQL support            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  Provider Implementations                                                   │
+│  ├── Voice         - ElevenLabs, Deepgram, OpenAI, Twilio                   │
+│  └── Chat          - Discord, Slack, Telegram, WhatsApp, Gmail              │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ## The plexusone Stack
@@ -137,7 +137,7 @@ This project demonstrates the plexusone voice and chat AI stack:
 
 - Go 1.25+
 - For voice: Twilio account + ngrok account
-- For chat: Discord/Telegram bot token (optional)
+- For chat: Discord/Slack/Telegram bot token (optional)
 
 ### Build
 
@@ -162,6 +162,8 @@ AgentComms uses a unified JSON configuration file that combines all settings.
 
 # Set environment variables for secrets
 export DISCORD_TOKEN=your_discord_bot_token
+export SLACK_BOT_TOKEN=xoxb-your-bot-token
+export SLACK_APP_TOKEN=xapp-your-app-token
 export TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 export TWILIO_AUTH_TOKEN=your_auth_token
 export ELEVENLABS_API_KEY=your_elevenlabs_key
@@ -667,7 +669,8 @@ agentcomms/
 | Deepgram STT | ~$0.0043/min (Nova-2) |
 | OpenAI TTS | ~$0.015/1K chars |
 | OpenAI STT | ~$0.006/min (Whisper) |
-| Discord/Telegram | Free |
+| Discord/Telegram/Slack | Free |
+| Gmail API | Free (500 emails/day) |
 | ngrok (free tier) | $0 |
 
 **Provider Recommendations:**

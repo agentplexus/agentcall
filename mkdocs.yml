@@ -47,6 +47,8 @@ nav:
       - CLI Commands: cli.md
       - MCP Tools: mcp-tools.md
       - Configuration: configuration.md
+      - Slack Setup: slack-setup.md
+      - Gmail Setup: gmail-setup.md
   - Architecture: architecture.md
   - Releases:
       - v0.3.0: releases/v0.3.0.md

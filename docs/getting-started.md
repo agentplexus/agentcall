@@ -42,6 +42,13 @@ export DISCORD_TOKEN=your_discord_bot_token
 # Telegram token (if using)
 export TELEGRAM_BOT_TOKEN=your_telegram_bot_token
 
+# Slack tokens (if using)
+export SLACK_BOT_TOKEN=xoxb-your-bot-token
+export SLACK_APP_TOKEN=xapp-your-app-token
+
+# Gmail (if using)
+export GMAIL_CREDENTIALS_FILE=~/.agentcomms/gmail_credentials.json
+
 # Voice providers (if using voice)
 export TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 export TWILIO_AUTH_TOKEN=your_auth_token

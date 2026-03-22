@@ -81,6 +81,17 @@ The configuration file is located at `~/.agentcomms/config.json`.
       "enabled": false,
       "db_path": "${HOME}/.agentcomms/whatsapp.db"
     },
+    "slack": {
+      "enabled": false,
+      "bot_token": "${SLACK_BOT_TOKEN}",
+      "app_token": "${SLACK_APP_TOKEN}"
+    },
+    "gmail": {
+      "enabled": false,
+      "credentials_file": "${HOME}/.agentcomms/gmail_credentials.json",
+      "token_file": "${HOME}/.agentcomms/gmail_token.json",
+      "from_address": "me"
+    },
     "channels": [
       {
         "channel_id": "discord:YOUR_CHANNEL_ID",
@@ -189,6 +200,27 @@ Get your bot token from [@BotFather](https://t.me/botfather).
 
 WhatsApp requires scanning a QR code on first connection.
 
+#### Slack
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `enabled` | bool | No | Enable Slack integration |
+| `bot_token` | string | When enabled | Slack bot token (xoxb-...) |
+| `app_token` | string | When enabled | Slack app token for Socket Mode (xapp-...) |
+
+Slack uses Socket Mode, which means no public webhook URL is required. See the [Slack Setup Guide](slack-setup.md) for detailed instructions.
+
+#### Gmail
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `enabled` | bool | No | Enable Gmail integration |
+| `credentials_file` | string | When enabled | Path to Google OAuth credentials JSON (client_secret.json) |
+| `token_file` | string | No | Path to store OAuth token (default: `~/.agentcomms/gmail_token.json`) |
+| `from_address` | string | No | Email address to send from (default: `me` for authenticated user) |
+
+Gmail uses OAuth 2.0 for authentication. On first run, you'll need to complete the OAuth flow in your browser. See the [Gmail Setup Guide](gmail-setup.md) for detailed instructions.
+
 #### Channel Mappings
 
 Map chat channels to agents.
@@ -203,6 +235,8 @@ Channel ID format:
 - Discord: `discord:CHANNEL_ID`
 - Telegram: `telegram:CHAT_ID`
 - WhatsApp: `whatsapp:JID`
+- Slack: `slack:CHANNEL_ID`
+- Gmail: `gmail:EMAIL_ADDRESS`
 
 ## Environment Variable Substitution
 
