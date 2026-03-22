@@ -5,10 +5,12 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"strings"
 	"sync"
 	"time"
 
 	"github.com/plexusone/omnivoice"
+	"github.com/plexusone/omnivoice-core/callsystem"
 	twiliosystem "github.com/plexusone/omnivoice-twilio/callsystem"
 	twiliotransport "github.com/plexusone/omnivoice-twilio/transport"
 	_ "github.com/plexusone/omnivoice/providers/all" // Register all providers
@@ -58,6 +60,7 @@ type Manager struct {
 
 	// omnivoice providers (using batteries-included registry)
 	callSystem  omnivoice.CallSystem
+	smsProvider callsystem.SMSProvider // Optional, set if callSystem implements SMSProvider
 	ttsProvider omnivoice.TTSProvider
 	sttProvider omnivoice.STTStreamingProvider
 
@@ -88,17 +91,24 @@ func New(cfg *config.Config) (*Manager, error) {
 func (m *Manager) Initialize(publicURL string) error {
 	m.publicURL = publicURL
 
-	// Create Twilio CallSystem provider
-	cs, err := twiliosystem.New(
-		twiliosystem.WithAccountSID(m.config.PhoneAccountSID),
-		twiliosystem.WithAuthToken(m.config.PhoneAuthToken),
-		twiliosystem.WithPhoneNumber(m.config.PhoneNumber),
-		twiliosystem.WithWebhookURL(publicURL+"/media-stream"),
+	// Create CallSystem provider using registry-based lookup
+	// Supports "twilio" (default) or "telnyx" based on PhoneProvider config
+	cs, err := omnivoice.GetCallSystemProvider(
+		m.config.PhoneProvider,
+		omnivoice.WithAccountSID(m.config.PhoneAccountSID),
+		omnivoice.WithAuthToken(m.config.PhoneAuthToken),
+		omnivoice.WithPhoneNumber(m.config.PhoneNumber),
+		omnivoice.WithWebhookURL(publicURL+"/media-stream"),
 	)
 	if err != nil {
 		return fmt.Errorf("failed to create callsystem: %w", err)
 	}
 	m.callSystem = cs
+
+	// Check if the call system supports SMS
+	if smsProvider, ok := cs.(callsystem.SMSProvider); ok {
+		m.smsProvider = smsProvider
+	}
 
 	// Create TTS provider using registry-based lookup
 	ttsProvider, err := omnivoice.GetTTSProvider(
@@ -136,13 +146,20 @@ func (m *Manager) generateCallID() string {
 }
 
 // InitiateCall starts a new call to the user and speaks a message.
+// If the call is not answered and SMS fallback is enabled, sends an SMS instead.
 func (m *Manager) InitiateCall(ctx context.Context, message string) (*CallState, string, error) {
 	if m.callSystem == nil {
 		return nil, "", fmt.Errorf("call manager not initialized; call Initialize() first")
 	}
 
+	// Build call options
+	var callOpts []omnivoice.CallOption
+	if m.config.EnableRecording {
+		callOpts = append(callOpts, omnivoice.WithRecording())
+	}
+
 	// Make the call
-	call, err := m.callSystem.MakeCall(ctx, m.config.UserPhoneNumber)
+	call, err := m.callSystem.MakeCall(ctx, m.config.UserPhoneNumber, callOpts...)
 	if err != nil {
 		return nil, "", fmt.Errorf("failed to make call: %w", err)
 	}
@@ -165,6 +182,16 @@ func (m *Manager) InitiateCall(ctx context.Context, message string) (*CallState,
 	if !answered {
 		_ = call.Hangup(ctx)
 		m.removeCall(callID)
+
+		// Try SMS fallback if enabled
+		if m.config.SMSFallbackEnabled && m.smsProvider != nil {
+			smsErr := m.sendSMSFallback(ctx, message)
+			if smsErr != nil {
+				return nil, "", fmt.Errorf("call not answered, SMS fallback failed: %w", smsErr)
+			}
+			return nil, "", fmt.Errorf("call not answered, sent SMS instead")
+		}
+
 		return nil, "", fmt.Errorf("call not answered")
 	}
 
@@ -250,6 +277,20 @@ func (m *Manager) removeCall(callID string) {
 	m.callsMu.Lock()
 	defer m.callsMu.Unlock()
 	delete(m.calls, callID)
+}
+
+// sendSMSFallback sends an SMS message when a call is not answered.
+func (m *Manager) sendSMSFallback(ctx context.Context, message string) error {
+	if m.smsProvider == nil {
+		return fmt.Errorf("SMS provider not available")
+	}
+
+	// Format the SMS message using the template
+	smsBody := m.config.SMSFallbackMessage
+	smsBody = strings.ReplaceAll(smsBody, "{message}", message)
+
+	_, err := m.smsProvider.SendSMS(ctx, m.config.UserPhoneNumber, smsBody)
+	return err
 }
 
 // waitForAnswer waits for the call to be answered.

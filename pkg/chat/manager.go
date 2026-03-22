@@ -5,13 +5,18 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"os"
 	"sync"
 	"time"
 
 	"github.com/plexusone/omnichat/provider"
 	"github.com/plexusone/omnichat/providers/discord"
+	"github.com/plexusone/omnichat/providers/email/gmail"
+	"github.com/plexusone/omnichat/providers/slack"
 	"github.com/plexusone/omnichat/providers/telegram"
+	"github.com/plexusone/omnivoice-core/callsystem"
 
+	"github.com/plexusone/agentcomms/pkg/chat/sms"
 	"github.com/plexusone/agentcomms/pkg/config"
 )
 
@@ -49,6 +54,9 @@ type Manager struct {
 	logger   *slog.Logger
 	sessions map[string]*ChatSession
 	mu       sync.RWMutex
+
+	// SMS provider for handling SMS messages
+	smsProvider *sms.Provider
 
 	// Session counter for generating IDs
 	sessionCounter int
@@ -98,6 +106,41 @@ func (m *Manager) Initialize(ctx context.Context) error {
 		}
 		m.router.Register(telegramProvider)
 		m.logger.Info("Telegram provider registered")
+	}
+
+	// Register Slack if enabled
+	if m.config.SlackEnabled {
+		slackProvider, err := slack.New(slack.Config{
+			BotToken: m.config.SlackBotToken,
+			AppToken: m.config.SlackAppToken,
+			Logger:   m.logger,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create Slack provider: %w", err)
+		}
+		m.router.Register(slackProvider)
+		m.logger.Info("Slack provider registered")
+	}
+
+	// Register Gmail if enabled
+	if m.config.GmailEnabled {
+		// Read credentials file
+		credentialsJSON, err := os.ReadFile(m.config.GmailCredentialsFile)
+		if err != nil {
+			return fmt.Errorf("failed to read Gmail credentials file: %w", err)
+		}
+
+		gmailProvider, err := gmail.New(gmail.Config{
+			CredentialsJSON: credentialsJSON,
+			TokenFile:       m.config.GmailTokenFile,
+			FromAddress:     m.config.GmailFromAddress,
+			Logger:          m.logger,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create Gmail provider: %w", err)
+		}
+		m.router.Register(gmailProvider)
+		m.logger.Info("Gmail provider registered")
 	}
 
 	// WhatsApp requires more complex setup (device pairing)
@@ -241,4 +284,38 @@ func (m *Manager) GetSession(providerName, chatID string) *ChatSession {
 func (m *Manager) Close() error {
 	ctx := context.Background()
 	return m.router.DisconnectAll(ctx)
+}
+
+// InitializeSMS sets up the SMS provider for chat.
+// This should be called after the voice manager has been initialized,
+// as it provides the SMSProvider.
+func (m *Manager) InitializeSMS(ctx context.Context, smsProvider callsystem.SMSProvider) error {
+	if smsProvider == nil {
+		return fmt.Errorf("SMS provider is required")
+	}
+
+	provider, err := sms.New(sms.Config{
+		SMSProvider: smsProvider,
+		PhoneNumber: m.config.PhoneNumber,
+		Logger:      m.logger,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to create SMS provider: %w", err)
+	}
+
+	m.smsProvider = provider
+	m.router.Register(provider)
+	m.logger.Info("SMS provider registered")
+
+	// Connect the SMS provider
+	if err := provider.Connect(ctx); err != nil {
+		return fmt.Errorf("failed to connect SMS provider: %w", err)
+	}
+
+	return nil
+}
+
+// SMSProvider returns the SMS provider for webhook integration.
+func (m *Manager) SMSProvider() *sms.Provider {
+	return m.smsProvider
 }

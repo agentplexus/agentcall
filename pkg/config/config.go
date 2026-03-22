@@ -18,6 +18,18 @@ type Config struct {
 	PhoneNumber     string // E.164 format, e.g., +15551234567
 	UserPhoneNumber string // E.164 format
 
+	// Voice enhancements
+	EnableRecording    bool   // Enable call recording
+	SMSFallbackEnabled bool   // Send SMS when call not answered
+	SMSFallbackMessage string // Custom SMS message (use {message} for original message)
+
+	// SMS transport settings
+	SMSEnabled bool // Enable inbound SMS as a chat transport
+
+	// Webhook server settings
+	WebhookPort    int  // Port for webhook server (0 = disabled)
+	WebhookEnabled bool // Enable webhook server
+
 	// Voice provider selection
 	TTSProvider string // "elevenlabs", "deepgram", or "openai"
 	STTProvider string // "elevenlabs", "deepgram", or "openai"
@@ -57,6 +69,15 @@ type Config struct {
 
 	TelegramEnabled bool
 	TelegramToken   string
+
+	SlackEnabled  bool
+	SlackBotToken string // xoxb-... token
+	SlackAppToken string // xapp-... token for Socket Mode
+
+	GmailEnabled         bool
+	GmailCredentialsFile string // Path to Google OAuth credentials JSON (client_secret.json)
+	GmailTokenFile       string // Path to store/load OAuth token (default: ~/.agentcomms/gmail_token.json)
+	GmailFromAddress     string // Email address to send from ("me" for authenticated user)
 }
 
 // Provider constants.
@@ -80,6 +101,12 @@ func DefaultConfig() *Config {
 		STTSilenceDurationMS: 800,
 		TranscriptTimeoutMS:  180000, // 3 minutes
 		WhatsAppDBPath:       "./whatsapp.db",
+		EnableRecording:      false,
+		SMSFallbackEnabled:   false,
+		SMSFallbackMessage:   "I tried calling but couldn't reach you. Here's my message: {message}",
+		SMSEnabled:           false,
+		WebhookEnabled:       false,
+		WebhookPort:          3334,
 	}
 }
 
@@ -104,6 +131,33 @@ func LoadFromEnv() (*Config, error) {
 	cfg.PhoneAuthToken = getEnvWithFallback("AGENTCOMMS_PHONE_AUTH_TOKEN", "AGENTCALL_PHONE_AUTH_TOKEN")
 	cfg.PhoneNumber = getEnvWithFallback("AGENTCOMMS_PHONE_NUMBER", "AGENTCALL_PHONE_NUMBER")
 	cfg.UserPhoneNumber = getEnvWithFallback("AGENTCOMMS_USER_PHONE_NUMBER", "AGENTCALL_USER_PHONE_NUMBER")
+
+	// Voice enhancements
+	if enabled := os.Getenv("AGENTCOMMS_ENABLE_RECORDING"); enabled == "true" || enabled == "1" {
+		cfg.EnableRecording = true
+	}
+	if enabled := os.Getenv("AGENTCOMMS_SMS_FALLBACK_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.SMSFallbackEnabled = true
+	}
+	if msg := os.Getenv("AGENTCOMMS_SMS_FALLBACK_MESSAGE"); msg != "" {
+		cfg.SMSFallbackMessage = msg
+	}
+
+	// SMS transport
+	if enabled := os.Getenv("AGENTCOMMS_SMS_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.SMSEnabled = true
+	}
+
+	// Webhook server
+	if enabled := os.Getenv("AGENTCOMMS_WEBHOOK_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.WebhookEnabled = true
+	}
+	if port := os.Getenv("AGENTCOMMS_WEBHOOK_PORT"); port != "" {
+		var p int
+		if _, err := fmt.Sscanf(port, "%d", &p); err == nil {
+			cfg.WebhookPort = p
+		}
+	}
 
 	// Voice provider selection
 	if ttsProvider := getEnvWithFallback("AGENTCOMMS_TTS_PROVIDER", "AGENTCALL_TTS_PROVIDER"); ttsProvider != "" {
@@ -195,6 +249,36 @@ func LoadFromEnv() (*Config, error) {
 		cfg.TelegramToken = os.Getenv("TELEGRAM_BOT_TOKEN") // fallback
 	}
 
+	// Chat providers - Slack
+	if enabled := os.Getenv("AGENTCOMMS_SLACK_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.SlackEnabled = true
+	}
+	cfg.SlackBotToken = os.Getenv("AGENTCOMMS_SLACK_BOT_TOKEN")
+	if cfg.SlackBotToken == "" {
+		cfg.SlackBotToken = os.Getenv("SLACK_BOT_TOKEN") // fallback
+	}
+	cfg.SlackAppToken = os.Getenv("AGENTCOMMS_SLACK_APP_TOKEN")
+	if cfg.SlackAppToken == "" {
+		cfg.SlackAppToken = os.Getenv("SLACK_APP_TOKEN") // fallback
+	}
+
+	// Chat providers - Gmail
+	if enabled := os.Getenv("AGENTCOMMS_GMAIL_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.GmailEnabled = true
+	}
+	cfg.GmailCredentialsFile = os.Getenv("AGENTCOMMS_GMAIL_CREDENTIALS_FILE")
+	if cfg.GmailCredentialsFile == "" {
+		cfg.GmailCredentialsFile = os.Getenv("GMAIL_CREDENTIALS_FILE") // fallback
+	}
+	cfg.GmailTokenFile = os.Getenv("AGENTCOMMS_GMAIL_TOKEN_FILE")
+	if cfg.GmailTokenFile == "" {
+		cfg.GmailTokenFile = os.Getenv("GMAIL_TOKEN_FILE") // fallback
+	}
+	cfg.GmailFromAddress = os.Getenv("AGENTCOMMS_GMAIL_FROM_ADDRESS")
+	if cfg.GmailFromAddress == "" {
+		cfg.GmailFromAddress = "me" // Default to authenticated user
+	}
+
 	return cfg, cfg.Validate()
 }
 
@@ -262,6 +346,17 @@ func (c *Config) Validate() error {
 	if c.TelegramEnabled && c.TelegramToken == "" {
 		missing = append(missing, "AGENTCOMMS_TELEGRAM_TOKEN or TELEGRAM_BOT_TOKEN")
 	}
+	if c.SlackEnabled {
+		if c.SlackBotToken == "" {
+			missing = append(missing, "AGENTCOMMS_SLACK_BOT_TOKEN or SLACK_BOT_TOKEN")
+		}
+		if c.SlackAppToken == "" {
+			missing = append(missing, "AGENTCOMMS_SLACK_APP_TOKEN or SLACK_APP_TOKEN")
+		}
+	}
+	if c.GmailEnabled && c.GmailCredentialsFile == "" {
+		missing = append(missing, "AGENTCOMMS_GMAIL_CREDENTIALS_FILE or GMAIL_CREDENTIALS_FILE")
+	}
 
 	if len(errors) > 0 {
 		return fmt.Errorf("configuration errors: %v", errors)
@@ -280,7 +375,7 @@ func (c *Config) VoiceEnabled() bool {
 
 // ChatEnabled returns true if any chat provider is enabled.
 func (c *Config) ChatEnabled() bool {
-	return c.WhatsAppEnabled || c.DiscordEnabled || c.TelegramEnabled
+	return c.WhatsAppEnabled || c.DiscordEnabled || c.TelegramEnabled || c.SlackEnabled || c.GmailEnabled
 }
 
 // NeedsElevenLabs returns true if any provider uses ElevenLabs.
