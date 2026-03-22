@@ -11,3 +11,7 @@ main.zip
 # Build artifacts
 agentcall
 agentcomms
+site/
+
+# Ideation documents
+IDEATION_*.md
