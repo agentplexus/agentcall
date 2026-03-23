@@ -111,6 +111,59 @@ The configuration file is located at `~/.agentcomms/config.json`.
 | `port` | int | 3333 | Server port for MCP |
 | `data_dir` | string | `~/.agentcomms` | Data directory path |
 
+### Database
+
+Configure the database backend. By default, AgentComms uses SQLite in single-tenant mode.
+
+```json
+{
+  "database": {
+    "driver": "postgres",
+    "dsn": "postgres://user:pass@localhost:5432/agentcomms?sslmode=disable",
+    "multi_tenant": true,
+    "use_rls": true
+  }
+}
+```
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `driver` | string | `sqlite` | Database driver: `sqlite` or `postgres` |
+| `dsn` | string | `data.db` | Connection string (SQLite path or PostgreSQL DSN) |
+| `multi_tenant` | bool | false | Enable multi-tenant mode with tenant_id filtering |
+| `use_rls` | bool | false | Enable PostgreSQL Row-Level Security (requires postgres driver) |
+
+#### SQLite (Default)
+
+```json
+{
+  "database": {
+    "driver": "sqlite",
+    "dsn": "~/.agentcomms/data.db"
+  }
+}
+```
+
+#### PostgreSQL with Multi-Tenancy
+
+For production deployments with multiple tenants:
+
+```json
+{
+  "database": {
+    "driver": "postgres",
+    "dsn": "postgres://user:pass@localhost:5432/agentcomms?sslmode=require",
+    "multi_tenant": true,
+    "use_rls": true
+  }
+}
+```
+
+Multi-tenancy uses two isolation layers:
+
+1. **Application-level** - Ent privacy rules filter all queries by `tenant_id` (works on SQLite and PostgreSQL)
+2. **Database-level** - PostgreSQL RLS policies provide additional isolation (PostgreSQL only)
+
 ### Logging
 
 | Field | Type | Default | Description |
@@ -220,6 +273,54 @@ Slack uses Socket Mode, which means no public webhook URL is required. See the [
 | `from_address` | string | No | Email address to send from (default: `me` for authenticated user) |
 
 Gmail uses OAuth 2.0 for authentication. On first run, you'll need to complete the OAuth flow in your browser. See the [Gmail Setup Guide](gmail-setup.md) for detailed instructions.
+
+#### SMS
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `enabled` | bool | No | Enable SMS as a chat transport |
+
+SMS uses your configured phone provider (Twilio or Telnyx) for sending and receiving messages. Inbound SMS requires the webhook server to be enabled.
+
+```json
+{
+  "chat": {
+    "sms": {
+      "enabled": true
+    }
+  }
+}
+```
+
+### Webhook
+
+Enable the webhook server to receive inbound SMS and voice status callbacks from Twilio/Telnyx.
+
+```json
+{
+  "webhook": {
+    "enabled": true,
+    "port": 3334
+  }
+}
+```
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `enabled` | bool | false | Enable webhook server |
+| `port` | int | 3334 | Webhook server port |
+
+#### Webhook Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/webhook/twilio/sms` | Incoming SMS from Twilio |
+| `/webhook/twilio/voice` | Voice status callbacks from Twilio |
+| `/webhook/telnyx/sms` | Incoming SMS from Telnyx |
+| `/webhook/telnyx/voice` | Voice status callbacks from Telnyx |
+| `/health` | Health check endpoint |
+
+Configure your Twilio/Telnyx phone number to send webhooks to `https://your-domain/webhook/twilio/sms` or `https://your-domain/webhook/telnyx/sms`.
 
 #### Channel Mappings
 

@@ -6,6 +6,47 @@
   "commitConvention": "conventional",
   "releases": [
     {
+      "version": "v0.4.0",
+      "date": "2026-03-22",
+      "highlights": [
+        { "description": "PostgreSQL support with Row-Level Security (RLS) for multi-tenancy" },
+        { "description": "SMS chat provider for sending and receiving messages via Twilio/Telnyx" },
+        { "description": "Webhook server for inbound SMS and voice status callbacks" },
+        { "description": "Updated dependencies: omnichat v0.4.0 (Slack, Gmail) and omnivoice v0.7.0" }
+      ],
+      "added": [
+        { "description": "PostgreSQL database driver with multi-tenancy support", "commit": "27a2494" },
+        { "description": "Row-Level Security (RLS) policies for PostgreSQL tenant isolation", "commit": "27a2494" },
+        { "description": "Tenant context package for managing tenant_id in request context", "commit": "27a2494" },
+        { "description": "Ent privacy policies for application-level tenant filtering", "commit": "63657c5" },
+        { "description": "Database abstraction layer supporting SQLite and PostgreSQL", "commit": "dbd4f27" },
+        { "description": "Webhook server for Twilio and Telnyx callbacks", "commit": "26af01c" },
+        { "description": "SMS chat provider for omnichat integration", "commit": "230a996" },
+        { "description": "Slack configuration with Socket Mode support", "commit": "e1c2eb7" },
+        { "description": "Gmail configuration with OAuth 2.0 support", "commit": "e1c2eb7" },
+        { "description": "SMS and webhook configuration options", "commit": "e1c2eb7" }
+      ],
+      "tests": [
+        { "description": "Unit tests for tenant context (100% coverage)", "commit": "8f35e59" },
+        { "description": "Unit tests for database abstraction layer", "commit": "8f35e59" },
+        { "description": "Unit tests for RLS policy application", "commit": "8f35e59" }
+      ],
+      "documentation": [
+        { "description": "Gmail setup guide for OAuth 2.0 configuration", "commit": "b54548f" },
+        { "description": "Slack setup guide for Socket Mode configuration", "commit": "b54548f" },
+        { "description": "Configuration guide updates for database and webhook settings", "commit": "b54548f" }
+      ],
+      "chore": [
+        { "description": "Add site/ and IDEATION_*.md to gitignore", "commit": "1859562" }
+      ],
+      "dependencies": [
+        { "description": "Update omnichat to v0.4.0 (Slack, Gmail providers)", "commit": "96bb592" },
+        { "description": "Update omnivoice to v0.7.0", "commit": "96bb592" },
+        { "description": "Add lib/pq v1.12.0 for PostgreSQL driver", "commit": "96bb592" },
+        { "description": "Update modernc.org/sqlite to v1.47.0", "commit": "96bb592" }
+      ]
+    },
+    {
       "version": "v0.3.0",
       "date": "2026-03-16",
       "highlights": [
