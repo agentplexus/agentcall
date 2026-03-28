@@ -4,6 +4,7 @@ package config
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 // Config holds all configuration for the agentcomms server.
@@ -78,6 +79,13 @@ type Config struct {
 	GmailCredentialsFile string // Path to Google OAuth credentials JSON (client_secret.json)
 	GmailTokenFile       string // Path to store/load OAuth token (default: ~/.agentcomms/gmail_token.json)
 	GmailFromAddress     string // Email address to send from ("me" for authenticated user)
+
+	IRCEnabled  bool
+	IRCServer   string   // Server address (e.g., "irc.libera.chat:6697")
+	IRCNick     string   // Bot nickname
+	IRCPassword string   // NickServ password (optional)
+	IRCChannels []string // Channels to join
+	IRCUseTLS   bool     // Use TLS for connection
 }
 
 // Provider constants.
@@ -279,6 +287,28 @@ func LoadFromEnv() (*Config, error) {
 		cfg.GmailFromAddress = "me" // Default to authenticated user
 	}
 
+	// Chat providers - IRC
+	if enabled := os.Getenv("AGENTCOMMS_IRC_ENABLED"); enabled == "true" || enabled == "1" {
+		cfg.IRCEnabled = true
+	}
+	cfg.IRCServer = os.Getenv("AGENTCOMMS_IRC_SERVER")
+	if cfg.IRCServer == "" {
+		cfg.IRCServer = os.Getenv("IRC_SERVER") // fallback
+	}
+	cfg.IRCNick = os.Getenv("AGENTCOMMS_IRC_NICK")
+	if cfg.IRCNick == "" {
+		cfg.IRCNick = os.Getenv("IRC_NICK") // fallback
+	}
+	cfg.IRCPassword = os.Getenv("AGENTCOMMS_IRC_PASSWORD")
+	if cfg.IRCPassword == "" {
+		cfg.IRCPassword = os.Getenv("IRC_PASSWORD") // fallback
+	}
+	if channels := os.Getenv("AGENTCOMMS_IRC_CHANNELS"); channels != "" {
+		cfg.IRCChannels = splitChannels(channels)
+	}
+	// Default to TLS enabled unless explicitly disabled
+	cfg.IRCUseTLS = os.Getenv("AGENTCOMMS_IRC_USE_TLS") != "false"
+
 	return cfg, cfg.Validate()
 }
 
@@ -291,6 +321,19 @@ func getEnvWithFallback(primary, secondary string) string {
 		return os.Getenv(secondary)
 	}
 	return ""
+}
+
+// splitChannels parses a comma-separated list of IRC channels.
+func splitChannels(s string) []string {
+	parts := strings.Split(s, ",")
+	channels := make([]string, 0, len(parts))
+	for _, p := range parts {
+		p = strings.TrimSpace(p)
+		if p != "" {
+			channels = append(channels, p)
+		}
+	}
+	return channels
 }
 
 // Validate checks that required configuration is present.
@@ -357,6 +400,14 @@ func (c *Config) Validate() error {
 	if c.GmailEnabled && c.GmailCredentialsFile == "" {
 		missing = append(missing, "AGENTCOMMS_GMAIL_CREDENTIALS_FILE or GMAIL_CREDENTIALS_FILE")
 	}
+	if c.IRCEnabled {
+		if c.IRCServer == "" {
+			missing = append(missing, "AGENTCOMMS_IRC_SERVER or IRC_SERVER")
+		}
+		if c.IRCNick == "" {
+			missing = append(missing, "AGENTCOMMS_IRC_NICK or IRC_NICK")
+		}
+	}
 
 	if len(errors) > 0 {
 		return fmt.Errorf("configuration errors: %v", errors)
@@ -375,7 +426,7 @@ func (c *Config) VoiceEnabled() bool {
 
 // ChatEnabled returns true if any chat provider is enabled.
 func (c *Config) ChatEnabled() bool {
-	return c.WhatsAppEnabled || c.DiscordEnabled || c.TelegramEnabled || c.SlackEnabled || c.GmailEnabled
+	return c.WhatsAppEnabled || c.DiscordEnabled || c.TelegramEnabled || c.SlackEnabled || c.GmailEnabled || c.IRCEnabled
 }
 
 // NeedsElevenLabs returns true if any provider uses ElevenLabs.

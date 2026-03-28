@@ -145,6 +145,9 @@ type ChatConfig struct {
 	// WhatsApp configuration (optional).
 	WhatsApp *WhatsAppConfig `json:"whatsapp,omitempty"`
 
+	// IRC configuration (optional).
+	IRC *IRCConfig `json:"irc,omitempty"`
+
 	// Channels maps chat channels to agents.
 	Channels []ChannelMapping `json:"channels,omitempty"`
 }
@@ -177,6 +180,27 @@ type WhatsAppConfig struct {
 
 	// DBPath is the SQLite database path for session storage.
 	DBPath string `json:"db_path"`
+}
+
+// IRCConfig holds IRC-specific configuration.
+type IRCConfig struct {
+	// Enabled controls whether IRC is active.
+	Enabled bool `json:"enabled,omitempty"`
+
+	// Server is the IRC server address (e.g., "irc.libera.chat:6697").
+	Server string `json:"server"`
+
+	// Nick is the bot's nickname.
+	Nick string `json:"nick"`
+
+	// Password is the NickServ password (optional).
+	Password string `json:"password,omitempty"`
+
+	// Channels is the list of channels to join on connect.
+	Channels []string `json:"channels"`
+
+	// UseTLS enables TLS for the connection (default: true).
+	UseTLS *bool `json:"use_tls,omitempty"`
 }
 
 // ChannelMapping maps a chat channel to an agent.
@@ -332,6 +356,14 @@ func (c *UnifiedConfig) Validate() error {
 		if c.Chat.WhatsApp != nil && c.Chat.WhatsApp.Enabled && c.Chat.WhatsApp.DBPath == "" {
 			errors = append(errors, "chat.whatsapp.db_path is required when enabled")
 		}
+		if c.Chat.IRC != nil && c.Chat.IRC.Enabled {
+			if c.Chat.IRC.Server == "" {
+				errors = append(errors, "chat.irc.server is required when enabled")
+			}
+			if c.Chat.IRC.Nick == "" {
+				errors = append(errors, "chat.irc.nick is required when enabled")
+			}
+		}
 
 		// Validate channel mappings
 		for _, mapping := range c.Chat.Channels {
@@ -427,6 +459,18 @@ func (c *UnifiedConfig) ToLegacyConfig() *Config {
 			cfg.WhatsAppEnabled = c.Chat.WhatsApp.Enabled
 			cfg.WhatsAppDBPath = c.Chat.WhatsApp.DBPath
 		}
+		if c.Chat.IRC != nil {
+			cfg.IRCEnabled = c.Chat.IRC.Enabled
+			cfg.IRCServer = c.Chat.IRC.Server
+			cfg.IRCNick = c.Chat.IRC.Nick
+			cfg.IRCPassword = c.Chat.IRC.Password
+			cfg.IRCChannels = c.Chat.IRC.Channels
+			if c.Chat.IRC.UseTLS != nil {
+				cfg.IRCUseTLS = *c.Chat.IRC.UseTLS
+			} else {
+				cfg.IRCUseTLS = true // Default to TLS enabled
+			}
+		}
 	}
 
 	return cfg
@@ -462,7 +506,8 @@ func (c *UnifiedConfig) HasChatProviders() bool {
 	}
 	return (c.Chat.Discord != nil && c.Chat.Discord.Enabled) ||
 		(c.Chat.Telegram != nil && c.Chat.Telegram.Enabled) ||
-		(c.Chat.WhatsApp != nil && c.Chat.WhatsApp.Enabled)
+		(c.Chat.WhatsApp != nil && c.Chat.WhatsApp.Enabled) ||
+		(c.Chat.IRC != nil && c.Chat.IRC.Enabled)
 }
 
 // VoiceEnabled returns true if voice calling is configured.
