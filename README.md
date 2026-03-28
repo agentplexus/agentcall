@@ -27,7 +27,7 @@
 
 **[Documentation](https://plexusone.github.io/agentcomms/)** | **[Getting Started](https://plexusone.github.io/agentcomms/getting-started/)** | **[MCP Tools](https://plexusone.github.io/agentcomms/mcp-tools/)**
 
-An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Slack, Telegram, WhatsApp, or Gmail.
+An MCP plugin that enables voice calls and chat messaging for AI coding assistants. Start a task, walk away. Your phone rings when the AI is done, stuck, or needs a decision. Or get notified via Discord, Slack, Telegram, WhatsApp, Gmail, or IRC.
 
 **Supports:** Claude Code, AWS Kiro CLI, Gemini CLI
 
@@ -36,7 +36,7 @@ An MCP plugin that enables voice calls and chat messaging for AI coding assistan
 ## Features
 
 - 📞 **Phone Calls**: Real voice calls to your phone via Twilio—works with smartphones, smartwatches, landlines, or VoIP
-- 💬 **Chat Messaging**: Send messages via Discord, Slack, Telegram, or WhatsApp
+- 💬 **Chat Messaging**: Send messages via Discord, Slack, Telegram, WhatsApp, or IRC
 - 🔄 **Multi-turn Conversations**: Back-and-forth discussions, not just one-way notifications
 - ⚡ **Smart Triggers**: Hooks that suggest calling/messaging when you're stuck or done with work
 - 🔀 **Mix and Match**: Use voice, chat, or both based on your needs
@@ -107,13 +107,13 @@ AgentComms provides **bidirectional communication** between humans and AI agents
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  Shared Infrastructure                                                      │
 │  ├── omnivoice     - Voice abstraction (TTS, STT, Transport, CallSystem)    │
-│  ├── omnichat      - Chat abstraction (Discord, Telegram, WhatsApp)         │
+│  ├── omnichat      - Chat abstraction (Discord, Telegram, WhatsApp, IRC)    │
 │  ├── mcpkit        - MCP server with ngrok integration                      │
 │  └── Ent           - Database ORM with SQLite/PostgreSQL support            │
 ├─────────────────────────────────────────────────────────────────────────────┤
 │  Provider Implementations                                                   │
 │  ├── Voice         - ElevenLabs, Deepgram, OpenAI, Twilio                   │
-│  └── Chat          - Discord, Slack, Telegram, WhatsApp, Gmail              │
+│  └── Chat          - Discord, Slack, Telegram, WhatsApp, Gmail, IRC         │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -669,7 +669,7 @@ agentcomms/
 | Deepgram STT | ~$0.0043/min (Nova-2) |
 | OpenAI TTS | ~$0.015/1K chars |
 | OpenAI STT | ~$0.006/min (Whisper) |
-| Discord/Telegram/Slack | Free |
+| Discord/Telegram/Slack/IRC | Free |
 | Gmail API | Free (500 emails/day) |
 | ngrok (free tier) | $0 |
 
