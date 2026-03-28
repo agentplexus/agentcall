@@ -12,6 +12,7 @@ import (
 	"github.com/plexusone/omnichat/provider"
 	"github.com/plexusone/omnichat/providers/discord"
 	"github.com/plexusone/omnichat/providers/email/gmail"
+	"github.com/plexusone/omnichat/providers/irc"
 	"github.com/plexusone/omnichat/providers/slack"
 	"github.com/plexusone/omnichat/providers/telegram"
 	"github.com/plexusone/omnivoice-core/callsystem"
@@ -141,6 +142,23 @@ func (m *Manager) Initialize(ctx context.Context) error {
 		}
 		m.router.Register(gmailProvider)
 		m.logger.Info("Gmail provider registered")
+	}
+
+	// Register IRC if enabled
+	if m.config.IRCEnabled {
+		ircProvider, err := irc.New(irc.Config{
+			Server:   m.config.IRCServer,
+			Nick:     m.config.IRCNick,
+			Password: m.config.IRCPassword,
+			Channels: m.config.IRCChannels,
+			UseTLS:   m.config.IRCUseTLS,
+			Logger:   m.logger,
+		})
+		if err != nil {
+			return fmt.Errorf("failed to create IRC provider: %w", err)
+		}
+		m.router.Register(ircProvider)
+		m.logger.Info("IRC provider registered", "server", m.config.IRCServer)
 	}
 
 	// WhatsApp requires more complex setup (device pairing)
