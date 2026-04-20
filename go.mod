@@ -10,7 +10,7 @@ require (
 	github.com/plexusone/assistantkit v0.12.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.5.0
-	github.com/plexusone/omnivoice v0.7.1
+	github.com/plexusone/omnivoice v0.7.2
 	github.com/plexusone/omnivoice-core v0.8.0
 	github.com/plexusone/omnivoice-twilio v0.3.1
 	github.com/spf13/cobra v1.10.2
@@ -89,9 +89,10 @@ require (
 	github.com/plexusone/elevenlabs-go v0.10.0 // indirect
 	github.com/plexusone/multi-agent-spec/sdk/go v0.8.0 // indirect
 	github.com/plexusone/ogen-tools v0.2.1 // indirect
+	github.com/plexusone/omni-openai v0.2.0 // indirect
 	github.com/plexusone/omnivoice-deepgram v0.5.0 // indirect
-	github.com/plexusone/omnivoice-openai v0.1.2 // indirect
 	github.com/plexusone/omnivoice-telnyx v0.1.1 // indirect
+	github.com/plexusone/twilio-go v0.4.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rs/zerolog v1.35.0 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
@@ -104,7 +105,7 @@ require (
 	github.com/tidwall/match v1.2.0 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
-	github.com/twilio/twilio-go v1.30.4 // indirect
+	github.com/twilio/twilio-go v1.30.5 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/quicktemplate v1.8.0 // indirect
 	github.com/vektah/gqlparser/v2 v2.5.32 // indirect
