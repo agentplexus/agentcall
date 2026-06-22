@@ -10,7 +10,7 @@ require (
 	github.com/plexusone/assistantkit v0.12.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.8.0
-	github.com/plexusone/omnivoice v0.9.1
+	github.com/plexusone/omnivoice v0.11.1
 	github.com/plexusone/omnivoice-core v0.14.0
 	github.com/plexusone/omnivoice-twilio v0.3.1
 	github.com/spf13/cobra v1.10.2
@@ -65,6 +65,7 @@ require (
 	github.com/grokify/gogithub v0.11.0 // indirect
 	github.com/grokify/gogoogle v0.11.0 // indirect
 	github.com/grokify/mogo v0.74.6 // indirect
+	github.com/grokify/sogo v0.15.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.24.0 // indirect
 	github.com/hokaccha/go-prettyjson v0.0.0-20211117102719-0474bc63780f // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
@@ -78,19 +79,20 @@ require (
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
-	github.com/ogen-go/ogen v1.20.3 // indirect
+	github.com/ogen-go/ogen v1.22.0 // indirect
 	github.com/openai/openai-go v1.12.0 // indirect
 	github.com/pelletier/go-toml/v2 v2.3.0 // indirect
 	github.com/petermattis/goid v0.0.0-20260330135022-df67b199bc81 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/plexusone/elevenlabs-go v0.11.0 // indirect
+	github.com/plexusone/elevenlabs-go v0.13.0 // indirect
 	github.com/plexusone/multi-agent-spec/sdk/go v0.8.0 // indirect
-	github.com/plexusone/ogen-tools v0.2.1 // indirect
+	github.com/plexusone/ogen-tools v0.3.0 // indirect
 	github.com/plexusone/omni-deepgram v0.6.1 // indirect
-	github.com/plexusone/omni-google v0.5.0 // indirect
-	github.com/plexusone/omni-openai v0.3.0 // indirect
-	github.com/plexusone/omni-telnyx v0.3.0 // indirect
-	github.com/plexusone/omni-twilio v0.7.0 // indirect
+	github.com/plexusone/omni-google v0.6.1 // indirect
+	github.com/plexusone/omni-openai v0.4.1 // indirect
+	github.com/plexusone/omni-telnyx v0.4.0 // indirect
+	github.com/plexusone/omni-twilio v0.8.0 // indirect
+	github.com/plexusone/omnillm-core v0.17.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rs/zerolog v1.35.1 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
@@ -98,7 +100,7 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/slack-go/slack v0.26.0 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/team-telnyx/telnyx-go/v4 v4.78.0 // indirect
+	github.com/team-telnyx/telnyx-go/v4 v4.80.0 // indirect
 	github.com/tidwall/gjson v1.19.0 // indirect
 	github.com/tidwall/match v1.2.0 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
@@ -133,8 +135,8 @@ require (
 	golang.org/x/term v0.44.0 // indirect
 	golang.org/x/text v0.38.0 // indirect
 	golang.org/x/tools v0.46.0 // indirect
-	google.golang.org/api v0.284.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260610212136-7ab31c22f7ad // indirect
+	google.golang.org/api v0.285.0 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260618152121-87f3d3e198d3 // indirect
 	google.golang.org/grpc v1.81.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/telebot.v3 v3.3.8 // indirect
