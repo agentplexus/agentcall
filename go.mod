@@ -11,7 +11,7 @@ require (
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.8.0
 	github.com/plexusone/omnivoice v0.11.1
-	github.com/plexusone/omnivoice-core v0.14.0
+	github.com/plexusone/omnivoice-core v0.15.0
 	github.com/plexusone/omnivoice-twilio v0.3.1
 	github.com/spf13/cobra v1.10.2
 	gopkg.in/yaml.v3 v3.0.1
@@ -136,7 +136,7 @@ require (
 	golang.org/x/text v0.38.0 // indirect
 	golang.org/x/tools v0.46.0 // indirect
 	google.golang.org/api v0.285.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20260618152121-87f3d3e198d3 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260622175928-b703f567277d // indirect
 	google.golang.org/grpc v1.81.1 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/telebot.v3 v3.3.8 // indirect

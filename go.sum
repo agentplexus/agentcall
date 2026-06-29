@@ -491,8 +491,8 @@ github.com/plexusone/omnillm-core v0.17.0 h1:mzM1yVt7sSFxHqNmyhoV6GxYsqfFOD/m1tW
 github.com/plexusone/omnillm-core v0.17.0/go.mod h1:180U/oa67fly3+T3h1sL/pBMvcjIKR+bvSEkAGnalMY=
 github.com/plexusone/omnivoice v0.11.1 h1:pFAZ/lvaNDDSTY13ypK0ahnFYgg+sDHeROIq66yxKbc=
 github.com/plexusone/omnivoice v0.11.1/go.mod h1:69xVHe/uc840+vLTBoLSwW3wtx4vYpfxTRpckl4eDXA=
-github.com/plexusone/omnivoice-core v0.14.0 h1:6KGvVwJI2RWcK0y1A91pVFn7lyuWsYjFPKxsAzIZPNA=
-github.com/plexusone/omnivoice-core v0.14.0/go.mod h1:ghbU63vSkn09vz1Mb9uQrePVcNLpXXBB9IMZ2wkzePM=
+github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=
+github.com/plexusone/omnivoice-core v0.15.0/go.mod h1:SwFSgk9D1UH9XIyofLUU6BEEWEtHsS+PHKduMp+VucE=
 github.com/plexusone/omnivoice-twilio v0.3.1 h1:fn3TCHiL2Am3EP5nhs70AR8LHX7lElEasN9h6GQljRw=
 github.com/plexusone/omnivoice-twilio v0.3.1/go.mod h1:S+qDumSH7iy5ixSX39PtKVrK6tV0rjRm+38uVvEprWI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
@@ -1080,8 +1080,8 @@ google.golang.org/genproto v0.0.0-20260618152121-87f3d3e198d3 h1:QS9ra9U3VDDJzRX
 google.golang.org/genproto v0.0.0-20260618152121-87f3d3e198d3/go.mod h1:V5M1lxGXNUICs0aOqAMsK6HtmLnCyuzY031uOQS9rJE=
 google.golang.org/genproto/googleapis/api v0.0.0-20260618152121-87f3d3e198d3 h1:ctPmKL12ZsoKAlmPUsoW70zEDiYF+/H6aLieXxgAU0k=
 google.golang.org/genproto/googleapis/api v0.0.0-20260618152121-87f3d3e198d3/go.mod h1:Z4WJ5pJOYWFWcHEQUelD5QaZDknIQkpIL/+fyJOT9+A=
-google.golang.org/genproto/googleapis/rpc v0.0.0-20260618152121-87f3d3e198d3 h1:phvBWCAQMGN1945mp5fjCXP6jEF0+a0+4TjokS4sxNY=
-google.golang.org/genproto/googleapis/rpc v0.0.0-20260618152121-87f3d3e198d3/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260622175928-b703f567277d h1:mpAgMyM9vQHxycBlDq50y1VHpfSfVwzXvrQKtYbXuUY=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20260622175928-b703f567277d/go.mod h1:4Hqkh8ycfw05ld/3BWL7rJOSfebL2Q+DVDeRgYgxUU8=
 google.golang.org/grpc v1.19.0/go.mod h1:mqu4LbDTu4XGKhr4mRzUsmM4RtVoemTSY81AxZiDr8c=
 google.golang.org/grpc v1.20.1/go.mod h1:10oTOabMzJvdu6/UiuZezV6QK5dSlG84ov/aaiqXj38=
 google.golang.org/grpc v1.21.1/go.mod h1:oYelfM1adQP15Ek0mdvEgi9Df8B9CZIaU1084ijfRaM=
