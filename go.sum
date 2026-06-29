@@ -456,8 +456,8 @@ github.com/pb33f/ordered-map/v2 v2.3.1/go.mod h1:qxFQgd0PkVUtOMCkTapqotNgzRhMPL7
 github.com/pborman/getopt v0.0.0-20170112200414-7148bc3a4c30/go.mod h1:85jBQOZwpVEaDAr341tbn15RS4fCAsIst0qp7i8ex1o=
 github.com/pelletier/go-toml v1.9.5/go.mod h1:u1nR/EPcESfeI/szUZKdtJ0xRNbUoANCkoOuaOx1Y+c=
 github.com/pelletier/go-toml/v2 v2.0.5/go.mod h1:OMHamSCAODeSsVrwwvcJOaoN0LIUIaFVNZzmWyNfXas=
-github.com/pelletier/go-toml/v2 v2.4.0 h1:Mwu0mAkUKbittDs3/ADDWXqMmq3EOK2VHiuCkV00Row=
-github.com/pelletier/go-toml/v2 v2.4.0/go.mod h1:2gIqNv+qfxSVS7cM2xJQKtLSTLUE9V8t9Stt+h56mCY=
+github.com/pelletier/go-toml/v2 v2.4.2 h1:M2fKKbmyvI+hGId/D0W64qDBMVhJnNR10O5gIbMc//Q=
+github.com/pelletier/go-toml/v2 v2.4.2/go.mod h1:2gIqNv+qfxSVS7cM2xJQKtLSTLUE9V8t9Stt+h56mCY=
 github.com/petermattis/goid v0.0.0-20260330135022-df67b199bc81 h1:WDsQxOJDy0N1VRAjXLpi8sCEZRSGarLWQevDxpTBRrM=
 github.com/petermattis/goid v0.0.0-20260330135022-df67b199bc81/go.mod h1:pxMtw7cyUw6B2bRH0ZBANSPg+AoSud1I1iyJHI69jH4=
 github.com/pkg/errors v0.8.0/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
@@ -465,8 +465,8 @@ github.com/pkg/errors v0.8.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINE
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pkg/sftp v1.13.1/go.mod h1:3HaPG6Dq1ILlpPZRO0HVMrsydcdLt6HRDccSgb87qRg=
-github.com/plexusone/assistantkit v0.13.0 h1:o72MfEsi5NK6ymlvWbxGYl2vNXSBgv8TmCkP8N52N9Y=
-github.com/plexusone/assistantkit v0.13.0/go.mod h1:aqBPbh0TLGRassIp2vkuq3I6EZKlI5M+Lq4aZQLngiQ=
+github.com/plexusone/assistantkit v0.14.0 h1:ZUxDX6h6RH+a+YlGE4Vmx1qx7/lXZYWga3Z8BolyGj8=
+github.com/plexusone/assistantkit v0.14.0/go.mod h1:j3HPDvFj8HpG3uCW6sq7RRYcCoQXpXciPdb1tf/Iflg=
 github.com/plexusone/elevenlabs-go v0.13.0 h1:KrgrhJjLfNbIRFp8F880QmxW1/VSkfpUcXXWfUEe8tU=
 github.com/plexusone/elevenlabs-go v0.13.0/go.mod h1:iNDRYo/Ya4oLYuIXKRtGRzNY9fdN/ALaQI2nEb5O540=
 github.com/plexusone/mcpkit v0.4.0 h1:NZQJwsJoVPexV84JQtjFw0gyPX/KXDsGbZBOA7GI/vI=

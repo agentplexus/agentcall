@@ -7,7 +7,7 @@ require (
 	github.com/lib/pq v1.12.3
 	github.com/modelcontextprotocol/go-sdk v1.6.1
 	github.com/oklog/ulid/v2 v2.1.1
-	github.com/plexusone/assistantkit v0.13.0
+	github.com/plexusone/assistantkit v0.14.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.8.0
 	github.com/plexusone/omnivoice v0.11.1
@@ -81,7 +81,7 @@ require (
 	github.com/ogen-go/ogen v1.22.0 // indirect
 	github.com/openai/openai-go v1.12.0 // indirect
 	github.com/pb33f/ordered-map/v2 v2.3.1 // indirect
-	github.com/pelletier/go-toml/v2 v2.4.0 // indirect
+	github.com/pelletier/go-toml/v2 v2.4.2 // indirect
 	github.com/petermattis/goid v0.0.0-20260330135022-df67b199bc81 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/plexusone/elevenlabs-go v0.13.0 // indirect
