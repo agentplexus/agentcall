@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/plexusone/omnivoice"
-	"github.com/plexusone/omnivoice-core/callsystem"
 	twiliosystem "github.com/plexusone/omni-twilio/omnivoice/callsystem"
 	twiliotransport "github.com/plexusone/omni-twilio/omnivoice/transport"
+	"github.com/plexusone/omnivoice"
+	"github.com/plexusone/omnivoice-core/callsystem"
 	_ "github.com/plexusone/omnivoice/providers/all" // Register all providers
 
 	"github.com/plexusone/agentcomms/pkg/config"
