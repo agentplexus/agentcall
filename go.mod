@@ -8,11 +8,11 @@ require (
 	github.com/modelcontextprotocol/go-sdk v1.6.1
 	github.com/oklog/ulid/v2 v2.1.1
 	github.com/plexusone/assistantkit v0.14.0
+	github.com/plexusone/omni-twilio v0.9.0
 	github.com/plexusone/omnichat v0.8.0
 	github.com/plexusone/omniskill v0.9.0
 	github.com/plexusone/omnivoice v0.12.0
 	github.com/plexusone/omnivoice-core v0.15.0
-	github.com/plexusone/omnivoice-twilio v0.3.1
 	github.com/spf13/cobra v1.10.2
 	gopkg.in/yaml.v3 v3.0.1
 	modernc.org/sqlite v1.53.0
@@ -91,7 +91,6 @@ require (
 	github.com/plexusone/omni-google v0.6.1 // indirect
 	github.com/plexusone/omni-openai v0.4.1 // indirect
 	github.com/plexusone/omni-telnyx v0.4.0 // indirect
-	github.com/plexusone/omni-twilio v0.9.0 // indirect
 	github.com/plexusone/omnillm-core v0.17.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rs/zerolog v1.35.1 // indirect

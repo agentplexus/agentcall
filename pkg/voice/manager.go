@@ -11,8 +11,8 @@ import (
 
 	"github.com/plexusone/omnivoice"
 	"github.com/plexusone/omnivoice-core/callsystem"
-	twiliosystem "github.com/plexusone/omnivoice-twilio/callsystem"
-	twiliotransport "github.com/plexusone/omnivoice-twilio/transport"
+	twiliosystem "github.com/plexusone/omni-twilio/omnivoice/callsystem"
+	twiliotransport "github.com/plexusone/omni-twilio/omnivoice/transport"
 	_ "github.com/plexusone/omnivoice/providers/all" // Register all providers
 
 	"github.com/plexusone/agentcomms/pkg/config"

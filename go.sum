@@ -493,8 +493,6 @@ github.com/plexusone/omnivoice v0.12.0 h1:dhlmeFaRn4zge+TZXFMvkNMkIADzSBPzsKq4dI
 github.com/plexusone/omnivoice v0.12.0/go.mod h1:n9TGZYkxKEU1zu7pgGASpzPRM464BAftvdPXE4Xfk1o=
 github.com/plexusone/omnivoice-core v0.15.0 h1:lvzucRbP53bwzBhbZ/x15iRUfJexJqzEeLJvXo74GRM=
 github.com/plexusone/omnivoice-core v0.15.0/go.mod h1:SwFSgk9D1UH9XIyofLUU6BEEWEtHsS+PHKduMp+VucE=
-github.com/plexusone/omnivoice-twilio v0.3.1 h1:fn3TCHiL2Am3EP5nhs70AR8LHX7lElEasN9h6GQljRw=
-github.com/plexusone/omnivoice-twilio v0.3.1/go.mod h1:S+qDumSH7iy5ixSX39PtKVrK6tV0rjRm+38uVvEprWI=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/posener/complete v1.1.1/go.mod h1:em0nMJCgc9GFtwrmVmEMR/ZL6WyhyjMBndrE9hABlRI=
