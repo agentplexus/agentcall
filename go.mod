@@ -10,7 +10,7 @@ require (
 	github.com/plexusone/assistantkit v0.14.0
 	github.com/plexusone/mcpkit v0.4.0
 	github.com/plexusone/omnichat v0.8.0
-	github.com/plexusone/omnivoice v0.11.1
+	github.com/plexusone/omnivoice v0.12.0
 	github.com/plexusone/omnivoice-core v0.15.0
 	github.com/plexusone/omnivoice-twilio v0.3.1
 	github.com/spf13/cobra v1.10.2
@@ -100,7 +100,7 @@ require (
 	github.com/shopspring/decimal v1.4.0 // indirect
 	github.com/slack-go/slack v0.26.0 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
-	github.com/team-telnyx/telnyx-go/v4 v4.80.0 // indirect
+	github.com/team-telnyx/telnyx-go/v4 v4.82.0 // indirect
 	github.com/tidwall/gjson v1.19.0 // indirect
 	github.com/tidwall/match v1.2.0 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
