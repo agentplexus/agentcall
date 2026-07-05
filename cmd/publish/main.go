@@ -100,7 +100,10 @@ func main() {
 	}
 
 	// Create publisher
-	publisher := claude.NewPublisher(token)
+	publisher, err := claude.NewPublisher(token)
+	if err != nil {
+		log.Fatalf("Failed to create publisher: %v", err)
+	}
 
 	// Validate
 	fmt.Println("\nValidating plugin...")
