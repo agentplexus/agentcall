@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
-	mcpkit "github.com/plexusone/mcpkit/runtime"
+	mcpkit "github.com/plexusone/omniskill/mcp/server"
 
 	"github.com/plexusone/agentcomms/pkg/chat"
 	"github.com/plexusone/agentcomms/pkg/voice"

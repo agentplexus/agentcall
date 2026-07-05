@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
-	mcpkit "github.com/plexusone/mcpkit/runtime"
+	mcpkit "github.com/plexusone/omniskill/mcp/server"
 
 	"github.com/plexusone/agentcomms/internal/daemon"
 )

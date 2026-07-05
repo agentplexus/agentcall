@@ -37,7 +37,7 @@ import (
 	"syscall"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
-	mcpkit "github.com/plexusone/mcpkit/runtime"
+	mcpkit "github.com/plexusone/omniskill/mcp/server"
 	"github.com/spf13/cobra"
 
 	"github.com/plexusone/agentcomms/internal/daemon"
