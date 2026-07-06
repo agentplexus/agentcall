@@ -11,7 +11,7 @@ require (
 	github.com/plexusone/omni-twilio v0.9.0
 	github.com/plexusone/omnichat v0.8.0
 	github.com/plexusone/omniskill v0.9.0
-	github.com/plexusone/omnivoice v0.12.0
+	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.15.0
 	github.com/spf13/cobra v1.10.2
 	gopkg.in/yaml.v3 v3.0.1
@@ -87,11 +87,11 @@ require (
 	github.com/plexusone/elevenlabs-go v0.13.0 // indirect
 	github.com/plexusone/multi-agent-spec/sdk/go v0.8.0 // indirect
 	github.com/plexusone/ogen-tools v0.3.0 // indirect
-	github.com/plexusone/omni-deepgram v0.6.1 // indirect
-	github.com/plexusone/omni-google v0.6.1 // indirect
-	github.com/plexusone/omni-openai v0.4.1 // indirect
+	github.com/plexusone/omni-deepgram v0.7.0 // indirect
+	github.com/plexusone/omni-google v0.7.0 // indirect
+	github.com/plexusone/omni-openai v0.5.0 // indirect
 	github.com/plexusone/omni-telnyx v0.4.0 // indirect
-	github.com/plexusone/omnillm-core v0.17.0 // indirect
+	github.com/plexusone/omnillm-core v0.18.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rs/zerolog v1.35.1 // indirect
 	github.com/segmentio/asm v1.2.1 // indirect
