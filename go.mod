@@ -10,7 +10,7 @@ require (
 	github.com/plexusone/assistantkit v0.14.0
 	github.com/plexusone/omni-twilio v0.9.0
 	github.com/plexusone/omnichat v0.8.0
-	github.com/plexusone/omniskill v0.9.0
+	github.com/plexusone/omniskill v0.10.0
 	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.15.0
 	github.com/spf13/cobra v1.10.2
