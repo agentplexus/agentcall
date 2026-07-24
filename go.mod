@@ -6,7 +6,7 @@ require (
 	entgo.io/ent v0.14.6
 	github.com/lib/pq v1.12.3
 	github.com/modelcontextprotocol/go-sdk v1.6.1
-	github.com/oklog/ulid/v2 v2.1.1
+	github.com/oklog/ulid/v2 v2.1.2
 	github.com/plexusone/assistantkit v0.14.0
 	github.com/plexusone/omni-twilio v0.9.0
 	github.com/plexusone/omnichat v0.8.0
