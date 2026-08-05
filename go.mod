@@ -10,7 +10,7 @@ require (
 	github.com/plexusone/assistantkit v0.14.0
 	github.com/plexusone/omni-twilio v0.9.0
 	github.com/plexusone/omnichat v0.8.1
-	github.com/plexusone/omniskill v0.10.0
+	github.com/plexusone/omniskill v0.11.0
 	github.com/plexusone/omnivoice v0.13.0
 	github.com/plexusone/omnivoice-core v0.16.0
 	github.com/spf13/cobra v1.10.2
@@ -75,7 +75,7 @@ require (
 	github.com/invopop/jsonschema v0.14.0 // indirect
 	github.com/jpillora/backoff v1.0.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
-	github.com/mattn/go-isatty v0.0.23 // indirect
+	github.com/mattn/go-isatty v0.0.24 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
 	github.com/ncruces/go-strftime v1.0.0 // indirect
 	github.com/ogen-go/ogen v1.22.0 // indirect
@@ -125,7 +125,7 @@ require (
 	golang.ngrok.com/muxado/v2 v2.0.1 // indirect
 	golang.ngrok.com/ngrok v1.13.0 // indirect
 	golang.org/x/crypto v0.54.0 // indirect
-	golang.org/x/exp v0.0.0-20260718201538-764159d718ef // indirect
+	golang.org/x/exp v0.0.0-20260727155853-b88d891fe743 // indirect
 	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/net v0.57.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
