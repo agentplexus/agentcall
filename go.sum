@@ -488,8 +488,8 @@ github.com/plexusone/omnichat v0.8.1 h1:KSkLSc1FKmzuXez60hnHE96fu8wDcg9oXIe43Prn
 github.com/plexusone/omnichat v0.8.1/go.mod h1:Ok5Y8xAgH/hH/18Ewg+uyeZV1XgRiqorfhowetwjumY=
 github.com/plexusone/omnillm-core v0.18.0 h1:JnONiIe08W+83hsyxyFHSouk0jkBY2o7/SzvJxF3mYI=
 github.com/plexusone/omnillm-core v0.18.0/go.mod h1:180U/oa67fly3+T3h1sL/pBMvcjIKR+bvSEkAGnalMY=
-github.com/plexusone/omniskill v0.10.0 h1:Nd/zfAGPNmnmRGyBhmMgXFS7lYcWbPtrT0k5cP8eOvY=
-github.com/plexusone/omniskill v0.10.0/go.mod h1:L0MW5av6S0EkgGByFMwDmTJBy/7h8ourBmQ5xxM2vQI=
+github.com/plexusone/omniskill v0.12.0 h1:MFGlpB2/Tp7SWcrn2kNHQ+h8j9lfdChvCi4ntymOG3I=
+github.com/plexusone/omniskill v0.12.0/go.mod h1:cTKqpqEDbTCAqKBsYHdBd7+LySO2dPHJE1S1VlnOovI=
 github.com/plexusone/omnivoice v0.13.0 h1:HU1Q2Qt740sJt+FgP1vSJI6Xpue1pA67Z5e6c4Wvs+A=
 github.com/plexusone/omnivoice v0.13.0/go.mod h1:RwS7s/xOW7y+Gs6+6hB1JJHRn/MZnit7zlk4/NyR3Es=
 github.com/plexusone/omnivoice-core v0.16.0 h1:vLpIuuhSFhznO62TOCgD/6hZ401D636Sfqs8GTLGcBo=
@@ -673,8 +673,8 @@ golang.org/x/exp v0.0.0-20191227195350-da58074b4299/go.mod h1:2RIsYlXP63K8oxa1u0
 golang.org/x/exp v0.0.0-20200119233911-0405dc783f0a/go.mod h1:2RIsYlXP63K8oxa1u096TMicItID8zy7Y6sNkU49FU4=
 golang.org/x/exp v0.0.0-20200207192155-f17229e696bd/go.mod h1:J/WKrq2StrnmMY6+EHIKF9dgMWnmCNThgcyBT1FY9mM=
 golang.org/x/exp v0.0.0-20200224162631-6cc2880d07d6/go.mod h1:3jZMyOhIsHpP37uCMkUooju7aAi5cS1Q23tOzKc+0MU=
-golang.org/x/exp v0.0.0-20260718201538-764159d718ef h1:LkZ48HFgy/TvhTI0bcWkjgFkgLyKUwcTbDjS0DUjw+A=
-golang.org/x/exp v0.0.0-20260718201538-764159d718ef/go.mod h1:EdfpwwqSu+0Li0mzskwHU6FWDV3t9Q+RZDo3QMUtL3Q=
+golang.org/x/exp v0.0.0-20260727155853-b88d891fe743 h1:ex206bKw+v3K0dm3andkrIF+ijyQKJG1pLgwQ2PYdQM=
+golang.org/x/exp v0.0.0-20260727155853-b88d891fe743/go.mod h1:EdfpwwqSu+0Li0mzskwHU6FWDV3t9Q+RZDo3QMUtL3Q=
 golang.org/x/image v0.0.0-20190227222117-0694c2d4d067/go.mod h1:kZ7UVZpmo3dzQBMxlp+ypCbDeSB+sBbTgSJuh5dn5js=
 golang.org/x/image v0.0.0-20190802002840-cff245a6509b/go.mod h1:FeLwcggjj3mMvU+oOTbSwawSJRM1uh48EjtB4UJZlP0=
 golang.org/x/lint v0.0.0-20181026193005-c67002cb31c3/go.mod h1:UVdnD1Gm6xHRNCYTkRU2/jEulfH38KcIWyp/GAMgvoE=
